@@ -12,10 +12,10 @@ export default function NotFound() {
     <>
       <Header />
       <main className="container">
-        <div className="error" style={{ textAlign: 'center', padding: '4rem 0' }}>
-          <h1 style={{ fontSize: '4rem', marginBottom: '1rem' }}>404</h1>
-          <h2 style={{ marginBottom: '2rem' }}>Page Not Found</h2>
-          <p style={{ marginBottom: '2rem', color: 'var(--color-gray-dark)' }}>
+        <div className="error error-page">
+          <h1 className="error-code">404</h1>
+          <h2 className="error-heading">Page Not Found</h2>
+          <p className="error-message">
             Sorry, the page you are looking for doesn&apos;t exist.
           </p>
           <Link href="/" className="btn btn-primary">

@@ -19,13 +19,12 @@ export default function ProductDetailClient({ product }) {
 
       <div className="product-detail">
         <div className="product-images">
-          <div style={{ position: 'relative', width: '100%', height: '500px' }}>
+          <div className="image-container">
             <Image
               src={product.images[selectedImage]}
               alt={product.name}
               fill
-              style={{ objectFit: 'cover' }}
-              className="main-image"
+              className="main-image img-cover"
               priority
               sizes="(max-width: 768px) 100vw, 50vw"
             />
@@ -35,7 +34,7 @@ export default function ProductDetailClient({ product }) {
               {product.images.map((image, index) => (
                 <div
                   key={index}
-                  style={{ position: 'relative', width: '80px', height: '80px', cursor: 'pointer' }}
+                  className="thumbnail-container"
                   onClick={() => setSelectedImage(index)}
                 >
                   <Image
@@ -72,8 +71,7 @@ export default function ProductDetailClient({ product }) {
           
           <a 
             href={product.stripePaymentLink}
-            className="btn btn-primary"
-            style={{ display: 'inline-block', marginTop: '2rem' }}
+            className="btn btn-primary btn-buy"
             target="_blank"
             rel="noopener noreferrer"
           >

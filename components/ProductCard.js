@@ -4,13 +4,12 @@ import Image from 'next/image'
 export default function ProductCard({ product }) {
   return (
     <Link href={`/products/${product.slug}`} className="product-card">
-      <div style={{ position: 'relative', width: '100%', height: '280px' }}>
+      <div className="product-image-container">
         <Image
           src={product.images[0]}
           alt={product.name}
           fill
-          style={{ objectFit: 'cover' }}
-          className="product-image"
+          className="product-image img-cover"
           sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
         />
       </div>
