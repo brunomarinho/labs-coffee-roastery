@@ -4,8 +4,8 @@ import ProductCard from '../../components/ProductCard'
 import productsData from '../../data/products.json'
 
 export const metadata = {
-  title: 'Products - My Store',
-  description: 'Browse our complete collection of products including apparel, accessories, and prints.',
+  title: 'Produtos - Mameluca',
+  description: 'Explore nossa coleção completa de cafés brasileiros de torra clara.',
 }
 
 export default function Products() {
@@ -18,7 +18,7 @@ export default function Products() {
     <>
       <Header />
       <main className="container">
-        <h1 className="text-center mt-lg mb-lg">All Products</h1>
+        <h1 className="text-center mt-lg mb-lg">Todos os Produtos</h1>
         
         {productsByCategory.map((category) => (
           <div key={category.id} className="category-section">

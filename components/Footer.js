@@ -8,12 +8,12 @@ export default function Footer() {
       <div className="container">
         <div className="footer-content">
           <div className="footer-links">
-            <Link href="/about">About</Link>
-            <Link href="/products">Products</Link>
+            <Link href="/sobre">Sobre</Link>
+            <Link href="/produtos">Produtos</Link>
             <Link href="/faq">FAQ</Link>
-            <Link href="/contact">Contact</Link>
+            <Link href="/contato">Contato</Link>
           </div>
-          <p>&copy; {currentYear} My Store. All rights reserved.</p>
+          <p>&copy; {currentYear} Mameluca. Todos os direitos reservados.</p>
         </div>
       </div>
     </footer>

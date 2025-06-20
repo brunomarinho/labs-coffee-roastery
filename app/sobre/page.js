@@ -5,12 +5,12 @@ import Footer from '../../components/Footer'
 import { parseMarkdown } from '../../utils/parseMarkdown'
 
 export const metadata = {
-  title: 'About Us - My Store',
-  description: 'Learn more about our story and mission.',
+  title: 'Sobre Nós - Mameluca',
+  description: 'Conheça nossa história e missão.',
 }
 
 export default function About() {
-  const filePath = path.join(process.cwd(), 'content', 'about.md')
+  const filePath = path.join(process.cwd(), 'content', 'sobre.md')
   const content = fs.readFileSync(filePath, 'utf8')
   const htmlContent = parseMarkdown(content)
 

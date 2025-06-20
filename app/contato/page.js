@@ -5,12 +5,12 @@ import Footer from '../../components/Footer'
 import { parseMarkdown } from '../../utils/parseMarkdown'
 
 export const metadata = {
-  title: 'Contact Us - My Store',
-  description: 'Get in touch with us. We\'d love to hear from you!',
+  title: 'Contato - Mameluca',
+  description: 'Entre em contato conosco. Adoraríamos ouvir você!',
 }
 
 export default function Contact() {
-  const filePath = path.join(process.cwd(), 'content', 'contact.md')
+  const filePath = path.join(process.cwd(), 'content', 'contato.md')
   const content = fs.readFileSync(filePath, 'utf8')
   const htmlContent = parseMarkdown(content)
 

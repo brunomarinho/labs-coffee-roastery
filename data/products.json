@@ -1,114 +1,46 @@
 {
   "products": [
     {
-      "id": "tshirt-001",
-      "slug": "classic-cotton-tshirt",
-      "name": "Classic Cotton T-Shirt",
-      "description": "Premium quality 100% cotton t-shirt. Comfortable and breathable, perfect for everyday wear. Available in multiple colors.",
-      "price": 29.99,
-      "category": "apparel",
+      "id": "001",
+      "slug": "cafe-001",
+      "name": "001 Ivan",
+      "description": "Esse Bourbon me lembrou do Letty Bermudez, um café excepcional da Colombia, refrescante, com textura de suco de fruta, suave e de final marcante.",
+      "price": 60.00,
+      "category": "coffee",
       "images": [
-        "/images/products/tshirt-1.jpg",
-        "/images/products/tshirt-2.jpg"
+        "/images/products/001a.jpg",
+        "/images/products/001b.jpg"
       ],
       "featured": true,
       "stripePaymentLink": "https://buy.stripe.com/test_00g3cd9P1b4k5Wg5kk",
-      "sizes": ["S", "M", "L", "XL"],
-      "colors": ["Black", "White", "Navy"]
+      "Fazenda": "Boa Vista",
+      "Produtor": "Anderson Monteiro",
+      "Variedade": "Bourbon",
+      "processo": "Natural"
     },
     {
-      "id": "hoodie-001",
-      "slug": "comfort-hoodie",
-      "name": "Comfort Hoodie",
-      "description": "Ultra-soft fleece hoodie with adjustable drawstring hood. Features a kangaroo pocket and ribbed cuffs for a snug fit.",
+      "id": "002",
+      "slug": "cafe-002",
+      "name": "002 Ivan",
+      "description": "Um café extraordinário com notas complexas e sabor marcante, perfeito para apreciadores de cafés especiais.",
       "price": 59.99,
-      "category": "apparel",
+      "category": "Café",
       "images": [
-        "/images/products/hoodie-1.jpg",
-        "/images/products/hoodie-2.jpg"
+        "/images/products/002a.jpg",
+        "/images/products/002b.jpg"
       ],
       "featured": true,
       "stripePaymentLink": "https://buy.stripe.com/test_14k3cd7GXa0g4Sc8ww",
-      "sizes": ["S", "M", "L", "XL"],
-      "colors": ["Gray", "Black"]
-    },
-    {
-      "id": "mug-001",
-      "slug": "ceramic-coffee-mug",
-      "name": "Ceramic Coffee Mug",
-      "description": "High-quality ceramic mug with comfortable handle. Dishwasher and microwave safe. Perfect for your morning coffee or tea.",
-      "price": 14.99,
-      "category": "accessories",
-      "images": [
-        "/images/products/mug-1.jpg",
-        "/images/products/mug-2.jpg"
-      ],
-      "featured": true,
-      "stripePaymentLink": "https://buy.stripe.com/test_28o8wx5yP8Wc2K4cMM",
-      "capacity": "12oz",
-      "material": "Ceramic"
-    },
-    {
-      "id": "totebag-001",
-      "slug": "canvas-tote-bag",
-      "name": "Canvas Tote Bag",
-      "description": "Durable canvas tote bag with reinforced handles. Spacious interior perfect for shopping, books, or daily essentials.",
-      "price": 24.99,
-      "category": "accessories",
-      "images": [
-        "/images/products/tote-1.jpg",
-        "/images/products/tote-2.jpg"
-      ],
-      "featured": false,
-      "stripePaymentLink": "https://buy.stripe.com/test_5kAaEFcZfbYE6Yk145",
-      "dimensions": "15\" x 16\" x 4\"",
-      "material": "100% Cotton Canvas"
-    },
-    {
-      "id": "poster-001",
-      "slug": "minimalist-art-poster",
-      "name": "Minimalist Art Poster",
-      "description": "Museum-quality poster printed on thick and durable matte paper. A statement piece for any room.",
-      "price": 19.99,
-      "category": "prints",
-      "images": [
-        "/images/products/poster-1.jpg",
-        "/images/products/poster-2.jpg"
-      ],
-      "featured": true,
-      "stripePaymentLink": "https://buy.stripe.com/test_9AQ00134t4LUg8IeUU",
-      "sizes": ["18x24", "24x36"],
-      "finish": "Matte"
-    },
-    {
-      "id": "sticker-001",
-      "slug": "vinyl-sticker-pack",
-      "name": "Vinyl Sticker Pack",
-      "description": "Set of 5 high-quality vinyl stickers. Waterproof and UV resistant, perfect for laptops, water bottles, and more.",
-      "price": 9.99,
-      "category": "prints",
-      "images": [
-        "/images/products/stickers-1.jpg",
-        "/images/products/stickers-2.jpg"
-      ],
-      "featured": false,
-      "stripePaymentLink": "https://buy.stripe.com/test_cN2aEF9P16TY6Yk9AA",
-      "quantity": "5 stickers",
-      "material": "Vinyl"
+      "Fazenda": "Santa Maria",
+      "Produtor": "José Silva",
+      "Variedade": "Catuai",
+      "processo": "Honey"
     }
   ],
   "categories": [
     {
-      "id": "apparel",
-      "displayName": "Apparel"
-    },
-    {
-      "id": "accessories",
-      "displayName": "Accessories"
-    },
-    {
-      "id": "prints",
-      "displayName": "Prints & Stickers"
+      "id": "coffee",
+      "displayName": "Café"
     }
   ]
 }

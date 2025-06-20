@@ -6,10 +6,10 @@ export default function sitemap() {
   // Static pages
   const staticPages = [
     '',
-    '/products',
-    '/about',
+    '/produtos',
+    '/sobre',
     '/faq',
-    '/contact',
+    '/contato',
   ].map((route) => ({
     url: `${baseUrl}${route}`,
     lastModified: new Date(),
@@ -19,7 +19,7 @@ export default function sitemap() {
   
   // Product pages
   const productPages = productsData.products.map((product) => ({
-    url: `${baseUrl}/products/${product.slug}`,
+    url: `${baseUrl}/produtos/${product.slug}`,
     lastModified: new Date(),
     changeFrequency: 'weekly',
     priority: 0.6,

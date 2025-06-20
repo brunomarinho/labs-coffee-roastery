@@ -8,7 +8,7 @@ export default function SelectedProducts() {
 
   return (
     <section className="container">
-      <h2 className="text-center mt-lg mb-lg">Featured Products</h2>
+      <h2 className="text-center mt-lg mb-lg">Produtos em Destaque</h2>
       <div className="product-grid">
         {featuredProducts.map((product) => (
           <ProductCard key={product.id} product={product} />

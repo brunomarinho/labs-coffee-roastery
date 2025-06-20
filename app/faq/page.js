@@ -5,8 +5,8 @@ import Footer from '../../components/Footer'
 import { parseMarkdown } from '../../utils/parseMarkdown'
 
 export const metadata = {
-  title: 'FAQ - My Store',
-  description: 'Frequently asked questions about our products and services.',
+  title: 'FAQ - Mameluca',
+  description: 'Perguntas frequentes sobre nossos produtos e serviços.',
 }
 
 export default function FAQ() {

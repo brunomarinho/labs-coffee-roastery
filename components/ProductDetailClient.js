@@ -10,9 +10,9 @@ export default function ProductDetailClient({ product }) {
   return (
     <>
       <div className="breadcrumb">
-        <Link href="/">Home</Link>
+        <Link href="/">Início</Link>
         <span className="breadcrumb-separator">/</span>
-        <Link href="/products">Products</Link>
+        <Link href="/produtos">Produtos</Link>
         <span className="breadcrumb-separator">/</span>
         <span>{product.name}</span>
       </div>
@@ -54,7 +54,7 @@ export default function ProductDetailClient({ product }) {
           <h1 className="product-title">{product.name}</h1>
           <p className="product-category">{product.category}</p>
           <p className="product-description">{product.description}</p>
-          <p className="product-price-large">${product.price}</p>
+          <p className="product-price-large">R$ {product.price}</p>
           
           {Object.entries(product).map(([key, value]) => {
             if (['id', 'slug', 'name', 'description', 'price', 'category', 'images', 'featured', 'stripePaymentLink'].includes(key)) {
@@ -75,7 +75,7 @@ export default function ProductDetailClient({ product }) {
             target="_blank"
             rel="noopener noreferrer"
           >
-            Buy Now
+            Comprar Agora
           </a>
         </div>
       </div>

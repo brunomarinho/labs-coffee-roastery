@@ -16,12 +16,12 @@ export async function generateMetadata({ params }) {
   
   if (!product) {
     return {
-      title: 'Product Not Found',
+      title: 'Produto Não Encontrado',
     }
   }
 
   return {
-    title: `${product.name} - My Store`,
+    title: `${product.name} - Mameluca`,
     description: product.description,
     openGraph: {
       title: product.name,

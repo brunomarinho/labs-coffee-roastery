@@ -4,11 +4,8 @@ export default function Hero() {
   return (
     <section className="hero">
       <div className="container">
-        <h1>Welcome to My Store</h1>
-        <p>Discover our curated collection of high-quality products</p>
-        <Link href="/products" className="btn btn-secondary">
-          Shop Now
-        </Link>
+        <h1>Cafés brasileiros com torra clara.</h1>
+        <p>Micro torrefação não escalável de cafés brasileiros com foco em torra clara, ressaltando as características de cultivo e a sensação de frescor. Entenda nosso estilo.</p>
       </div>
     </section>
   )
