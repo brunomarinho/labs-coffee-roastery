@@ -24,7 +24,7 @@
       "name": "002 Ivan",
       "description": "Um café extraordinário com notas complexas e sabor marcante, perfeito para apreciadores de cafés especiais.",
       "price": 59.99,
-      "category": "Café",
+      "category": "coffee",
       "images": [
         "/images/products/002a.jpg",
         "/images/products/002b.jpg"
