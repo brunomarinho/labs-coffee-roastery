@@ -1,7 +1,9 @@
 import Link from 'next/link'
 import Image from 'next/image'
 
-export default function ProductCard({ product }) {
+export default function ProductCard({ product, categories }) {
+  const categoryDisplay = categories?.find(cat => cat.id === product.category)?.displayName || product.category
+  
   return (
     <Link href={`/produtos/${product.slug}`} className="product-card">
       <div className="product-image-container">
@@ -14,7 +16,7 @@ export default function ProductCard({ product }) {
         />
       </div>
       <div className="product-info">
-        <p className="product-category">{product.category}</p>
+        <p className="product-category">{categoryDisplay}</p>
         <h3 className="product-name">{product.name}</h3>
         <p className="product-price">R$ {product.price}</p>
       </div>

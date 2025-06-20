@@ -43,7 +43,7 @@ export default async function ProductDetail({ params }) {
     <>
       <Header />
       <main className="container">
-        <ProductDetailClient product={product} />
+        <ProductDetailClient product={product} categories={productsData.categories} />
       </main>
       <Footer />
     </>

@@ -4,8 +4,10 @@ import { useState } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 
-export default function ProductDetailClient({ product }) {
+export default function ProductDetailClient({ product, categories }) {
   const [selectedImage, setSelectedImage] = useState(0)
+  
+  const categoryDisplay = categories?.find(cat => cat.id === product.category)?.displayName || product.category
 
   return (
     <>
@@ -52,7 +54,7 @@ export default function ProductDetailClient({ product }) {
 
         <div className="product-details">
           <h1 className="product-title">{product.name}</h1>
-          <p className="product-category">{product.category}</p>
+          <p className="product-category">{categoryDisplay}</p>
           <p className="product-description">{product.description}</p>
           <p className="product-price-large">R$ {product.price}</p>
           

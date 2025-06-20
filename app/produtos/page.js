@@ -25,7 +25,7 @@ export default function Products() {
             <h2 className="category-title">{category.displayName}</h2>
             <div className="product-grid">
               {category.products.map((product) => (
-                <ProductCard key={product.id} product={product} />
+                <ProductCard key={product.id} product={product} categories={productsData.categories} />
               ))}
             </div>
           </div>

@@ -11,7 +11,7 @@ export default function SelectedProducts() {
       <h2 className="text-center mt-lg mb-lg">Produtos em Destaque</h2>
       <div className="product-grid">
         {featuredProducts.map((product) => (
-          <ProductCard key={product.id} product={product} />
+          <ProductCard key={product.id} product={product} categories={productsData.categories} />
         ))}
       </div>
     </section>
