@@ -8,7 +8,7 @@ export default function Header() {
 
   return (
     <header className="header">
-      <div className="container">
+      
         <div className="header-container">
           <Link href="/" className="logo">
             Mameluca
@@ -22,7 +22,7 @@ export default function Header() {
             ))}
           </nav>
         </div>
-      </div>
+      
     </header>
   )
 }
