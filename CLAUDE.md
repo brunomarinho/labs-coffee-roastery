@@ -19,6 +19,7 @@ This is a Next.js ecommerce template that uses Stripe payment links for checkout
 - CSS with tokenized design system
 - Static Site Generation (SSG)
 - Stripe Payment Links
+- Remark for markdown processing (CommonMark + GFM)
 
 ## Project Structure
 
@@ -59,6 +60,7 @@ npm run lint
 2. Static pages are generated at build time using this data
 3. Product images are stored in `/public/images/products/`
 4. Stripe payment links handle the checkout process externally
+5. Markdown content is processed at build time using Remark
 
 ### Key Components
 - **Header**: Navigation with responsive mobile menu
@@ -135,6 +137,7 @@ Categories are defined in the same `products.json` file with display names.
 4. **Links**: Use Next.js Link component for internal navigation
 5. **Data Updates**: Modify `/data/products.json` and rebuild to update products
 6. **Content Updates**: Edit markdown files in `/content` for page content
+7. **Markdown Support**: Full CommonMark + GitHub Flavored Markdown syntax supported
 
 ## Common Tasks
 
@@ -167,3 +170,4 @@ Categories are defined in the same `products.json` file with display names.
 - Stripe handles all payment processing externally
 - Images should be optimized before adding to the project
 - The site is configured for static export (`output: 'export'`)
+- Markdown pages use async components due to Remark's async processing

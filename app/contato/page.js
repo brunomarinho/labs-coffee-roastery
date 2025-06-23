@@ -9,10 +9,10 @@ export const metadata = {
   description: 'Entre em contato conosco. Adoraríamos ouvir você!',
 }
 
-export default function Contact() {
+export default async function Contact() {
   const filePath = path.join(process.cwd(), 'content', 'contato.md')
   const content = fs.readFileSync(filePath, 'utf8')
-  const htmlContent = parseMarkdown(content)
+  const htmlContent = await parseMarkdown(content)
 
   return (
     <>

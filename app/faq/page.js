@@ -9,10 +9,10 @@ export const metadata = {
   description: 'Perguntas frequentes sobre nossos produtos e serviços.',
 }
 
-export default function FAQ() {
+export default async function FAQ() {
   const filePath = path.join(process.cwd(), 'content', 'faq.md')
   const content = fs.readFileSync(filePath, 'utf8')
-  const htmlContent = parseMarkdown(content)
+  const htmlContent = await parseMarkdown(content)
 
   return (
     <>

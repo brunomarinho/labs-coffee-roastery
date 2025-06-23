@@ -9,10 +9,10 @@ export const metadata = {
   description: 'Conheça nossa história e missão.',
 }
 
-export default function About() {
+export default async function About() {
   const filePath = path.join(process.cwd(), 'content', 'sobre.md')
   const content = fs.readFileSync(filePath, 'utf8')
-  const htmlContent = parseMarkdown(content)
+  const htmlContent = await parseMarkdown(content)
 
   return (
     <>

@@ -9,7 +9,7 @@ A modern, fully static ecommerce template built with Next.js 14 App Router and S
 - 📱 **Fully Responsive** - Mobile-first design with responsive breakpoints
 - 🚀 **Static Site Generation** - Fast loading with SEO optimization
 - 🎨 **Tokenized CSS System** - Consistent design with CSS variables
-- 📝 **Markdown Content** - Easy content management for About, FAQ, Contact pages
+- 📝 **Markdown Content** - Easy content management with full CommonMark support via Remark
 - 🔍 **SEO Ready** - Dynamic meta tags, sitemap, and Open Graph support
 - 🚫 **Sold Out Management** - Support for sold out products with disabled checkout
 
@@ -130,6 +130,7 @@ To mark a product as sold out:
 ### 5. Customize Content
 
 - Edit markdown files in `/content/` for About, FAQ, and Contact pages
+- Markdown supports full CommonMark specification plus GitHub Flavored Markdown
 - Update store name and metadata in `/app/layout.js`
 - Modify hero text in `/components/Hero.js`
 - Customize colors and styling in `/styles/globals.css`
@@ -202,8 +203,15 @@ vercel --prod
 1. Build the project: `npm run build`
 2. Deploy the `out` directory
 
-## SEO Features
+## Technical Features
 
+### Markdown Processing
+- Uses [Remark](https://github.com/remarkjs/remark) for markdown parsing
+- Full CommonMark specification support
+- GitHub Flavored Markdown (tables, strikethrough, task lists, etc.)
+- Secure HTML output with built-in sanitization
+
+### SEO Features
 - Dynamic page titles and descriptions
 - Open Graph tags for social sharing
 - Automatic sitemap generation at `/sitemap.xml`
