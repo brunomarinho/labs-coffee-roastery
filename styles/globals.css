@@ -330,6 +330,18 @@ p {
   letter-spacing: 0.5px;
 }
 
+.sold-out-badge {
+  display: inline-block;
+  background-color: var(--color-gray-dark);
+  color: white;
+  padding: var(--space-xs) var(--space-sm);
+  font-size: var(--font-sm);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-top: var(--space-sm);
+}
+
 /* Product Detail */
 .product-detail {
   display: grid;
@@ -452,6 +464,12 @@ p {
   margin-bottom: var(--space-md);
   padding-bottom: var(--space-sm);
   border-bottom: 2px solid var(--color-border);
+}
+
+.section-title {
+  font-size: 2rem;
+  margin-bottom: var(--space-lg);
+  font-weight: 600;
 }
 
 /* Loading State */

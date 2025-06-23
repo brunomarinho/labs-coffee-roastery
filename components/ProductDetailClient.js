@@ -59,7 +59,7 @@ export default function ProductDetailClient({ product, categories }) {
           <p className="product-price-large">R$ {product.price}</p>
           
           {Object.entries(product).map(([key, value]) => {
-            if (['id', 'slug', 'name', 'description', 'price', 'category', 'images', 'featured', 'stripePaymentLink'].includes(key)) {
+            if (['id', 'slug', 'name', 'description', 'price', 'category', 'images', 'featured', 'stripePaymentLink', 'soldOut'].includes(key)) {
               return null
             }
             return (
@@ -71,14 +71,24 @@ export default function ProductDetailClient({ product, categories }) {
             )
           })}
           
-          <a 
-            href={product.stripePaymentLink}
-            className="btn btn-primary btn-buy"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Comprar Agora
-          </a>
+          {product.soldOut ? (
+            <button 
+              className="btn btn-secondary btn-buy"
+              disabled
+              style={{ cursor: 'not-allowed', opacity: 0.6 }}
+            >
+              Esgotado
+            </button>
+          ) : (
+            <a 
+              href={product.stripePaymentLink}
+              className="btn btn-primary btn-buy"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Comprar Agora
+            </a>
+          )}
         </div>
       </div>
     </>

@@ -1,33 +1,17 @@
-# About Us
+# Sobre
 
-Welcome to **My Store**, where quality meets style. We started our journey in 2020 with a simple mission: to provide high-quality products that bring joy to our customers' everyday lives.
+##  Mameluca
 
-## Our Story
+Mameluca é um experimento, uma opinião, algo diferente em meio de tantas coisas repetitivas no *mercado*. Uma mistura da minha apreciação pelo universo do café com a oportunidade de mostrar para mais pessoas que o café é uma fruta.
 
-What began as a small online shop has grown into a curated collection of carefully selected items. We believe that the products we use daily should not only serve their purpose but also bring a smile to our faces.
+Mameluca oferece cafés brasileiros com torra clara, torrada com ar quente. Essas torras evolvem com o tempo. Geralmente atingindo seu melhor entre duas a quatro semanas. Mameluca oferece também experimentos, como diferentes perfis de torra de um mesmo café para motivos de contraste e aprendizado.
 
-## Our Mission
+Mameluca traz um pouco desse aspecto para o mundo do café e de quem aprecia a arte, o hobby, a cerimônia, a repetição do processo de extrair e apreciar essa bebida.
 
-We're committed to:
 
-* **Quality First**: Every product is tested and selected for its durability and craftsmanship
-* **Fair Pricing**: Premium quality doesn't have to break the bank
-* **Sustainability**: We partner with suppliers who share our values of environmental responsibility
-* **Customer Satisfaction**: Your happiness is our success
+## Exemplo de bullet
 
-## Why Choose Us?
-
-### Curated Selection
-We don't just sell products; we curate experiences. Each item in our store has been personally selected and tested by our team.
-
-### Fast Shipping
-Orders are processed within 24 hours and shipped with care. We know you're excited to receive your items!
-
-### Excellent Support
-Have a question? Our friendly customer support team is here to help, Monday through Friday.
-
-## Join Our Community
-
-Follow us on social media to stay updated on new products, special offers, and behind-the-scenes content. We love connecting with our customers and hearing your stories!
-
-Thank you for choosing My Store. We're honored to be part of your journey.
+- **Quality First**: Every product is tested and selected for its durability and craftsmanship
+- **Fair Pricing**: Premium quality doesn't have to break the bank
+- **Sustainability**: We partner with suppliers who share our values of environmental responsibility
+- **Customer Satisfaction**: Your happiness is our success

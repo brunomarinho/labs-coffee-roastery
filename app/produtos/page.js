@@ -9,9 +9,17 @@ export const metadata = {
 }
 
 export default function Products() {
-  const productsByCategory = productsData.categories.map(category => ({
+  const availableProducts = productsData.products.filter(product => !product.soldOut)
+  const soldOutProducts = productsData.products.filter(product => product.soldOut)
+  
+  const availableProductsByCategory = productsData.categories.map(category => ({
     ...category,
-    products: productsData.products.filter(product => product.category === category.id)
+    products: availableProducts.filter(product => product.category === category.id)
+  })).filter(category => category.products.length > 0)
+  
+  const soldOutProductsByCategory = productsData.categories.map(category => ({
+    ...category,
+    products: soldOutProducts.filter(product => product.category === category.id)
   })).filter(category => category.products.length > 0)
 
   return (
@@ -20,16 +28,37 @@ export default function Products() {
       <main className="container">
         <h1 className="text-center mt-lg mb-lg">Todos os Produtos</h1>
         
-        {productsByCategory.map((category) => (
-          <div key={category.id} className="category-section">
-            <h2 className="category-title">{category.displayName}</h2>
-            <div className="product-grid">
-              {category.products.map((product) => (
-                <ProductCard key={product.id} product={product} categories={productsData.categories} />
-              ))}
-            </div>
-          </div>
-        ))}
+        {availableProductsByCategory.length > 0 && (
+          <>
+            <h2 className="section-title">Cafés disponíveis</h2>
+            {availableProductsByCategory.map((category) => (
+              <div key={category.id} className="category-section">
+                <h3 className="category-title">{category.displayName}</h3>
+                <div className="product-grid">
+                  {category.products.map((product) => (
+                    <ProductCard key={product.id} product={product} categories={productsData.categories} />
+                  ))}
+                </div>
+              </div>
+            ))}
+          </>
+        )}
+        
+        {soldOutProductsByCategory.length > 0 && (
+          <>
+            <h2 className="section-title mt-xl">Cafés anteriores</h2>
+            {soldOutProductsByCategory.map((category) => (
+              <div key={category.id} className="category-section">
+                <h3 className="category-title">{category.displayName}</h3>
+                <div className="product-grid">
+                  {category.products.map((product) => (
+                    <ProductCard key={product.id} product={product} categories={productsData.categories} />
+                  ))}
+                </div>
+              </div>
+            ))}
+          </>
+        )}
       </main>
       <Footer />
     </>

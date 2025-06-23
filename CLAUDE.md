@@ -70,8 +70,8 @@ npm run lint
 
 ### Page Structure
 - Homepage: Hero + Featured Products + About snippet
-- Products: Category-grouped product listing
-- Product Detail: Image gallery + Product info + Buy button
+- Products: Category-grouped product listing with available/sold out sections
+- Product Detail: Image gallery + Product info + Buy button (disabled for sold out)
 - Content Pages: Markdown-rendered About, FAQ, Contact
 
 ## Styling
@@ -97,6 +97,7 @@ npm run lint
   "category": "category-id",
   "images": ["/images/products/image.jpg"],
   "featured": true,
+  "soldOut": false,
   "stripePaymentLink": "https://buy.stripe.com/...",
   "customField": "value"
 }
@@ -138,10 +139,16 @@ Categories are defined in the same `products.json` file with display names.
 ## Common Tasks
 
 ### Adding a New Product
-1. Add product object to `/data/products.json`
+1. Add product object to `/data/products.json` with `soldOut: false`
 2. Add product images to `/public/images/products/`
 3. Set up Stripe payment link and add URL to product data
 4. Run `npm run build` to regenerate static pages
+
+### Managing Sold Out Products
+1. Set `"soldOut": true` in the product data to mark as sold out
+2. Product will display "Esgotado" badge and disabled checkout button
+3. Sold out products appear in "Cafés anteriores" section on products page
+4. Section automatically hides when no products are sold out
 
 ### Adding a New Category
 1. Add category to the categories array in `products.json`

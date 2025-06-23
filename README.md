@@ -11,6 +11,7 @@ A modern, fully static ecommerce template built with Next.js 14 App Router and S
 - 🎨 **Tokenized CSS System** - Consistent design with CSS variables
 - 📝 **Markdown Content** - Easy content management for About, FAQ, Contact pages
 - 🔍 **SEO Ready** - Dynamic meta tags, sitemap, and Open Graph support
+- 🚫 **Sold Out Management** - Support for sold out products with disabled checkout
 
 ## Project Structure
 
@@ -95,6 +96,7 @@ Edit `/data/products.json` to add your products:
         "/images/products/product1-2.jpg"
       ],
       "featured": true,
+      "soldOut": false,
       "stripePaymentLink": "https://buy.stripe.com/...",
       "customField1": "value",
       "customField2": "value"
@@ -117,14 +119,22 @@ Place your product images in `/public/images/products/`. Use the filenames refer
 
 Replace the sample Stripe payment links with your actual payment links from your Stripe dashboard.
 
-### 4. Customize Content
+### 4. Managing Sold Out Products
+
+To mark a product as sold out:
+- Set `"soldOut": true` in the product data
+- The product will show "Esgotado" badge and disabled checkout button
+- On the products page, sold out items appear in a separate "Cafés anteriores" section
+- The "Cafés anteriores" section is automatically hidden when no products are sold out
+
+### 5. Customize Content
 
 - Edit markdown files in `/content/` for About, FAQ, and Contact pages
 - Update store name and metadata in `/app/layout.js`
 - Modify hero text in `/components/Hero.js`
 - Customize colors and styling in `/styles/globals.css`
 
-### 5. Update Site URLs
+### 6. Update Site URLs
 
 Update the site URL in:
 - `/app/sitemap.js` - Change baseUrl

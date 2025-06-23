@@ -24,6 +24,7 @@ export default function ProductCard({ product, categories }) {
         <h3>{product.produtor}</h3>
         <h3>{product.variedade}</h3>
         <p>{product.notes}</p>
+        {product.soldOut && <p className="sold-out-badge">Esgotado</p>}
       </div>
     </Link>
   )

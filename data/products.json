@@ -13,6 +13,7 @@
         "/images/products/001b.jpg"
       ],
       "featured": true,
+      "soldOut": false,
       "stripePaymentLink": "https://buy.stripe.com/test_00g3cd9P1b4k5Wg5kk",
       "fazenda": "Boa Vista",
       "produtor": "Anderson Monteiro",
@@ -32,6 +33,7 @@
         "/images/products/002b.jpg"
       ],
       "featured": true,
+      "soldOut": true,
       "stripePaymentLink": "https://buy.stripe.com/test_14k3cd7GXa0g4Sc8ww",
       "fazenda": "Santa Maria",
       "produtor": "José Silva",
