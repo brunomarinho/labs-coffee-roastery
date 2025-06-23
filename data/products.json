@@ -1,6 +1,46 @@
 {
   "products": [
     {
+      "id": "003",
+      "slug": "cafe-003",
+      "name": "003",
+      "description": "Esse Bourbon me lembrou do Letty Bermudez, um café excepcional da Colombia, refrescante, com textura de suco de fruta, suave e de final marcante.",
+      "notes": "Doce, Mamão, Refrescante",
+      "price": 60,
+      "category": "coffee",
+      "images": [
+        "/images/products/001a.jpg",
+        "/images/products/001b.jpg"
+      ],
+      "featured": true,
+      "soldOut": false,
+      "stripePaymentLink": "https://buy.stripe.com/test_00g3cd9P1b4k5Wg5kk",
+      "fazenda": "Boa Vista",
+      "produtor": "Anderson Monteiro",
+      "variedade": "Bourbon",
+      "processo": "Natural"
+    },
+    {
+      "id": "004",
+      "slug": "cafe-004",
+      "name": "004",
+      "description": "Um café extraordinário com notas complexas e sabor marcante, perfeito para apreciadores de cafés especiais.",
+      "notes": "Jabuticaba; Sedoso,",
+      "price": 60,
+      "category": "coffee",
+      "images": [
+        "/images/products/002a.jpg",
+        "/images/products/002b.jpg"
+      ],
+      "featured": true,
+      "soldOut": false,
+      "stripePaymentLink": "https://buy.stripe.com/test_14k3cd7GXa0g4Sc8ww",
+      "fazenda": "Santa Maria",
+      "produtor": "José Silva",
+      "variedade": "Arara",
+      "processo": "Honey"
+    },
+    {
       "id": "001",
       "slug": "cafe-001",
       "name": "001",
@@ -13,7 +53,7 @@
         "/images/products/001b.jpg"
       ],
       "featured": true,
-      "soldOut": false,
+      "soldOut": true,
       "stripePaymentLink": "https://buy.stripe.com/test_00g3cd9P1b4k5Wg5kk",
       "fazenda": "Boa Vista",
       "produtor": "Anderson Monteiro",

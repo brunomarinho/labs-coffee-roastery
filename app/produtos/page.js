@@ -33,7 +33,7 @@ export default function Products() {
             <h2 className="section-title">Cafés disponíveis</h2>
             {availableProductsByCategory.map((category) => (
               <div key={category.id} className="category-section">
-                <h3 className="category-title">{category.displayName}</h3>
+                {/* <h3 className="category-title">{category.displayName}</h3> */}
                 <div className="product-grid">
                   {category.products.map((product) => (
                     <ProductCard key={product.id} product={product} categories={productsData.categories} />
@@ -49,7 +49,7 @@ export default function Products() {
             <h2 className="section-title mt-xl">Cafés anteriores</h2>
             {soldOutProductsByCategory.map((category) => (
               <div key={category.id} className="category-section">
-                <h3 className="category-title">{category.displayName}</h3>
+                {/*<h3 className="category-title">{category.displayName}</h3> */}
                 <div className="product-grid">
                   {category.products.map((product) => (
                     <ProductCard key={product.id} product={product} categories={productsData.categories} />

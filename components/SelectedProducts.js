@@ -3,7 +3,7 @@ import productsData from '../data/products.json'
 
 export default function SelectedProducts() {
   const featuredProducts = productsData.products
-    .filter(product => product.featured)
+    .filter(product => product.featured && !product.soldOut)
     .slice(0, 4)
 
   return (
