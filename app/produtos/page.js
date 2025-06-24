@@ -26,7 +26,7 @@ export default function Products() {
     <>
       <Header />
       <main className="container">
-        <h1 className="text-center mt-lg mb-lg">Todos os Produtos</h1>
+        <h1 className="mt-lg mb-lg">Todos os Produtos</h1>
         
         {availableProductsByCategory.length > 0 && (
           <>

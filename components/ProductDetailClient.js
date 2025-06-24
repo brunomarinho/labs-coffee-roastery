@@ -54,22 +54,10 @@ export default function ProductDetailClient({ product, categories }) {
 
         <div className="product-details">
           <h1 className="product-title">{product.name}</h1>
-          <p className="product-category">{categoryDisplay}</p>
+          {/*<p className="product-category">{categoryDisplay}</p>*/}
           <p className="product-description">{product.description}</p>
+
           <p className="product-price-large">R$ {product.price}</p>
-          
-          {Object.entries(product).map(([key, value]) => {
-            if (['id', 'slug', 'name', 'description', 'price', 'category', 'images', 'featured', 'stripePaymentLink', 'soldOut'].includes(key)) {
-              return null
-            }
-            return (
-              <p key={key} className="mb-sm">
-                <strong>{key.charAt(0).toUpperCase() + key.slice(1)}:</strong> {
-                  Array.isArray(value) ? value.join(', ') : value
-                }
-              </p>
-            )
-          })}
           
           {product.soldOut ? (
             <button 
@@ -86,9 +74,24 @@ export default function ProductDetailClient({ product, categories }) {
               target="_blank"
               rel="noopener noreferrer"
             >
-              Comprar Agora
+              Comprar
             </a>
           )}
+          
+          {Object.entries(product).map(([key, value]) => {
+            if (['id', 'slug', 'name', 'description', 'price', 'category', 'images', 'featured', 'stripePaymentLink', 'soldOut'].includes(key)) {
+              return null
+            }
+            return (
+              <p key={key} className="custom-attribute">
+                <strong>{key.charAt(0).toUpperCase() + key.slice(1)}:</strong> {
+                  Array.isArray(value) ? value.join(', ') : value
+                }
+              </p>
+            )
+          })}
+
+          
         </div>
       </div>
     </>

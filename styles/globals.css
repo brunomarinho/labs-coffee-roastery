@@ -105,6 +105,8 @@ h1, h2, h3, h4, h5, h6 {
 
 h1 {
   font-size: var(--font-xl);
+  font-weight: 700;
+  line-height: 1.1;
 }
 
 h2 {
@@ -387,6 +389,11 @@ p {
   padding: var(--space-lg);
 }
 
+.custom-attribute {
+  margin: 0;
+  padding: 0;
+}
+
 .product-title {
   font-size: 2rem;
   margin-bottom: var(--space-md);
@@ -401,7 +408,7 @@ p {
   font-size: 2rem;
   color: var(--color-primary);
   font-weight: 700;
-  margin-bottom: var(--space-lg);
+  margin-bottom: var(--space-sm);
 }
 
 /* Footer */
@@ -515,7 +522,7 @@ p {
 .image-container {
   position: relative;
   width: 100%;
-  height: 500px;
+  aspect-ratio: 1/1;
 }
 
 .thumbnail-container {
@@ -560,7 +567,7 @@ p {
 /* Button Styles */
 .btn-buy {
   display: inline-block;
-  margin-top: var(--space-lg);
+  margin-bottom: var(--space-lg);
 }
 
 /* Image Styles */
