@@ -17,6 +17,11 @@ export default async function About() {
   return (
     <>
       <Header />
+      <section className="hero">
+        <div className="container">
+          <h1>Sobre</h1>
+        </div>
+      </section>
       <main className="container">
         <div className="markdown-content" dangerouslySetInnerHTML={{ __html: htmlContent }} />
       </main>

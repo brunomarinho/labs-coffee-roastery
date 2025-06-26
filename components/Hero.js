@@ -5,7 +5,7 @@ export default function Hero() {
     <section className="hero">
       <div className="container">
         <h1>Cafés brasileiros com torra clara.</h1>
-        <p>Micro torrefação não escalável de cafés brasileiros com foco em torra clara, ressaltando as características de cultivo e a sensação de frescor. Entenda nosso estilo.</p>
+        <p><a href='/sobre'>Entenda</a> nosso estilo.</p>
       </div>
     </section>
   )

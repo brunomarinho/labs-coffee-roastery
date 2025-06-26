@@ -63,8 +63,8 @@ npm run lint
 5. Markdown content is processed at build time using Remark
 
 ### Key Components
-- **Header**: Navigation with responsive mobile menu
-- **ProductCard**: Reusable product display component
+- **Header**: Navigation with centered SVG logo
+- **ProductCard**: Product display with background image effect and action buttons
 - **ProductDetailClient**: Client component for interactive product features
 - **Hero**: Homepage hero section
 - **SelectedProducts**: Featured products display
@@ -79,12 +79,14 @@ npm run lint
 ## Styling
 
 - Uses a tokenized CSS system in `/styles/globals.css`
-- CSS variables for fonts, spacing, colors, shadows, and border radius
+- CSS variables for fonts, spacing, colors, and shadows
+- Sharp corners design (no border-radius)
 - Mobile-first, responsive design with breakpoints:
   - Mobile: < 768px
   - Tablet: 768px - 1024px  
   - Desktop: > 1024px
 - Utility classes for common patterns
+- Product cards feature subtle background images with 0.05 opacity and luminosity blend mode
 
 ## Data Management
 
@@ -149,7 +151,7 @@ Categories are defined in the same `products.json` file with display names.
 
 ### Managing Sold Out Products
 1. Set `"soldOut": true` in the product data to mark as sold out
-2. Product will display "Esgotado" badge and disabled checkout button
+2. Product will display "Esgotado" badge next to "Detalhes" button
 3. Sold out products appear in "Cafés anteriores" section on products page
 4. Section automatically hides when no products are sold out
 

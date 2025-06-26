@@ -1,5 +1,3 @@
-# Sobre
-
 ##  Mameluca
 
 Mameluca é um experimento, uma opinião, algo diferente em meio de tantas coisas repetitivas no *mercado*. Uma mistura da minha apreciação pelo universo do café com a oportunidade de mostrar para mais pessoas que o café é uma fruta.

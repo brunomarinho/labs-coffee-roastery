@@ -12,6 +12,8 @@ A modern, fully static ecommerce template built with Next.js 14 App Router and S
 - 📝 **Markdown Content** - Easy content management with full CommonMark support via Remark
 - 🔍 **SEO Ready** - Dynamic meta tags, sitemap, and Open Graph support
 - 🚫 **Sold Out Management** - Support for sold out products with disabled checkout
+- 🎯 **Modern UI Design** - Clean interface with sharp corners and minimalist aesthetics
+- 🖼️ **Background Image Effects** - Product cards with subtle background images using opacity and blend modes
 
 ## Project Structure
 
@@ -28,9 +30,9 @@ A modern, fully static ecommerce template built with Next.js 14 App Router and S
   sitemap.js            # Dynamic sitemap generation
   robots.js             # robots.txt configuration
 /components
-  Header.js              # Navigation header with mobile menu
+  Header.js              # Navigation header with centered logo
   Footer.js              # Site footer
-  ProductCard.js         # Product card component
+  ProductCard.js         # Product card with background image and action buttons
   Hero.js                # Homepage hero section
   SelectedProducts.js    # Featured products display
   AboutSnippet.js        # Homepage about section
@@ -123,7 +125,7 @@ Replace the sample Stripe payment links with your actual payment links from your
 
 To mark a product as sold out:
 - Set `"soldOut": true` in the product data
-- The product will show "Esgotado" badge and disabled checkout button
+- The product will show "Esgotado" badge next to the "Detalhes" button
 - On the products page, sold out items appear in a separate "Cafés anteriores" section
 - The "Cafés anteriores" section is automatically hidden when no products are sold out
 
