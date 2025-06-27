@@ -73,9 +73,25 @@ img {
 
 /* Container */
 .container {
-  padding: var(--space-lg) 0;
+  padding: var(--space-xl) 0;
   text-align: left;
 }
+
+
+.container h1 {
+  margin-bottom: var(--space-md);
+  font-family: 'Objektiv VF';
+  font-style: italic;
+  font-weight: 300;
+  font-size: 80px;
+  line-height: 110%;
+}
+
+.container p {
+  font-size: var(--font-lg);
+  
+}
+
 
 /* Utilities */
 .text-center {
@@ -128,7 +144,7 @@ p {
   margin: var(--space-md) 0;
 }
 
-/* Buttons */
+/* Buttons & Tags */
 .btn {
   display: inline-block;
   padding: var(--space-sm) var(--space-lg);
@@ -140,6 +156,17 @@ p {
   transition: all 0.2s ease;
   text-align: center;
   text-decoration: none;
+  text-transform: uppercase;
+}
+
+.tag {
+  display: inline-block;
+  padding: var(--space-sm) var(--space-lg);
+  border-radius: 0;
+  border: 2px solid var(--color-primary);
+  font-size: var(--font-md);
+  font-weight: 500;
+  text-align: center;
 }
 
 .btn-primary {
@@ -287,26 +314,6 @@ p {
   border-bottom: 1px solid var(--color-border);
 }
 
-/* Hero Section */
-
-.hero {
-  
-}
-
-.hero h1 {
-  margin-bottom: var(--space-md);
-  font-family: 'Objektiv VF';
-  font-style: italic;
-  font-weight: 300;
-  font-size: 80px;
-  line-height: 110%;
-}
-
-.hero p {
-  font-size: var(--font-lg);
-  
-}
-
 /* Product Grid */
 .product-grid {
   display: grid;
@@ -403,7 +410,6 @@ p {
   margin-top: auto;
   display: flex;
   gap: var(--space-sm);
-  align-items: center;
 }
 
 .sold-out-badge {
@@ -464,9 +470,30 @@ p {
   padding: var(--space-lg);
 }
 
+.custom-attributes-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-md);
+  margin-top: var(--space-lg);
+  margin-bottom: var(--space-lg);
+}
+
 .custom-attribute {
   margin: 0;
   padding: 0;
+}
+
+/* Responsive grid for custom attributes */
+@media (max-width: 1024px) {
+  .custom-attributes-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .custom-attributes-grid {
+    grid-template-columns: 1fr;
+  }
 }
 
 .product-title {
@@ -642,7 +669,7 @@ p {
 /* Button Styles */
 .btn-buy {
   display: inline-block;
-  margin-bottom: var(--space-lg);
+
 }
 
 /* Image Styles */

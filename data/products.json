@@ -7,6 +7,7 @@
       "description": "Esse Bourbon me lembrou do Letty Bermudez, um café excepcional da Colombia, refrescante, com textura de suco de fruta, suave e de final marcante.",
       "notas": "Doce, Mamão, Refrescante",
       "price": 60,
+      "quantity": "100g",
       "category": "coffee",
       "images": [
         "/images/products/001a.jpg",
@@ -27,6 +28,7 @@
       "description": "Um café extraordinário com notas complexas e sabor marcante, perfeito para apreciadores de cafés especiais.",
       "notas": "Jabuticaba; Sedoso,",
       "price": 60,
+      "quantity": "100g",
       "category": "coffee",
       "images": [
         "/images/products/002a.jpg",
@@ -47,6 +49,7 @@
       "description": "Esse Bourbon me lembrou do Letty Bermudez, um café excepcional da Colombia, refrescante, com textura de suco de fruta, suave e de final marcante.",
       "notas": "Doce, Mamão, Refrescante",
       "price": 60,
+      "quantity": "100g",
       "category": "coffee",
       "images": [
         "/images/products/001a.jpg",
@@ -67,6 +70,7 @@
       "description": "Um café extraordinário com notas complexas e sabor marcante, perfeito para apreciadores de cafés especiais.",
       "notas": "Jabuticaba; Sedoso,",
       "price": 60,
+      "quantity": "100g",
       "category": "coffee",
       "images": [
         "/images/products/002a.jpg",

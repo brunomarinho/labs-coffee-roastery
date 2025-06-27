@@ -1,16 +1,13 @@
 'use client'
 
-import { useState } from 'react'
 import Image from 'next/image'
-import Link from 'next/link'
+
 
 export default function ProductDetailClient({ product, categories }) {
-  const [selectedImage, setSelectedImage] = useState(0)
-  
-  const categoryDisplay = categories?.find(cat => cat.id === product.category)?.displayName || product.category
 
   return (
     <>
+      {/*
       <div className="breadcrumb">
         <Link href="/">Início</Link>
         <span className="breadcrumb-separator">/</span>
@@ -18,8 +15,69 @@ export default function ProductDetailClient({ product, categories }) {
         <span className="breadcrumb-separator">/</span>
         <span>{product.name}</span>
       </div>
+      */}
+     
+        <section className="product-card">
+          <div className="product-card-bg">
+          <Image
+            src={product.images[0]}
+            alt=""
+            fill
+            className="product-card-bg-image"
+            sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+          />
+          </div>
+          <div className="product-info">
+            <h2 className="product-name">{product.name}</h2>
+            <h3>{product.produtor}</h3>
+            <h3>{product.variedade} {product.processo}</h3>
+            <p>{product.notas}</p>
+            <div className="product-card-actions">
+              <div className="tag">
+                {product.quantity} | R$ {product.price}
+              </div>
+              {product.soldOut ? (
+                <button 
+                  className="btn btn-secondary btn-buy"
+                  disabled
+                  style={{ cursor: 'not-allowed', opacity: 0.6 }}
+                >
+                  Esgotado
+                </button>
+            ) : (
+              <a 
+                href={product.stripePaymentLink}
+                className="btn btn-primary btn-buy"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Comprar
+              </a>
+            )}
+              
+            </div>
+          </div>
+        </section>
+        <p className="product-description">{product.description}</p>
 
-      <div className="product-detail">
+        <div className="custom-attributes-grid">
+          {Object.entries(product).map(([key, value]) => {
+            if (['id', 'slug', 'name', 'description', 'price', 'quantity', 'category', 'images', 'featured', 'stripePaymentLink', 'soldOut'].includes(key)) {
+              return null
+            }
+            return (
+              <p key={key} className="custom-attribute">
+                <strong>{key.charAt(0).toUpperCase() + key.slice(1)}:</strong> {
+                  Array.isArray(value) ? value.join(', ') : value
+                }
+              </p>
+            )
+          })}
+        </div>
+        
+        {/*
+        <div className="product-details">
+        <div className="product-detail">
         <div className="product-images">
           <div className="image-container">
             <Image
@@ -51,49 +109,9 @@ export default function ProductDetailClient({ product, categories }) {
             </div>
           )}
         </div>
-
-        <div className="product-details">
-          <h1 className="product-title">{product.name}</h1>
-          {/*<p className="product-category">{categoryDisplay}</p>*/}
-          <p className="product-description">{product.description}</p>
-
-          <p className="product-price-large">R$ {product.price}</p>
-          
-          {product.soldOut ? (
-            <button 
-              className="btn btn-secondary btn-buy"
-              disabled
-              style={{ cursor: 'not-allowed', opacity: 0.6 }}
-            >
-              Esgotado
-            </button>
-          ) : (
-            <a 
-              href={product.stripePaymentLink}
-              className="btn btn-primary btn-buy"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Comprar
-            </a>
-          )}
-          
-          {Object.entries(product).map(([key, value]) => {
-            if (['id', 'slug', 'name', 'description', 'price', 'category', 'images', 'featured', 'stripePaymentLink', 'soldOut'].includes(key)) {
-              return null
-            }
-            return (
-              <p key={key} className="custom-attribute">
-                <strong>{key.charAt(0).toUpperCase() + key.slice(1)}:</strong> {
-                  Array.isArray(value) ? value.join(', ') : value
-                }
-              </p>
-            )
-          })}
-
-          
         </div>
       </div>
+      */}
     </>
   )
 }
