@@ -14,12 +14,15 @@ A modern, fully static ecommerce template built with Next.js 14 App Router and S
 - 🚫 **Sold Out Management** - Support for sold out products with disabled checkout
 - 🎯 **Modern UI Design** - Clean interface with sharp corners and minimalist aesthetics
 - 🖼️ **Background Image Effects** - Product cards with subtle background images using opacity and blend modes
+- 📰 **Blog System** - Markdown-based blog with static generation and SEO optimization
 
 ## Project Structure
 
 ```
 /app
   /about/page.js          # About page (renders markdown)
+  /blog/page.js          # Blog listing page
+  /blog/[slug]/page.js   # Individual blog post pages
   /faq/page.js           # FAQ page (renders markdown)
   /contact/page.js       # Contact page (renders markdown)
   /products/page.js      # Product listing page
@@ -41,6 +44,8 @@ A modern, fully static ecommerce template built with Next.js 14 App Router and S
   about.md               # About page content
   faq.md                 # FAQ page content
   contact.md             # Contact page content
+  /blog/                 # Blog posts directory
+    post-slug.md         # Individual blog posts
 /data
   products.json          # Product data and categories
 /public
@@ -137,7 +142,38 @@ To mark a product as sold out:
 - Modify hero text in `/components/Hero.js`
 - Customize colors and styling in `/styles/globals.css`
 
-### 6. Update Site URLs
+### 6. Managing Blog Posts
+
+The template includes a blog system for content marketing:
+
+#### Creating Blog Posts
+
+1. Create a new markdown file in `/content/blog/` (e.g., `my-post.md`)
+2. Add frontmatter at the top of the file:
+
+```yaml
+---
+title: "Your Blog Post Title"
+date: "2024-01-15"
+visibility: true
+---
+
+Your blog post content here using markdown...
+```
+
+3. The slug (URL) will be the filename without `.md` extension
+4. Set `visibility: false` to hide a post without deleting it
+5. Run `npm run build` to regenerate the site with new posts
+
+#### Blog Features
+
+- **Automatic listing** - All visible posts appear on `/blog`
+- **Date sorting** - Posts are ordered newest first
+- **SEO optimization** - Each post has dynamic meta tags
+- **Full markdown support** - CommonMark + GitHub Flavored Markdown
+- **Static generation** - Posts are pre-rendered at build time
+
+### 7. Update Site URLs
 
 Update the site URL in:
 - `/app/sitemap.js` - Change baseUrl

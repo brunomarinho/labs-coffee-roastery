@@ -20,13 +20,16 @@ This is a Next.js ecommerce template that uses Stripe payment links for checkout
 - Static Site Generation (SSG)
 - Stripe Payment Links
 - Remark for markdown processing (CommonMark + GFM)
+- Gray Matter for frontmatter parsing in blog posts
 
 ## Project Structure
 
 ```
 /app              # Next.js App Router pages
+  /blog           # Blog listing and post pages
 /components       # React components
 /content         # Markdown content files
+  /blog          # Blog post markdown files
 /data            # Product data (products.json)
 /public          # Static assets and images
 /styles          # Global CSS
@@ -61,6 +64,8 @@ npm run lint
 3. Product images are stored in `/public/images/products/`
 4. Stripe payment links handle the checkout process externally
 5. Markdown content is processed at build time using Remark
+6. Blog posts are stored as markdown files in `/content/blog/`
+7. Blog pages are statically generated from markdown content
 
 ### Key Components
 - **Header**: Navigation with centered SVG logo
@@ -69,12 +74,21 @@ npm run lint
 - **Hero**: Homepage hero section
 - **SelectedProducts**: Featured products display
 - **Footer**: Site footer with links
+- **Blog Components**: Blog listing and individual post pages
 
 ### Page Structure
 - Homepage: Hero + Featured Products + About snippet
 - Products: Category-grouped product listing with available/sold out sections
 - Product Detail: Image gallery + Product info + Buy button (disabled for sold out)
 - Content Pages: Markdown-rendered About, FAQ, Contact
+- Blog: Post listing page + Individual blog post pages
+
+### Blog Architecture
+- **Routes**: `/blog` for listing, `/blog/[slug]` for individual posts
+- **Content**: Markdown files with gray-matter frontmatter
+- **Static Generation**: Uses `generateStaticParams()` for build-time rendering
+- **SEO**: Dynamic metadata for each post
+- **Navigation**: Integrated into main header navigation
 
 ## Styling
 
@@ -87,6 +101,7 @@ npm run lint
   - Desktop: > 1024px
 - Utility classes for common patterns
 - Product cards feature subtle background images with 0.05 opacity and luminosity blend mode
+- Blog has dedicated styles for post listings and article content
 
 ## Data Management
 
@@ -110,6 +125,17 @@ npm run lint
 ### Categories
 Categories are defined in the same `products.json` file with display names.
 
+### Blog Post Schema
+```yaml
+---
+title: "Post Title"
+date: "YYYY-MM-DD"
+visibility: true  # Set to false to hide post
+---
+
+Markdown content here...
+```
+
 ## SEO Considerations
 
 - Dynamic metadata generation for all pages
@@ -123,6 +149,8 @@ Categories are defined in the same `products.json` file with display names.
 - Most components are server components by default
 - Client components are used only when needed (state, interactivity)
 - Example: `ProductDetailClient` handles image gallery interaction
+- Blog pages are server components with static generation
+- Important: In Next.js 15, dynamic route params must be awaited before use
 
 ## Security Guidelines
 
@@ -165,6 +193,13 @@ Categories are defined in the same `products.json` file with display names.
 2. Modify component styles using existing utility classes
 3. Keep mobile-first approach in mind
 
+### Managing Blog Posts
+1. Create markdown files in `/content/blog/` with frontmatter
+2. Set `visibility: false` to hide posts without deleting
+3. Posts are automatically sorted by date (newest first)
+4. Run `npm run build` to regenerate static pages
+5. Blog supports full CommonMark + GitHub Flavored Markdown
+
 ## Important Notes
 
 - This is a static site - changes require rebuilding
@@ -173,3 +208,5 @@ Categories are defined in the same `products.json` file with display names.
 - Images should be optimized before adding to the project
 - The site is configured for static export (`output: 'export'`)
 - Markdown pages use async components due to Remark's async processing
+- Blog posts include SEO-optimized metadata generation
+- Dynamic route parameters must be awaited in Next.js 15 (e.g., `const { slug } = await params`)
