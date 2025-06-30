@@ -10,6 +10,7 @@ export default function Footer() {
           <div className="footer-links">
             <Link href="/sobre">Sobre</Link>
             <Link href="/produtos">Produtos</Link>
+            <Link href="/blog">Blog</Link>
             <Link href="/faq">FAQ</Link>
             <Link href="/contato">Contato</Link>
           </div>

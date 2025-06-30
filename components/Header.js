@@ -3,6 +3,7 @@ import Link from 'next/link'
 export default function Header() {
   const menuItems = [
     { href: '/produtos', label: 'Produtos' },
+    { href: '/blog', label: 'Blog' },
     { href: '/sobre', label: 'Sobre' }
   ]
 
