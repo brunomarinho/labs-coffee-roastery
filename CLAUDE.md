@@ -93,7 +93,12 @@ npm run lint
 ## Styling
 
 - Uses a tokenized CSS system in `/styles/globals.css`
-- CSS variables for fonts, spacing, colors, and shadows
+- CSS variables for fonts, spacing, colors, shadows, and font weights
+- Font weight tokens:
+  - `--font-weight-light: 300`
+  - `--font-weight-regular: 350` (default for body text, optimized for variable font)
+  - `--font-weight-medium: 500`
+  - `--font-weight-bold: 700`
 - Sharp corners design (no border-radius)
 - Mobile-first, responsive design with breakpoints:
   - Mobile: < 768px
@@ -102,6 +107,7 @@ npm run lint
 - Utility classes for common patterns
 - Product cards feature subtle background images with 0.05 opacity and luminosity blend mode
 - Blog has dedicated styles for post listings and article content
+- Custom attributes on product pages use smaller font size for better hierarchy
 
 ## Data Management
 
@@ -182,6 +188,13 @@ Markdown content here...
 2. Product will display "Esgotado" badge next to "Detalhes" button
 3. Sold out products appear in "Cafés anteriores" section on products page
 4. Section automatically hides when no products are sold out
+
+### Managing Product Attributes
+1. Product details page displays custom attributes in a grid layout
+2. Attributes are explicitly defined using an allowlist approach
+3. Current attributes displayed in "Detalhes" section: `produtor`, `fazenda`, `regiao`, `variedade`, `processo`, `torra`
+4. Attributes displayed in "Recomendações" section: `descanso`, `filtrados`, `espresso`
+5. To modify displayed attributes, update the arrays in `ProductDetailClient.js`
 
 ### Adding a New Category
 1. Add category to the categories array in `products.json`

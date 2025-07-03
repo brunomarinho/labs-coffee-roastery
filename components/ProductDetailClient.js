@@ -16,7 +16,16 @@ export default function ProductDetailClient({ product, categories }) {
         <span>{product.name}</span>
       </div>
       */}
-     
+        <div className="image-container">
+            <Image
+              src={product.images[0]}
+              alt={product.name}
+              fill
+              className="main-image img-cover"
+              priority
+              sizes="(max-width: 768px) 100vw, 50vw"
+            />
+        </div>
         <section className="product-card">
           <div className="product-card-bg">
           <Image
@@ -59,16 +68,38 @@ export default function ProductDetailClient({ product, categories }) {
           </div>
         </section>
         <p className="product-description">{product.description}</p>
-
+        
+        
+        <h2>Detalhes</h2>
         <div className="custom-attributes-grid">
-          {Object.entries(product).map(([key, value]) => {
-            if (['id', 'slug', 'name', 'description', 'price', 'quantity', 'category', 'images', 'featured', 'stripePaymentLink', 'soldOut'].includes(key)) {
-              return null
-            }
+         
+          {/* Define which attributes to display */}
+          {['produtor', 'fazenda', 'regiao', 'variedade', 'processo', 'torra'].map((key) => {
+            // Only render if the product has this attribute
+            if (!product[key]) return null
+            
             return (
               <p key={key} className="custom-attribute">
-                <strong>{key.charAt(0).toUpperCase() + key.slice(1)}:</strong> {
-                  Array.isArray(value) ? value.join(', ') : value
+                <strong>{key.charAt(0).toUpperCase() + key.slice(1)}</strong> <br /> {
+                  Array.isArray(product[key]) ? product[key].join(', ') : product[key]
+                }
+              </p>
+            )
+          })}
+        </div>
+
+        <h2>Recomendações</h2>
+        <div className="custom-attributes-grid">
+         
+          {/* Define which attributes to display */}
+          {['descanso', 'filtrados', 'espresso'].map((key) => {
+            // Only render if the product has this attribute
+            if (!product[key]) return null
+            
+            return (
+              <p key={key} className="custom-attribute">
+                <strong>{key.charAt(0).toUpperCase() + key.slice(1)}</strong> <br /> {
+                  Array.isArray(product[key]) ? product[key].join(', ') : product[key]
                 }
               </p>
             )
