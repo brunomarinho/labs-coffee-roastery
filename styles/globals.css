@@ -499,10 +499,25 @@ p {
   .custom-attributes-grid {
     grid-template-columns: repeat(2, 1fr);
   }
+  
+  .product-card {
+    aspect-ratio: auto;
+    min-height: 400px;
+  }
 }
 
 @media (max-width: 768px) {
   .custom-attributes-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .product-card {
+    aspect-ratio: auto;
+    min-height: auto;
+    padding: var(--space-lg);
+  }
+  
+  .product-grid {
     grid-template-columns: 1fr;
   }
 }
@@ -728,9 +743,7 @@ p {
 }
 
 @media (min-width: 768px) and (max-width: 1024px) {
-  .product-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
+  /* Product grid now uses default single column layout */
 }
 
 /* Blog Styles */
