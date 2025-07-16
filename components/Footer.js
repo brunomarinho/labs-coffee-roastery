@@ -1,20 +1,33 @@
 import Link from 'next/link'
+import Logo from './Logo'
 
 export default function Footer() {
   const currentYear = new Date().getFullYear()
+  
+  const menuItems = [
+    { href: '/produtos', label: 'Produtos' },
+    { href: '/blog', label: 'Blog' },
+    { href: '/sobre', label: 'Sobre' },
+    { href: '/contato', label: 'Contato' }
+  ]
   
   return (
     <footer className="footer">
       <div className="container">
         <div className="footer-content">
           <div className="footer-links">
-            <Link href="/sobre">Sobre</Link>
-            <Link href="/produtos">Produtos</Link>
-            <Link href="/blog">Blog</Link>
-            <Link href="/faq">FAQ</Link>
-            <Link href="/contato">Contato</Link>
+            {menuItems.map((item) => (
+              <Link key={item.href} href={item.href}>
+                {item.label}
+              </Link>
+            ))}
           </div>
-          <p>&copy; {currentYear} Mameluca. Todos os direitos reservados.</p>
+          <div className="footer-logo">
+            <Logo />
+          </div>
+          <div className="footer-bottom">
+            <p>&copy; {currentYear} Mameluca. Todos os direitos reservados.</p>
+          </div>
         </div>
       </div>
     </footer>
