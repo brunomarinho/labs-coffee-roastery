@@ -262,6 +262,17 @@ p {
   color: var(--color-primary);
   text-decoration: none;
   text-transform: uppercase;
+
+}
+
+.logo-center svg { stroke-width: 1.5px; }
+.logo-center svg { stroke-width: 1px; }
+
+/* For retina displays */
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+  .logo-center {
+    shape-rendering: geometricPrecision;
+  }
 }
 
 .logo-center {
@@ -272,6 +283,11 @@ p {
   display: flex;
   align-items: center;
   transition: opacity 0.2s ease;
+  width: 80px;
+  height: 80px;
+  shape-rendering: crispEdges;
+  -webkit-backface-visibility: hidden;
+  transform: translateZ(0);
 }
 
 .logo-center:hover {
