@@ -21,6 +21,9 @@ export default function ProductCard({ product, categories }) {
         <h3>{product.variedade} {product.processo}</h3>
         <p>{product.notas}</p>
         <div className="product-card-actions">
+          <div className="tag">
+            {product.quantity} | R$ {product.price}
+          </div>
           <div className="btn btn-primary btn-details">Detalhes</div>
           {product.soldOut && <div className="sold-out-badge">Esgotado</div>}
         </div>
