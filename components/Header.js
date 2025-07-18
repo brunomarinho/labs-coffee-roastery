@@ -15,7 +15,7 @@ export default function Header() {
             Mameluca
           </Link>
           
-          <Link href="/" className="logo-center">
+          <Link className='logo-symbol' href="/">
             <Logo />
           </Link>
           

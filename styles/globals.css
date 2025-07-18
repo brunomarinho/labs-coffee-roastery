@@ -20,6 +20,7 @@
   --space-md: 1rem;
   --space-lg: 2rem;
   --space-xl: 4rem;
+  --space-xxl: 8rem;
   
   /* Colors */
   --color-primary: #000000;
@@ -265,34 +266,33 @@ p {
 
 }
 
-.logo-center svg { stroke-width: 1.5px; }
-.logo-center svg { stroke-width: 1px; }
-
-/* For retina displays */
-@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
-  .logo-center {
-    shape-rendering: geometricPrecision;
-  }
-}
-
-.logo-center {
+.logo-symbol {
   position: absolute;
   left: 50%;
   transform: translateX(-50%);
   color: var(--color-primary);
-  display: flex;
-  align-items: center;
   transition: opacity 0.2s ease;
   width: 80px;
   height: 80px;
   shape-rendering: crispEdges;
   -webkit-backface-visibility: hidden;
-  transform: translateZ(0);
+
 }
+
+.logo-symbol svg { stroke-width: 1.3px; }
+
 
 .logo-center:hover {
   opacity: 0.8;
 }
+
+/* For retina displays */
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+  .logo-symbol {
+    shape-rendering: geometricPrecision;
+  }
+}
+
 
 .nav {
   display: flex;
