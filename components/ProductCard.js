@@ -18,7 +18,7 @@ export default function ProductCard({ product, categories }) {
       <div className="product-info">
         <h2 className="product-name">{product.name}</h2>
         <h3>{product.produtor}</h3>
-        <h3>{product.variedade} {product.processo}</h3>
+        <h3>{product.variedade}</h3>
         <p>{product.notas}</p>
         <div className="product-card-actions">
           <div className="tag">

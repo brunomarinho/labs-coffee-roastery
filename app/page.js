@@ -11,7 +11,6 @@ export default function Home() {
       <main className='container'>
         <Hero />
         <SelectedProducts />
-        <AboutSnippet />
       </main>
       <Footer />
     </>

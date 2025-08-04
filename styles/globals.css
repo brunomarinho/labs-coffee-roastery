@@ -5,6 +5,7 @@
   --font-xs: 0.75rem;
   --font-sm: 0.875rem;
   --font-md: 1rem;
+  --font-post: 1.125rem;
   --font-lg: 1.5rem;
   --font-xl: 6rem;
   
@@ -82,7 +83,7 @@ img {
 
 /* Container */
 .container {
-  padding: var(--space-xl) 0;
+  padding: var(--space-xxl) 0;
   text-align: left;
 }
 
@@ -97,7 +98,8 @@ img {
 }
 
 .container p {
-  font-size: var(--font-lg);
+  font-size: var(--font-post);
+  
   
 }
 
@@ -132,7 +134,8 @@ h1, h2, h3, h4, h5, h6 {
 h1 {
   font-size: var(--font-xl);
   font-weight: var(--font-weight-light);
-  line-height: 1.1;
+  line-height: 1.2;
+  letter-spacing: -0.05rem;
 }
 
 h2 {
@@ -350,7 +353,7 @@ p {
 
 .product-card {
   padding: var(--space-xl);
-  background: var(--color-gray-light);
+  background: var(--color-background);
   overflow: hidden;
   transition: all 0.2s ease;
   cursor: auto;
@@ -875,9 +878,9 @@ p {
 }
 
 .blog-post-content {
-  font-size: 1.125rem;
   line-height: 1.7;
   color: var(--color-text);
+  max-width: 48rem;
 }
 
 .blog-post-content h1,
@@ -901,11 +904,15 @@ p {
 }
 
 .blog-post-content h3 {
-  font-size: 1.5rem;
+  font-size: var(--font-post);
+  font-weight: var(--font-weight-bold);
 }
 
 .blog-post-content p {
-  margin-bottom: var(--space-lg);
+  font-size: var(--font-post);
+  line-height: 1.6;
+  letter-spacing: -0.2px;
+  margin-bottom: var(--space-md);
 }
 
 .blog-post-content ul,

@@ -1,15 +1,8 @@
-##  Mameluca
+Mameluca é um experimento, uma opinião, algo diferente em meio a tanta repetição. É uma mistura da minha apreciação pelo universo do café com a oportunidade de mostrar para mais pessoas que o café é, antes de tudo, uma fruta.
 
-Mameluca é um experimento, uma opinião, algo diferente em meio de tantas coisas repetitivas no *mercado*. Uma mistura da minha apreciação pelo universo do café com a oportunidade de mostrar para mais pessoas que o café é uma fruta.
+As condições econômicas e culturais do Brasil não criam um ambiente onde pequenos negócios artesanais — ou negócios em que a prioridade é a qualidade, não o lucro — sejam viáveis para a maioria das pessoas. Você já notou como muitas torrefações geralmente focam em promoções, palavras da moda, venda de cursos e equipamentos? O café bem torrado, que deveria ser o protagonista, muitas vezes parece secundário.
 
-Mameluca oferece cafés brasileiros com torra clara, torrada com ar quente. Essas torras evolvem com o tempo. Geralmente atingindo seu melhor entre duas a quatro semanas. Mameluca oferece também experimentos, como diferentes perfis de torra de um mesmo café para motivos de contraste e aprendizado.
-
-Mameluca traz um pouco desse aspecto para o mundo do café e de quem aprecia a arte, o hobby, a cerimônia, a repetição do processo de extrair e apreciar essa bebida.
+A Mameluca oferece cafés brasileiros com torra clara. São torras que evoluem com o tempo, como um vinho que respira. Geralmente atingem seu melhor momento entre duas e quatro semanas — é quando os sabores se abrem, quando você consegue sentir as notas de frutas que estavam ali o tempo todo. Nossos cafés existem em quantidades limitadas. Também oferecemos experimentos: diferentes perfis de torra do mesmo café, para quem quer comparar, contrastar, aprender como a torra transforma o grão.
 
 
-## Exemplo de bullet
-
-- **Quality First**: Every product is tested and selected for its durability and craftsmanship
-- **Fair Pricing**: Premium quality doesn't have to break the bank
-- **Sustainability**: We partner with suppliers who share our values of environmental responsibility
-- **Customer Satisfaction**: Your happiness is our success
+-Bruno Marinho
