@@ -1,11 +1,11 @@
-# Next.js Ecommerce Template with Stripe Payment Links
+# Next.js Ecommerce Template with Stripe Checkout
 
-A modern, fully static ecommerce template built with Next.js 14 App Router and Stripe payment links. Perfect for quickly launching an online store without backend complexity.
+A modern, fully static ecommerce template built with Next.js 14 App Router and Stripe's client-side checkout. Perfect for quickly launching an online store without backend complexity.
 
 ## Features
 
 - 🛍️ **Product Catalog** - Organized by categories with detail pages
-- 💳 **Stripe Payment Links** - Direct checkout without backend setup
+- 💳 **Stripe Client-Side Checkout** - Direct checkout using Stripe price IDs without backend setup
 - 📱 **Fully Responsive** - Mobile-first design with responsive breakpoints
 - 🚀 **Static Site Generation** - Fast loading with SEO optimization
 - 🎨 **Tokenized CSS System** - Consistent design with CSS variables
@@ -61,6 +61,7 @@ A modern, fully static ecommerce template built with Next.js 14 App Router and S
 
 - Node.js 18+ 
 - npm or yarn
+- Stripe account with test/live API keys
 
 ### Installation
 
@@ -75,7 +76,17 @@ cd labs-stripe-link-template
 npm install
 ```
 
-3. Run the development server:
+3. Set up environment variables:
+```bash
+cp .env.local.example .env.local
+```
+
+4. Add your Stripe publishable key to `.env.local`:
+```
+NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=pk_test_your_key_here
+```
+
+5. Run the development server:
 ```bash
 npm run dev
 ```
@@ -104,7 +115,7 @@ Edit `/data/products.json` to add your products:
       ],
       "featured": true,
       "soldOut": false,
-      "stripePaymentLink": "https://buy.stripe.com/...",
+      "stripePriceId": "price_1ABC123DEF456",
       "customField1": "value",
       "customField2": "value"
     }
@@ -122,9 +133,21 @@ Edit `/data/products.json` to add your products:
 
 Place your product images in `/public/images/products/`. Use the filenames referenced in your products.json.
 
-### 3. Update Stripe Payment Links
+### 3. Set Up Stripe Products
 
-Replace the sample Stripe payment links with your actual payment links from your Stripe dashboard.
+1. **Create products in Stripe Dashboard:**
+   - Go to your [Stripe Dashboard](https://dashboard.stripe.com/products)
+   - Create a new product with name and price
+   - Copy the price ID (starts with `price_`)
+   
+2. **Update products.json:**
+   - Replace placeholder price IDs with your actual Stripe price IDs
+   - Example: `"stripePriceId": "price_1ABC123DEF456"`
+
+3. **Test with Stripe Test Mode:**
+   - Use test API keys during development
+   - Test card number: 4242 4242 4242 4242
+   - Any future expiry date and any 3-digit CVV
 
 ### 4. Managing Sold Out Products
 
