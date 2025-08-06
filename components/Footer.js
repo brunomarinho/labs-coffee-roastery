@@ -27,6 +27,11 @@ export default function Footer() {
           </div>
           <div className="footer-bottom">
             <p>&copy; {currentYear} Mameluca. Todos os direitos reservados.</p>
+            <div className="footer-legal">
+              <Link href="/termos">Termos de Uso</Link>
+              <span className="separator">•</span>
+              <Link href="/privacidade">Política de Privacidade</Link>
+            </div>
           </div>
         </div>
       </div>

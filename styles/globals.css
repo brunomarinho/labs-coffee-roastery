@@ -604,6 +604,26 @@ p {
   color: var(--color-gray);
 }
 
+.footer-legal {
+  margin-top: var(--space-sm);
+  font-size: var(--font-sm);
+  color: var(--color-gray);
+}
+
+.footer-legal a {
+  color: var(--color-gray);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.footer-legal a:hover {
+  color: var(--color-primary);
+}
+
+.footer-legal .separator {
+  margin: 0 var(--space-sm);
+}
+
 /* Breadcrumb */
 .breadcrumb {
   display: flex;
