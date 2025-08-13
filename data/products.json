@@ -5,7 +5,7 @@
       "slug": "cafe-001",
       "name": "001",
       "description": "Esse Bourbon me lembrou do Letty Bermudez, um café excepcional da Colombia, refrescante, com textura de suco de fruta, suave e de final marcante.",
-      "notas": "Doce, Mamão, Refrescante",
+      "notas": "Acidez Média, Fruta Vermelha, Suculento",
       "price": 60,
       "quantity": "100g",
       "category": "coffee",
@@ -13,10 +13,10 @@
         "/images/products/001a.jpg",
         "/images/products/001b.jpg"
       ],
-      "featured": true,
-      "soldOut": false,
+      "featured": false,
+      "soldOut": true,
       "stripePriceId": "price_1RsXgZ7jQouLiFSsNcGbtoZy",
-      "produtor": "Anderson Monteiro",
+      "produtor": "Ivan Santana",
       "fazenda": "Jangada",
       "regiao": "Boa Vista, MG",
       "variedade": "Bourbon",
@@ -30,6 +30,27 @@
       "id": "002",
       "slug": "cafe-002",
       "name": "002",
+      "description": "Um café extraordinário com notas complexas e sabor marcante, perfeito para apreciadores de cafés especiais.",
+      "notas": "Acidez Alta, Carambola, Suculento",
+      "price": 60,
+      "quantity": "100g",
+      "category": "coffee",
+      "images": [
+        "/images/products/002a.jpg",
+        "/images/products/002b.jpg"
+      ],
+      "featured": true,
+      "soldOut": false,
+      "stripePriceId": "price_1RsXip7jQouLiFSsnPYcvasU",
+      "fazenda": "Santa Maria",
+      "produtor": "Raquel Meirelles",
+      "variedade": "Topazio",
+      "processo": "Honey"
+    },
+    {
+      "id": "003",
+      "slug": "cafe-003",
+      "name": "003",
       "description": "Um café extraordinário com notas complexas e sabor marcante, perfeito para apreciadores de cafés especiais.",
       "notas": "Jabuticaba; Sedoso,",
       "price": 60,
@@ -47,7 +68,7 @@
       "variedade": "Arara",
       "processo": "Honey"
     },
-        {
+    {
       "id": "000",
       "slug": "blend",
       "name": "Blend",

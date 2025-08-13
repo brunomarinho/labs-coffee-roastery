@@ -31,7 +31,7 @@ export default function Products() {
         
         {availableProductsByCategory.length > 0 && (
           <>
-            <h2 className="section-title">Cafés disponíveis</h2>
+            <h2>Cafés disponíveis</h2>
             {availableProductsByCategory.map((category) => (
               <div key={category.id} className="category-section">
                 {/* <h3 className="category-title">{category.displayName}</h3> */}
@@ -47,7 +47,7 @@ export default function Products() {
         
         {soldOutProductsByCategory.length > 0 && (
           <>
-            <h2 className="section-title mt-xl">Cafés anteriores</h2>
+            <h2>Cafés anteriores</h2>
             {soldOutProductsByCategory.map((category) => (
               <div key={category.id} className="category-section">
                 {/*<h3 className="category-title">{category.displayName}</h3> */}

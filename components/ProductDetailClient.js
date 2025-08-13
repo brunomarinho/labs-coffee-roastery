@@ -89,32 +89,23 @@ export default function ProductDetailClient({ product, categories }) {
         <span>{product.name}</span>
       </div>
       */}
-        <div className="image-container">
+        <div className="product-detail-hero-image">
             <Image
               src={product.images[0]}
               alt={product.name}
               fill
-              className="main-image img-cover"
+              className="detail-image"
               priority
               sizes="(max-width: 768px) 100vw, 50vw"
             />
         </div>
-        <section className="product-card">
-          <div className="product-card-bg">
-          <Image
-            src={product.images[0]}
-            alt=""
-            fill
-            className="product-card-bg-image"
-            sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
-          />
-          </div>
-          <div className="product-info">
-            <h2 className="product-name">{product.name}</h2>
-            <h3>{product.produtor}</h3>
-            <h3>{product.variedade}</h3>
-            <p>{product.notas}</p>
-            <div className="product-card-actions">
+        <section className="product-detail-card">
+          <div className="product-detail-info">
+            <h2 className="product-title">{product.name}</h2>
+            <h3 className="product-subtitle">{product.produtor}</h3>
+            <h3 className="product-subtitle">{product.variedade}</h3>
+            <p className="product-notes">{product.notas}</p>
+            <div className="product-detail-actions">
               <div className="tag">
                 {product.quantity} | R$ {product.price}
               </div>

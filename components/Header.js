@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import Logo from './Logo'
+import Image from 'next/image'
 
 export default function Header() {
   const menuItems = [
@@ -8,8 +8,8 @@ export default function Header() {
   ]
 
   return (
-    <header className="header">
-      
+    <>
+      <header className="header">
         <div className="header-container">
           <Link href="/" className="logo">
             <svg width="112" height="16" viewBox="0 0 112 16" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -20,7 +20,12 @@ export default function Header() {
           </Link>
           
           <Link className='logo-symbol' href="/">
-            <Logo />
+            <Image 
+              src="/images/symbol.png"
+              alt="Mameluca Logo"
+              width={64}
+              height={89}
+            />
           </Link>
           
           <nav className="nav">
@@ -31,7 +36,8 @@ export default function Header() {
             ))}
           </nav>
         </div>
-      
-    </header>
+      </header>
+      <hr className="section-divider-full" />
+    </>
   )
 }

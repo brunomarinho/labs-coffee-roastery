@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import Logo from './Logo'
+import Image from 'next/image'
 
 export default function Footer() {
   const currentYear = new Date().getFullYear()
@@ -12,7 +12,9 @@ export default function Footer() {
   ]
   
   return (
-    <footer className="footer">
+    <>
+      <hr className="section-divider-full" />
+      <footer className="footer">
       <div className="container">
         <div className="footer-content">
           <div className="footer-links">
@@ -23,7 +25,12 @@ export default function Footer() {
             ))}
           </div>
           <div className="footer-logo">
-            <Logo />
+            <Image 
+              src="/images/symbol.png"
+              alt="Mameluca Logo"
+              width={64}
+              height={89}
+            />
           </div>
           <div className="footer-bottom">
             <p>&copy; {currentYear} Mameluca. Todos os direitos reservados.</p>
@@ -36,5 +43,6 @@ export default function Footer() {
         </div>
       </div>
     </footer>
+    </>
   )
 }
