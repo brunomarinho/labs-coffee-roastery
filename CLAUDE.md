@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-This is a Next.js ecommerce template that uses Stripe payment links for checkout. It's a fully static site (SSG) that allows merchants to quickly launch an online store without backend infrastructure. Products are managed via a JSON file and payments are processed through Stripe's hosted payment links.
+This is a Next.js ecommerce template that uses server-side Stripe checkout with custom fields for Brazilian business requirements. It uses hybrid rendering (SSG + API routes) that allows merchants to quickly launch an online store with enhanced payment processing. Products are managed via a JSON file and payments are processed through Stripe's hosted checkout with required CPF and cellphone collection.
 
 ## Development Principles
 
@@ -17,8 +17,9 @@ This is a Next.js ecommerce template that uses Stripe payment links for checkout
 - React 18
 - JavaScript (no TypeScript)
 - CSS with tokenized design system
-- Static Site Generation (SSG)
-- Stripe Payment Links
+- Hybrid Rendering (SSG + API Routes)
+- Server-side Stripe Checkout with Custom Fields
+- Brazilian Business Requirements (CPF, Cellphone)
 - Remark for markdown processing (CommonMark + GFM)
 - Gray Matter for frontmatter parsing in blog posts
 
@@ -26,6 +27,8 @@ This is a Next.js ecommerce template that uses Stripe payment links for checkout
 
 ```
 /app              # Next.js App Router pages
+  /api            # API routes for server-side functionality
+    /checkout     # Stripe checkout session creation
   /blog           # Blog listing and post pages
 /components       # React components
 /content         # Markdown content files
@@ -46,7 +49,7 @@ npm install
 # Start development server
 npm run dev
 
-# Build for production (static export)
+# Build for production (hybrid rendering)
 npm run build
 
 # Start production server
@@ -62,15 +65,16 @@ npm run lint
 1. Products are defined in `/data/products.json`
 2. Static pages are generated at build time using this data
 3. Product images are stored in `/public/images/products/`
-4. Stripe payment links handle the checkout process externally
-5. Markdown content is processed at build time using Remark
-6. Blog posts are stored as markdown files in `/content/blog/`
-7. Blog pages are statically generated from markdown content
+4. Server-side API creates Stripe checkout sessions with custom fields
+5. Checkout process collects CPF and cellphone data through Stripe's hosted interface
+6. Markdown content is processed at build time using Remark
+7. Blog posts are stored as markdown files in `/content/blog/`
+8. Blog pages are statically generated from markdown content
 
 ### Key Components
 - **Header**: Navigation with centered SVG logo
 - **ProductCard**: Product display with background image effect and action buttons
-- **ProductDetailClient**: Client component for interactive product features
+- **ProductDetailClient**: Client component for product details and checkout initiation
 - **Hero**: Homepage hero section
 - **SelectedProducts**: Featured products display
 - **Footer**: Site footer with links
@@ -123,7 +127,7 @@ npm run lint
   "images": ["/images/products/image.jpg"],
   "featured": true,
   "soldOut": false,
-  "stripePaymentLink": "https://buy.stripe.com/...",
+  "stripePriceId": "price_1ABC123DEF456",
   "customField": "value"
 }
 ```
@@ -160,10 +164,12 @@ Markdown content here...
 
 ## Security Guidelines
 
-1. **Stripe Integration**: Payment links are external - no sensitive payment data is handled
-2. **Static Site**: No server-side code means reduced attack surface
-3. **Content Security**: Markdown content is parsed safely without executing scripts
-4. **Image Optimization**: Next.js Image component prevents XSS through images
+1. **Stripe Integration**: Server-side checkout with secure API key handling
+2. **Hybrid Architecture**: Static pages with secure server-side API routes
+3. **Environment Variables**: Sensitive keys (STRIPE_SECRET_KEY) never exposed to client
+4. **Input Validation**: Server-side validation of product data before checkout
+5. **Content Security**: Markdown content is parsed safely without executing scripts
+6. **Image Optimization**: Next.js Image component prevents XSS through images
 
 ## Development Guidelines
 
@@ -172,6 +178,7 @@ Markdown content here...
 3. **Images**: Always use Next.js Image component for optimization
 4. **Links**: Use Next.js Link component for internal navigation
 5. **Data Updates**: Modify `/data/products.json` and rebuild to update products
+6. **Environment Setup**: Use `.env.local` for API keys (never commit secrets)
 6. **Content Updates**: Edit markdown files in `/content` for page content
 7. **Markdown Support**: Full CommonMark + GitHub Flavored Markdown syntax supported
 
@@ -180,7 +187,7 @@ Markdown content here...
 ### Adding a New Product
 1. Add product object to `/data/products.json` with `soldOut: false`
 2. Add product images to `/public/images/products/`
-3. Set up Stripe payment link and add URL to product data
+3. Create Stripe price and add price ID to product data
 4. Run `npm run build` to regenerate static pages
 
 ### Managing Sold Out Products
@@ -213,13 +220,61 @@ Markdown content here...
 4. Run `npm run build` to regenerate static pages
 5. Blog supports full CommonMark + GitHub Flavored Markdown
 
+### Server-Side Checkout Implementation
+
+#### API Route Structure
+- **Endpoint**: `/api/checkout` (POST)
+- **Purpose**: Creates Stripe checkout sessions with Brazilian custom fields
+- **Location**: `/app/api/checkout/route.js`
+
+#### Custom Fields Configuration
+The checkout session includes these required fields for Brazilian compliance:
+
+1. **CPF Field**:
+   - Key: `cpf`
+   - Label: `CPF (000.000.000-00 ou 00000000000)`
+   - Type: `text`
+   - Validation: Required, 11-14 characters
+   - Purpose: Brazilian tax identification
+   - Format: Accepts both formatted (000.000.000-00) and unformatted (00000000000)
+   - Note: Real-time masking not available in Stripe hosted checkout
+
+2. **Cellphone Field**:
+   - Key: `cellphone`
+   - Label: `Celular (WhatsApp)`
+   - Type: `text`
+   - Validation: Required, 10-15 characters
+   - Purpose: Customer contact via WhatsApp
+
+#### Request Flow
+1. User clicks "Comprar" button on product page
+2. `ProductDetailClient.js` sends POST request to `/api/checkout` with product ID
+3. API validates product exists and is not sold out
+4. Creates Stripe checkout session with custom fields and Brazil-only shipping
+5. Returns checkout URL for client-side redirect
+6. User completes payment with CPF and cellphone data collection
+7. Stripe processes payment and stores custom field data
+
+#### Error Handling
+- Product not found: "Produto não encontrado"
+- Product sold out: "Produto esgotado"
+- Server errors: "Erro ao processar pagamento. Tente novamente."
+- Missing environment variables: Proper server-side validation
+
+#### Environment Variables Required
+```bash
+NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=pk_test_... # Client-side key
+STRIPE_SECRET_KEY=sk_test_...                   # Server-side key (never exposed)
+```
+
 ## Important Notes
 
-- This is a static site - changes require rebuilding
-- No backend or database - all data comes from JSON files
-- Stripe handles all payment processing externally
+- Uses hybrid rendering - static pages with dynamic API routes
+- No database - all product data comes from JSON files
+- Server-side Stripe checkout requires Node.js runtime
 - Images should be optimized before adding to the project
-- The site is configured for static export (`output: 'export'`)
+- Static export is disabled to enable API routes (`output: 'export'` commented out)
 - Markdown pages use async components due to Remark's async processing
 - Blog posts include SEO-optimized metadata generation
 - Dynamic route parameters must be awaited in Next.js 15 (e.g., `const { slug } = await params`)
+- Requires environment variables: `NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY` and `STRIPE_SECRET_KEY`

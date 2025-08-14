@@ -569,10 +569,6 @@ p {
   }
 }
 
-.product-title {
-  font-size: 2rem;
-  margin-bottom: var(--space-md);
-}
 
 .product-description {
   color: var(--color-gray-dark);

@@ -1,13 +1,13 @@
 # Next.js Ecommerce Template with Stripe Checkout
 
-A modern, fully static ecommerce template built with Next.js 14 App Router and Stripe's client-side checkout. Perfect for quickly launching an online store without backend complexity.
+A modern ecommerce template built with Next.js 14 App Router and Stripe's server-side checkout with custom fields for Brazilian business requirements. Perfect for quickly launching an online store with enhanced payment processing.
 
 ## Features
 
 - 🛍️ **Product Catalog** - Organized by categories with detail pages
-- 💳 **Stripe Client-Side Checkout** - Direct checkout using Stripe price IDs without backend setup
+- 💳 **Stripe Server-Side Checkout** - Custom checkout with required CPF and cellphone fields for Brazilian businesses
 - 📱 **Fully Responsive** - Mobile-first design with responsive breakpoints
-- 🚀 **Static Site Generation** - Fast loading with SEO optimization
+- 🚀 **Hybrid Rendering** - Static site generation with dynamic API routes for checkout processing
 - 🎨 **Tokenized CSS System** - Consistent design with CSS variables
 - 📝 **Markdown Content** - Easy content management with full CommonMark support via Remark
 - 🔍 **SEO Ready** - Dynamic meta tags, sitemap, and Open Graph support
@@ -20,6 +20,8 @@ A modern, fully static ecommerce template built with Next.js 14 App Router and S
 
 ```
 /app
+  /api
+    /checkout/route.js     # Server-side Stripe checkout API
   /about/page.js          # About page (renders markdown)
   /blog/page.js          # Blog listing page
   /blog/[slug]/page.js   # Individual blog post pages
@@ -81,9 +83,10 @@ npm install
 cp .env.local.example .env.local
 ```
 
-4. Add your Stripe publishable key to `.env.local`:
+4. Add your Stripe keys to `.env.local`:
 ```
 NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=pk_test_your_key_here
+STRIPE_SECRET_KEY=sk_test_your_key_here
 ```
 
 5. Run the development server:
@@ -148,6 +151,8 @@ Place your product images in `/public/images/products/`. Use the filenames refer
    - Use test API keys during development
    - Test card number: 4242 4242 4242 4242
    - Any future expiry date and any 3-digit CVV
+   - Custom fields (CPF and cellphone) will appear in checkout form
+   - Test data will appear in your Stripe dashboard after successful payment
 
 ### 4. Managing Sold Out Products
 
@@ -196,7 +201,37 @@ Your blog post content here using markdown...
 - **Full markdown support** - CommonMark + GitHub Flavored Markdown
 - **Static generation** - Posts are pre-rendered at build time
 
-### 7. Update Site URLs
+### 7. Brazilian Checkout Requirements
+
+The checkout system includes custom fields required for Brazilian businesses:
+
+#### Custom Fields
+
+- **CPF (Cadastro de Pessoas Físicas)**
+  - Required field for Brazilian tax identification
+  - Accepts 11-14 characters (formatted or unformatted)
+  - Appears as "CPF" in checkout form
+
+- **Cellphone (WhatsApp)**
+  - Required field for customer contact
+  - Accepts 10-15 characters for phone numbers
+  - Labeled as "Celular (WhatsApp)" in checkout
+
+#### Data Collection
+
+- Both fields are mandatory during checkout
+- Data is collected through Stripe's hosted checkout interface
+- Information appears in Stripe dashboard after successful payment
+- Shipping address collection is limited to Brazil only (`allowedCountries: ['BR']`)
+
+#### API Architecture
+
+- Server-side checkout session creation via `/api/checkout`
+- Product validation (exists, not sold out) before creating session
+- Secure handling of Stripe secret keys server-side
+- Portuguese error messages for all scenarios
+
+### 8. Update Site URLs
 
 Update the site URL in:
 - `/app/sitemap.js` - Change baseUrl
@@ -242,27 +277,32 @@ npm run start        # Start production server
 
 # Code Quality
 npm run lint         # Run ESLint
-
-# Static Export
-npm run build        # Generates static files in 'out' directory
 ```
 
 ## Deployment
 
-This template is configured for static export. After building, you can deploy the `out` directory to any static hosting service:
+This template uses hybrid rendering (static pages + API routes) and requires a Node.js server environment:
 
-### Vercel
+### Vercel (Recommended)
 ```bash
 vercel --prod
 ```
+Set environment variables in Vercel dashboard:
+- `NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY`
+- `STRIPE_SECRET_KEY`
 
 ### Netlify
 1. Build command: `npm run build`
-2. Publish directory: `out`
+2. Publish directory: `.next`
+3. Add environment variables in Netlify dashboard
+4. Enable "Functions" for API routes
 
-### GitHub Pages
+### Other Node.js Hosting
 1. Build the project: `npm run build`
-2. Deploy the `out` directory
+2. Start with: `npm start`
+3. Ensure environment variables are set
+
+**Note:** Static export is disabled to support server-side checkout API routes. The site requires a Node.js runtime for the checkout functionality.
 
 ## Technical Features
 

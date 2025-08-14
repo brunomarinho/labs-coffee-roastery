@@ -1,78 +1,43 @@
 'use client'
 
 import Image from 'next/image'
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 
 
 export default function ProductDetailClient({ product, categories }) {
   const [isLoading, setIsLoading] = useState(false)
-  const [stripeLoaded, setStripeLoaded] = useState(false)
-  const [stripe, setStripe] = useState(null)
-
-  // Load Stripe.js dynamically
-  useEffect(() => {
-    // Check if Stripe.js is already loaded
-    if (window.Stripe) {
-      const stripeInstance = window.Stripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY)
-      setStripe(stripeInstance)
-      setStripeLoaded(true)
-      return
-    }
-
-    // Load Stripe.js script
-    const script = document.createElement('script')
-    script.src = 'https://js.stripe.com/v3/'
-    script.async = true
-    script.onload = () => {
-      if (window.Stripe) {
-        const stripeInstance = window.Stripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY)
-        setStripe(stripeInstance)
-        setStripeLoaded(true)
-      }
-    }
-    document.body.appendChild(script)
-
-    // Cleanup
-    return () => {
-      if (script.parentNode) {
-        script.parentNode.removeChild(script)
-      }
-    }
-  }, [])
 
   const handleCheckout = async () => {
     // Prevent double-clicks
-    if (isLoading || !stripeLoaded || !stripe) {
+    if (isLoading) {
       return
     }
 
     setIsLoading(true)
 
     try {
-      // Create checkout session
-      const { error } = await stripe.redirectToCheckout({
-        lineItems: [{
-          price: product.stripePriceId,
-          quantity: 1,
-        }],
-        mode: 'payment',
-        // Test mode: Use test cards like 4242 4242 4242 4242
-        successUrl: `${window.location.origin}/obrigado`,
-        cancelUrl: window.location.href,
-        // Add shipping address collection
-        shippingAddressCollection: {
-          // List of countries you ship to
-          allowedCountries: ['BR'], // Just Brazil, or add more like ['BR', 'US', 'PT']
+      // Call our API to create checkout session
+      const response = await fetch('/api/checkout', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
         },
+        body: JSON.stringify({
+          productId: product.id,
+        }),
       })
 
-      if (error) {
-        console.error('Stripe checkout error:', error)
-        alert('Erro ao processar pagamento. Tente novamente.')
+      const data = await response.json()
+
+      if (!response.ok) {
+        throw new Error(data.error || 'Erro ao processar pagamento. Tente novamente.')
       }
+
+      // Redirect to Stripe checkout
+      window.location.href = data.url
     } catch (err) {
       console.error('Checkout error:', err)
-      alert('Algo deu errado. Por favor, tente novamente.')
+      alert(err.message || 'Erro ao processar pagamento. Tente novamente.')
     } finally {
       setIsLoading(false)
     }
@@ -121,9 +86,9 @@ export default function ProductDetailClient({ product, categories }) {
               <button 
                 onClick={handleCheckout}
                 className="btn btn-primary btn-buy"
-                disabled={isLoading || !stripeLoaded}
+                disabled={isLoading}
               >
-                {isLoading ? 'Processando...' : (!stripeLoaded ? 'Carregando...' : 'Comprar')}
+                {isLoading ? 'Processando...' : 'Comprar'}
               </button>
             )}
               

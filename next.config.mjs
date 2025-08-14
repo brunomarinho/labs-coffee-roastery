@@ -1,6 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  output: 'export',
+  // Note: 'export' output mode disabled to enable API routes for server-side Stripe checkout
+  // output: 'export',
   images: {
     unoptimized: true,
   },
