@@ -40,3 +40,6 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 repomix-output.txt
+
+# Backup files from migration
+/data/products.json.backup

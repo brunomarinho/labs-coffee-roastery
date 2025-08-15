@@ -1,8 +1,9 @@
-import productsData from '../data/products.json'
+import getProductsData from '../utils/loadProducts'
 
 export const dynamic = 'force-static'
 
 export default function sitemap() {
+  const productsData = getProductsData()
   const baseUrl = 'https://mystore.com'
   
   // Static pages

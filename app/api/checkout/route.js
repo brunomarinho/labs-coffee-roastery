@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server'
 import Stripe from 'stripe'
-import products from '../../../data/products.json'
+import getProductsData from '../../../utils/loadProducts'
 
 // Initialize Stripe only when needed to avoid build-time errors
 let stripe
@@ -63,7 +63,8 @@ export async function POST(request) {
     }
 
     // Find the product in the data
-    const product = products.products.find(p => p.id === productId)
+    const productsData = getProductsData()
+    const product = productsData.products.find(p => p.id === productId)
     
     if (!product) {
       return NextResponse.json({ error: 'Produto não encontrado' }, { status: 404 })

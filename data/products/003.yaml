@@ -1,0 +1,30 @@
+# Café 003 - Arara
+# José Silva - Santa Maria
+
+id: "003"
+slug: cafe-003
+name: "003"
+featured: true
+soldOut: false
+category: coffee
+
+# Descrição e Notas
+description: >
+  Um café extraordinário com notas complexas e sabor marcante, perfeito para apreciadores de cafés especiais.
+notas: Jabuticaba; Sedoso,
+
+# Comercial
+price: 60
+quantity: 100g
+stripePriceId: price_1RsXip7jQouLiFSsnPYcvasU
+
+# Informações do Café
+produtor: José Silva
+fazenda: Santa Maria
+variedade: Arara
+processo: Honey
+
+# Imagens
+images:
+  - /images/products/002a.jpg
+  - /images/products/002b.jpg

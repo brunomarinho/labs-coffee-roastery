@@ -1,0 +1,37 @@
+# Café 001 - Bourbon
+# Ivan Santana - Jangada
+
+id: "001"
+slug: cafe-001
+name: "001"
+featured: false
+soldOut: true
+category: coffee
+
+# Descrição e Notas
+description: >
+  Esse Bourbon me lembrou do Letty Bermudez, um café excepcional da Colombia, refrescante, com textura de suco de fruta, suave e de final marcante.
+notas: Acidez Média, Fruta Vermelha, Suculento
+
+# Comercial
+price: 60
+quantity: 100g
+stripePriceId: price_1RsXgZ7jQouLiFSsNcGbtoZy
+
+# Informações do Café
+produtor: Ivan Santana
+fazenda: Jangada
+regiao: Boa Vista, MG
+variedade: Bourbon
+processo: Natural Fermentado
+torra: Clara
+
+# Recomendações de Preparo
+descanso: 2-3 semanas pós torra
+filtrados: 85c, 1:17, pouca agitação
+espresso: 94c, 1:3
+
+# Imagens
+images:
+  - /images/products/001a.jpg
+  - /images/products/001b.jpg

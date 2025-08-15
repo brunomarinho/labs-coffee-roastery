@@ -2,9 +2,10 @@ import { notFound } from 'next/navigation'
 import Header from '../../../components/Header'
 import Footer from '../../../components/Footer'
 import ProductDetailClient from '../../../components/ProductDetailClient'
-import productsData from '../../../data/products.json'
+import getProductsData from '../../../utils/loadProducts'
 
 export async function generateStaticParams() {
+  const productsData = getProductsData()
   return productsData.products.map((product) => ({
     slug: product.slug,
   }))
@@ -12,6 +13,7 @@ export async function generateStaticParams() {
 
 export async function generateMetadata({ params }) {
   const { slug } = await params
+  const productsData = getProductsData()
   const product = productsData.products.find(p => p.slug === slug)
   
   if (!product) {
@@ -33,6 +35,7 @@ export async function generateMetadata({ params }) {
 
 export default async function ProductDetail({ params }) {
   const { slug } = await params
+  const productsData = getProductsData()
   const product = productsData.products.find(p => p.slug === slug)
 
   if (!product) {

@@ -1,7 +1,8 @@
 import ProductCard from './ProductCard'
-import productsData from '../data/products.json'
+import getProductsData from '../utils/loadProducts'
 
 export default function SelectedProducts() {
+  const productsData = getProductsData()
   const featuredProducts = productsData.products
     .filter(product => product.featured && !product.soldOut)
     .slice(0, 4)

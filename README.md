@@ -49,12 +49,21 @@ A modern ecommerce template built with Next.js 14 App Router and Stripe's server
   /blog/                 # Blog posts directory
     post-slug.md         # Individual blog posts
 /data
-  products.json          # Product data and categories
+  categories.yaml        # Category definitions
+  /products/             # Individual product YAML files
+    001.yaml            # Product files (one per product)
+    002.yaml
+    blend.yaml
 /public
   /images
     /products           # Product images directory
+/scripts
+  migrate-json-to-yaml.js # Migration script (for reference)
+  new-product.js         # Helper script to create new products
 /styles
   globals.css           # Global styles with CSS tokens
+/utils
+  loadProducts.js       # YAML product loader utility
 ```
 
 ## Getting Started
@@ -98,43 +107,88 @@ Open [http://localhost:3000](http://localhost:3000) to see your site.
 
 ## Configuration
 
-### 1. Update Product Data
+### 1. Managing Products (YAML-Based System)
 
-Edit `/data/products.json` to add your products:
+This template uses a modern YAML-based product management system where each product has its own file for easier editing and management.
 
-```json
-{
-  "products": [
-    {
-      "id": "unique-id",
-      "slug": "url-friendly-name",
-      "name": "Product Name",
-      "description": "Product description",
-      "price": 99.99,
-      "category": "category-name",
-      "images": [
-        "/images/products/product1-1.jpg",
-        "/images/products/product1-2.jpg"
-      ],
-      "featured": true,
-      "soldOut": false,
-      "stripePriceId": "price_1ABC123DEF456",
-      "customField1": "value",
-      "customField2": "value"
-    }
-  ],
-  "categories": [
-    {
-      "id": "category-name",
-      "displayName": "Category Display Name"
-    }
-  ]
-}
+#### Adding a New Product
+
+Use the helper script to create a new product:
+
+```bash
+node scripts/new-product.js 005
+```
+
+This creates `/data/products/005.yaml` with a template structure:
+
+```yaml
+# Café 005 - [Variedade]
+# [Produtor] - [Fazenda]
+
+id: "005"
+slug: cafe-005
+name: "005"
+featured: false
+soldOut: false
+category: coffee
+
+# Descrição e Notas
+description: >
+  Descrição do café aqui...
+notas: Notas de degustação
+
+# Comercial
+price: 60
+quantity: 100g
+stripePriceId: price_PLACEHOLDER
+
+# Informações do Café
+produtor: Nome do Produtor
+fazenda: Nome da Fazenda
+regiao: Região, Estado
+variedade: Variedade
+processo: Processamento
+torra: Clara
+
+# Recomendações de Preparo
+descanso: 2-3 semanas pós torra
+filtrados: temperatura, proporção, método
+espresso: temperatura, proporção
+
+# Imagens
+images:
+  - /images/products/005a.jpg
+  - /images/products/005b.jpg
+```
+
+#### Editing Products
+
+Simply edit the individual YAML files in `/data/products/`:
+
+```bash
+# Edit a specific product
+code data/products/003.yaml
+
+# Mark as sold out
+soldOut: true
+
+# Make it featured on homepage
+featured: true
+```
+
+#### Product Categories
+
+Categories are defined in `/data/categories.yaml`:
+
+```yaml
+categories:
+  - id: coffee
+    displayName: Café
 ```
 
 ### 2. Add Product Images
 
-Place your product images in `/public/images/products/`. Use the filenames referenced in your products.json.
+Place your product images in `/public/images/products/`. Use the filenames referenced in your product YAML files.
 
 ### 3. Set Up Stripe Products
 
@@ -143,9 +197,9 @@ Place your product images in `/public/images/products/`. Use the filenames refer
    - Create a new product with name and price
    - Copy the price ID (starts with `price_`)
    
-2. **Update products.json:**
+2. **Update product YAML files:**
    - Replace placeholder price IDs with your actual Stripe price IDs
-   - Example: `"stripePriceId": "price_1ABC123DEF456"`
+   - Example: `stripePriceId: price_1ABC123DEF456`
 
 3. **Test with Stripe Test Mode:**
    - Use test API keys during development
@@ -157,7 +211,7 @@ Place your product images in `/public/images/products/`. Use the filenames refer
 ### 4. Managing Sold Out Products
 
 To mark a product as sold out:
-- Set `"soldOut": true` in the product data
+- Set `soldOut: true` in the product YAML file
 - The product will show "Esgotado" badge next to the "Detalhes" button
 - On the products page, sold out items appear in a separate "Cafés anteriores" section
 - The "Cafés anteriores" section is automatically hidden when no products are sold out
@@ -277,6 +331,9 @@ npm run start        # Start production server
 
 # Code Quality
 npm run lint         # Run ESLint
+
+# Product Management
+node scripts/new-product.js <id>  # Create new product template
 ```
 
 ## Deployment

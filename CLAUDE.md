@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-This is a Next.js ecommerce template that uses server-side Stripe checkout with custom fields for Brazilian business requirements. It uses hybrid rendering (SSG + API routes) that allows merchants to quickly launch an online store with enhanced payment processing. Products are managed via a JSON file and payments are processed through Stripe's hosted checkout with required CPF and cellphone collection.
+This is a Next.js ecommerce template that uses server-side Stripe checkout with custom fields for Brazilian business requirements. It uses hybrid rendering (SSG + API routes) that allows merchants to quickly launch an online store with enhanced payment processing. Products are managed via individual YAML files and payments are processed through Stripe's hosted checkout with required CPF and cellphone collection.
 
 ## Development Principles
 
@@ -20,6 +20,7 @@ This is a Next.js ecommerce template that uses server-side Stripe checkout with 
 - Hybrid Rendering (SSG + API Routes)
 - Server-side Stripe Checkout with Custom Fields
 - Brazilian Business Requirements (CPF, Cellphone)
+- YAML-based Product Management with js-yaml parser
 - Remark for markdown processing (CommonMark + GFM)
 - Gray Matter for frontmatter parsing in blog posts
 
@@ -33,9 +34,13 @@ This is a Next.js ecommerce template that uses server-side Stripe checkout with 
 /components       # React components
 /content         # Markdown content files
   /blog          # Blog post markdown files
-/data            # Product data (products.json)
+/data            # Product data
+  categories.yaml         # Category definitions
+  /products/             # Individual product YAML files
 /public          # Static assets and images
+/scripts         # Utility scripts for product management
 /styles          # Global CSS
+/utils           # YAML loader and other utilities
 ```
 
 ## Commands
@@ -57,19 +62,24 @@ npm start
 
 # Run linting
 npm run lint
+
+# Create new product template
+node scripts/new-product.js <product-id>
 ```
 
 ## Architecture
 
 ### Data Flow
-1. Products are defined in `/data/products.json`
-2. Static pages are generated at build time using this data
-3. Product images are stored in `/public/images/products/`
-4. Server-side API creates Stripe checkout sessions with custom fields
-5. Checkout process collects CPF and cellphone data through Stripe's hosted interface
-6. Markdown content is processed at build time using Remark
-7. Blog posts are stored as markdown files in `/content/blog/`
-8. Blog pages are statically generated from markdown content
+1. Products are defined in individual YAML files in `/data/products/`
+2. Categories are defined in `/data/categories.yaml`
+3. YAML loader utility (`/utils/loadProducts.js`) reads and combines all product data
+4. Static pages are generated at build time using this data
+5. Product images are stored in `/public/images/products/`
+6. Server-side API creates Stripe checkout sessions with custom fields
+7. Checkout process collects CPF and cellphone data through Stripe's hosted interface
+8. Markdown content is processed at build time using Remark
+9. Blog posts are stored as markdown files in `/content/blog/`
+10. Blog pages are statically generated from markdown content
 
 ### Key Components
 - **Header**: Navigation with centered SVG logo
@@ -115,25 +125,67 @@ npm run lint
 
 ## Data Management
 
-### Product Schema
-```json
-{
-  "id": "unique-id",
-  "slug": "url-friendly-name",
-  "name": "Product Name",
-  "description": "Product description",
-  "price": 99.99,
-  "category": "category-id",
-  "images": ["/images/products/image.jpg"],
-  "featured": true,
-  "soldOut": false,
-  "stripePriceId": "price_1ABC123DEF456",
-  "customField": "value"
-}
+### YAML-Based Product System
+
+#### Product Schema (Individual YAML Files)
+Each product is stored in `/data/products/<id>.yaml`:
+
+```yaml
+# Café 001 - Bourbon Natural
+# Ivan Santana - Fazenda Jangada
+
+id: "001"
+slug: cafe-001
+name: "001"
+featured: false
+soldOut: true
+category: coffee
+
+# Descrição e Notas
+description: >
+  Esse Bourbon me lembrou do Letty Bermudez, um café excepcional 
+  da Colombia, refrescante, com textura de suco de fruta, suave 
+  e de final marcante.
+notas: Acidez Média, Fruta Vermelha, Suculento
+
+# Comercial
+price: 60
+quantity: 100g
+stripePriceId: price_1RsXgZ7jQouLiFSsNcGbtoZy
+
+# Informações do Café
+produtor: Ivan Santana
+fazenda: Jangada
+regiao: Boa Vista, MG
+variedade: Bourbon
+processo: Natural Fermentado
+torra: Clara
+
+# Recomendações de Preparo
+descanso: 2-3 semanas pós torra
+filtrados: 85c, 1:17, pouca agitação
+espresso: 94c, 1:3
+
+# Imagens
+images:
+  - /images/products/001a.jpg
+  - /images/products/001b.jpg
 ```
 
-### Categories
-Categories are defined in the same `products.json` file with display names.
+#### Categories Schema
+Categories are defined in `/data/categories.yaml`:
+
+```yaml
+categories:
+  - id: coffee
+    displayName: Café
+```
+
+#### Data Loading
+- Uses `/utils/loadProducts.js` to read all YAML files
+- Caches data in production, reloads in development
+- Sorts products by ID for consistent ordering
+- Handles parsing errors gracefully
 
 ### Blog Post Schema
 ```yaml
@@ -177,7 +229,7 @@ Markdown content here...
 2. **Styling**: Use CSS tokens and utility classes before adding custom styles
 3. **Images**: Always use Next.js Image component for optimization
 4. **Links**: Use Next.js Link component for internal navigation
-5. **Data Updates**: Modify `/data/products.json` and rebuild to update products
+5. **Data Updates**: Modify individual YAML files in `/data/products/` - no rebuild needed in development
 6. **Environment Setup**: Use `.env.local` for API keys (never commit secrets)
 6. **Content Updates**: Edit markdown files in `/content` for page content
 7. **Markdown Support**: Full CommonMark + GitHub Flavored Markdown syntax supported
@@ -185,16 +237,23 @@ Markdown content here...
 ## Common Tasks
 
 ### Adding a New Product
-1. Add product object to `/data/products.json` with `soldOut: false`
-2. Add product images to `/public/images/products/`
-3. Create Stripe price and add price ID to product data
-4. Run `npm run build` to regenerate static pages
+1. Create new product with helper script: `node scripts/new-product.js <product-id>`
+2. Edit the generated YAML file in `/data/products/<product-id>.yaml`
+3. Add product images to `/public/images/products/`
+4. Create Stripe price and update `stripePriceId` in the YAML file
+5. For production, run `npm run build` to regenerate static pages
 
 ### Managing Sold Out Products
-1. Set `"soldOut": true` in the product data to mark as sold out
+1. Set `soldOut: true` in the product YAML file to mark as sold out
 2. Product will display "Esgotado" badge next to "Detalhes" button
 3. Sold out products appear in "Cafés anteriores" section on products page
 4. Section automatically hides when no products are sold out
+
+### Editing Products
+1. Edit individual YAML files in `/data/products/` directly
+2. Changes are reflected immediately in development
+3. Use comments and structured sections for organization
+4. All data preserved from original JSON structure
 
 ### Managing Product Attributes
 1. Product details page displays custom attributes in a grid layout
@@ -270,7 +329,8 @@ STRIPE_SECRET_KEY=sk_test_...                   # Server-side key (never exposed
 ## Important Notes
 
 - Uses hybrid rendering - static pages with dynamic API routes
-- No database - all product data comes from JSON files
+- No database - all product data comes from YAML files
+- YAML-based product management for easier editing and scalability
 - Server-side Stripe checkout requires Node.js runtime
 - Images should be optimized before adding to the project
 - Static export is disabled to enable API routes (`output: 'export'` commented out)

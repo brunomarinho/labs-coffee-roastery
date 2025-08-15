@@ -1,0 +1,30 @@
+# Café 002 - Topazio
+# Raquel Meirelles - Santa Maria
+
+id: "002"
+slug: cafe-002
+name: "002"
+featured: true
+soldOut: false
+category: coffee
+
+# Descrição e Notas
+description: >
+  Um café extraordinário com notas complexas e sabor marcante, perfeito para apreciadores de cafés especiais.
+notas: Acidez Alta, Carambola, Suculento
+
+# Comercial
+price: 60
+quantity: 100g
+stripePriceId: price_1RsXip7jQouLiFSsnPYcvasU
+
+# Informações do Café
+produtor: Raquel Meirelles
+fazenda: Santa Maria
+variedade: Topazio
+processo: Honey
+
+# Imagens
+images:
+  - /images/products/002a.jpg
+  - /images/products/002b.jpg

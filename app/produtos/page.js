@@ -1,7 +1,7 @@
 import Header from '../../components/Header'
 import Footer from '../../components/Footer'
 import ProductCard from '../../components/ProductCard'
-import productsData from '../../data/products.json'
+import getProductsData from '../../utils/loadProducts'
 
 export const metadata = {
   title: 'Produtos - Mameluca',
@@ -9,6 +9,7 @@ export const metadata = {
 }
 
 export default function Products() {
+  const productsData = getProductsData()
   const availableProducts = productsData.products.filter(product => !product.soldOut)
   const soldOutProducts = productsData.products.filter(product => product.soldOut)
   
