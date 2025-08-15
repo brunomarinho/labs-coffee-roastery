@@ -23,7 +23,11 @@ Os produtos marcados como "Esgotado" não estão disponíveis para compra pois t
 Utilizamos o Stripe como processador de pagamentos, aceitas as principais formas de pagamento:
 - Cartões de crédito e débito
 
-Não armazenamos nenhuma informação de pagamento em nossos servidores. Todo o processo é gerenciado de forma segura pelo Stripe.
+Durante o checkout, solicitamos:
+- CPF: transportadoras precisam para enviar produtos
+- Celular/WhatsApp: transportadoras precisam para qualquer eventual comunicação com o destinatário
+
+Não armazenamos nenhuma informação de pagamento ou dados pessoais em nossos servidores. Todo o processo é gerenciado de forma segura pelo Stripe.
 
 ### Confirmação de Pedido
 Após a conclusão do pagamento, você receberá um email de confirmação. Guarde este email - ele é seu comprovante de compra.

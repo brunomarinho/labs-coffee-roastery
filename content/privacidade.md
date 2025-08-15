@@ -10,6 +10,8 @@ Nosso site é estático - não usamos cookies de rastreamento, não monitoramos 
 ### Quando Você Compra
 Durante o processo de compra, as seguintes informações são necessárias:
 - Nome completo
+- CPF (necessário para envios de mercadoria)
+- Celular/WhatsApp (necessário para envios de mercadoria)
 - Endereço de entrega
 - Email (para enviar confirmações e rastreamento)
 - Informações de pagamento
@@ -22,7 +24,7 @@ As informações fornecidas durante a compra são usadas exclusivamente para:
 - Processar seu pagamento (via Stripe)
 - Enviar seu café para o endereço correto
 - Enviar confirmação de pedido e informações de rastreamento
-- Entrar em contato caso haja algum problema com seu pedido
+- Entrar em contato caso haja algum problema com seu pedido (via WhatsApp ou email)
 
 Não vendemos, alugamos ou compartilhamos suas informações com terceiros para fins de marketing.
 
