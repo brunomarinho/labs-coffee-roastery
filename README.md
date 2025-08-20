@@ -6,12 +6,13 @@ A modern ecommerce template built with Next.js 14 App Router and Stripe's server
 
 - 🛍️ **Product Catalog** - Organized by categories with detail pages
 - 💳 **Stripe Server-Side Checkout** - Custom checkout with required CPF and cellphone fields for Brazilian businesses
+- 📊 **Real-Time Inventory Management** - Redis-powered inventory system with admin interface
 - 📱 **Fully Responsive** - Mobile-first design with responsive breakpoints
 - 🚀 **Hybrid Rendering** - Static site generation with dynamic API routes for checkout processing
 - 🎨 **Tokenized CSS System** - Consistent design with CSS variables
 - 📝 **Markdown Content** - Easy content management with full CommonMark support via Remark
 - 🔍 **SEO Ready** - Dynamic meta tags, sitemap, and Open Graph support
-- 🚫 **Sold Out Management** - Support for sold out products with disabled checkout
+- ⚡ **Low Stock Warnings** - Automatic alerts when products are running low
 - 🎯 **Modern UI Design** - Clean interface with sharp corners and minimalist aesthetics
 - 🖼️ **Background Image Effects** - Product cards with subtle background images using opacity and blend modes
 - 📰 **Blog System** - Markdown-based blog with static generation and SEO optimization
@@ -22,6 +23,11 @@ A modern ecommerce template built with Next.js 14 App Router and Stripe's server
 /app
   /api
     /checkout/route.js     # Server-side Stripe checkout API
+    /inventory/check/route.js  # Inventory checking API
+    /admin/inventory/route.js  # Admin inventory management API
+    /admin/inventory/sync/route.js  # Product inventory sync
+    /webhooks/stripe/route.js  # Stripe webhook handler
+  /admin/inventory/page.js   # Admin inventory management interface
   /about/page.js          # About page (renders markdown)
   /blog/page.js          # Blog listing page
   /blog/[slug]/page.js   # Individual blog post pages
@@ -42,6 +48,8 @@ A modern ecommerce template built with Next.js 14 App Router and Stripe's server
   SelectedProducts.js    # Featured products display
   AboutSnippet.js        # Homepage about section
   ProductDetailClient.js # Client component for product details
+  InventoryStatus.js     # Real-time inventory checking component
+  ProductsWithInventory.js # Server component for inventory-aware product listing
 /content
   about.md               # About page content
   faq.md                 # FAQ page content
@@ -50,10 +58,12 @@ A modern ecommerce template built with Next.js 14 App Router and Stripe's server
     post-slug.md         # Individual blog posts
 /data
   categories.yaml        # Category definitions
-  /products/             # Individual product YAML files
+  /products/             # Individual product YAML files with inventoryId
     001.yaml            # Product files (one per product)
     002.yaml
     blend.yaml
+/lib
+  redis.js              # Redis client and inventory management functions
 /public
   /images
     /products           # Product images directory
@@ -73,6 +83,7 @@ A modern ecommerce template built with Next.js 14 App Router and Stripe's server
 - Node.js 18+ 
 - npm or yarn
 - Stripe account with test/live API keys
+- Upstash Redis database (free tier available)
 
 ### Installation
 
@@ -92,18 +103,39 @@ npm install
 cp .env.local.example .env.local
 ```
 
-4. Add your Stripe keys to `.env.local`:
+4. Set up required services:
+   - Create a free Upstash Redis database at https://upstash.com
+   - Get your Stripe API keys from the Stripe dashboard
+
+5. Add your environment variables to `.env.local`:
 ```
+# Stripe Configuration
 NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=pk_test_your_key_here
 STRIPE_SECRET_KEY=sk_test_your_key_here
+
+# Upstash Redis Configuration
+UPSTASH_REDIS_REST_URL=https://your-url.upstash.io
+UPSTASH_REDIS_REST_TOKEN=your-token
+
+# Admin Configuration
+ADMIN_PASSWORD=your-secure-password-here
+
+# Stripe Webhook Secret (for production)
+STRIPE_WEBHOOK_SECRET=whsec_your_webhook_secret
 ```
 
-5. Run the development server:
+6. Run the development server:
 ```bash
 npm run dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) to see your site.
+
+7. Set up inventory (first time only):
+   - Visit http://localhost:3000/admin/inventory
+   - Enter your admin password
+   - Click "Sincronizar Produtos" to initialize inventory
+   - Set stock levels for your products
 
 ## Configuration
 
@@ -126,10 +158,10 @@ This creates `/data/products/005.yaml` with a template structure:
 # [Produtor] - [Fazenda]
 
 id: "005"
+inventoryId: "inv_005"
 slug: cafe-005
 name: "005"
 featured: false
-soldOut: false
 category: coffee
 
 # Descrição e Notas
@@ -169,11 +201,10 @@ Simply edit the individual YAML files in `/data/products/`:
 # Edit a specific product
 code data/products/003.yaml
 
-# Mark as sold out
-soldOut: true
-
 # Make it featured on homepage
 featured: true
+
+# Note: Sold out status is now managed through the inventory system
 ```
 
 #### Product Categories
@@ -208,13 +239,28 @@ Place your product images in `/public/images/products/`. Use the filenames refer
    - Custom fields (CPF and cellphone) will appear in checkout form
    - Test data will appear in your Stripe dashboard after successful payment
 
-### 4. Managing Sold Out Products
+### 4. Managing Inventory
 
-To mark a product as sold out:
-- Set `soldOut: true` in the product YAML file
-- The product will show "Esgotado" badge next to the "Detalhes" button
+The template includes a real-time inventory management system:
+
+#### Admin Interface
+- Visit `/admin/inventory` and enter your admin password
+- Use "Sincronizar Produtos" to initialize inventory for new products
+- Set stock levels using the input fields or quick action buttons (+10, +1, -1, -10)
+- Inventory updates in real-time and affects product availability immediately
+
+#### Inventory Features  
+- **Real-time updates**: Inventory changes are immediately reflected on the frontend
+- **Low stock warnings**: Products with < 5 units show "Apenas X unidades disponíveis" 
+- **Sold out handling**: Products with 0 inventory automatically show "Esgotado"
+- **Automatic updates**: Stripe webhooks automatically decrement inventory after successful purchases
+- **Graceful fallback**: If Redis is unavailable, products remain purchasable (fail-open)
+
+#### Sold Out Products
+- Products with zero inventory automatically show "Esgotado" badge 
 - On the products page, sold out items appear in a separate "Cafés anteriores" section
 - The "Cafés anteriores" section is automatically hidden when no products are sold out
+- No more manual `soldOut: true` in YAML files - it's all inventory-based now
 
 ### 5. Customize Content
 
@@ -347,6 +393,10 @@ vercel --prod
 Set environment variables in Vercel dashboard:
 - `NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY`
 - `STRIPE_SECRET_KEY`
+- `UPSTASH_REDIS_REST_URL`
+- `UPSTASH_REDIS_REST_TOKEN`
+- `ADMIN_PASSWORD`
+- `STRIPE_WEBHOOK_SECRET` (for webhook handling)
 
 ### Netlify
 1. Build command: `npm run build`

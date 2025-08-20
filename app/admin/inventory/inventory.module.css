@@ -1,0 +1,265 @@
+.container {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: var(--space-xl) 0;
+  min-height: 100vh;
+}
+
+.authForm {
+  max-width: 400px;
+  margin: 100px auto;
+  padding: var(--space-lg);
+  background: var(--color-background);
+  box-shadow: var(--shadow-md);
+}
+
+.authForm h1 {
+  margin-bottom: var(--space-lg);
+  font-size: var(--font-lg);
+  text-align: center;
+  font-weight: var(--font-weight-medium);
+}
+
+.passwordInput {
+  width: 100%;
+  padding: var(--space-sm) var(--space-md);
+  border: 1px solid var(--color-border);
+  font-size: var(--font-md);
+  margin-bottom: var(--space-md);
+  font-family: var(--font-family);
+}
+
+.submitButton {
+  width: 100%;
+  padding: var(--space-sm) var(--space-md);
+  background: var(--color-primary);
+  color: white;
+  border: none;
+  font-size: var(--font-md);
+  cursor: pointer;
+  transition: opacity 0.2s;
+  font-family: var(--font-family);
+}
+
+.submitButton:hover {
+  opacity: 0.8;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--space-lg);
+}
+
+.header h1 {
+  font-size: var(--font-2xl);
+  font-weight: var(--font-weight-medium);
+}
+
+.actions {
+  display: flex;
+  gap: var(--space-md);
+}
+
+.syncButton,
+.refreshButton,
+.saveButton,
+.cancelButton {
+  padding: var(--space-sm) var(--space-md);
+  background: var(--color-primary);
+  color: white;
+  border: none;
+  cursor: pointer;
+  transition: opacity 0.2s;
+  font-family: var(--font-family);
+  font-size: var(--font-sm);
+}
+
+.saveButton {
+  background: #059669;
+}
+
+.saveButton:hover {
+  background: #047857;
+}
+
+.cancelButton {
+  background: var(--color-gray);
+}
+
+.cancelButton:hover {
+  background: var(--color-gray-dark);
+}
+
+.syncButton:hover,
+.refreshButton:hover {
+  opacity: 0.8;
+}
+
+.syncButton:disabled,
+.refreshButton:disabled,
+.saveButton:disabled,
+.cancelButton:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.error {
+  background: #fee;
+  color: #c00;
+  padding: var(--space-md);
+  margin-bottom: var(--space-md);
+  border: 1px solid #fcc;
+}
+
+.success {
+  background: #efe;
+  color: #060;
+  padding: var(--space-md);
+  margin-bottom: var(--space-md);
+  border: 1px solid #cfc;
+}
+
+.unsavedWarning {
+  background: #fff3cd;
+  color: #856404;
+  padding: var(--space-md);
+  margin-bottom: var(--space-md);
+  border: 1px solid #ffeaa7;
+  font-weight: var(--font-weight-medium);
+}
+
+.lastUpdated {
+  color: var(--color-gray);
+  font-size: var(--font-sm);
+  margin-bottom: var(--space-md);
+}
+
+.loading {
+  text-align: center;
+  padding: var(--space-lg);
+  color: var(--color-gray);
+}
+
+.tableContainer {
+  overflow-x: auto;
+  background: var(--color-background);
+  box-shadow: var(--shadow-sm);
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.table thead {
+  background: var(--color-gray-light);
+  border-bottom: 2px solid var(--color-border);
+}
+
+.table th {
+  padding: var(--space-md);
+  text-align: left;
+  font-weight: var(--font-weight-medium);
+  color: var(--color-gray-dark);
+  font-size: var(--font-sm);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.table tbody tr {
+  border-bottom: 1px solid var(--color-border);
+}
+
+.table tbody tr:hover {
+  background: var(--color-gray-light);
+}
+
+.table td {
+  padding: var(--space-md);
+  color: var(--color-text);
+}
+
+.quantityInput {
+  width: 80px;
+  padding: var(--space-xs) var(--space-sm);
+  border: 1px solid var(--color-border);
+  text-align: center;
+  font-family: var(--font-family);
+  transition: border-color 0.2s, background-color 0.2s;
+}
+
+.quantityInput.modified {
+  border-color: #f59e0b;
+  background-color: #fef3c7;
+}
+
+.hasChanges {
+  background-color: #fef3c7;
+}
+
+.available {
+  color: #060;
+  font-weight: var(--font-weight-medium);
+}
+
+.soldOut {
+  color: #c00;
+  font-weight: var(--font-weight-medium);
+}
+
+.actionButtons {
+  display: flex;
+  gap: var(--space-xs);
+}
+
+.actionButton {
+  padding: var(--space-xs) var(--space-sm);
+  background: var(--color-primary);
+  color: white;
+  border: none;
+  cursor: pointer;
+  font-size: var(--font-xs);
+  transition: opacity 0.2s;
+  min-width: 35px;
+  font-family: var(--font-family);
+}
+
+.actionButton:hover {
+  opacity: 0.8;
+}
+
+.actionButton:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+@media (max-width: 768px) {
+  .container {
+    padding: 1rem;
+  }
+  
+  .header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+  
+  .table {
+    font-size: 0.875rem;
+  }
+  
+  .table th,
+  .table td {
+    padding: 0.5rem;
+  }
+  
+  .actionButtons {
+    flex-wrap: wrap;
+  }
+  
+  .quantityInput {
+    width: 60px;
+  }
+}

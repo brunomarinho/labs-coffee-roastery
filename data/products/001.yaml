@@ -2,10 +2,10 @@
 # Ivan Santana - Jangada
 
 id: "001"
+inventoryId: "inv_001"
 slug: cafe-001
 name: "001"
 featured: false
-soldOut: true
 category: coffee
 
 # Descrição e Notas

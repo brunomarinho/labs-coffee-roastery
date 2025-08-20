@@ -2,10 +2,10 @@
 # Varios - Boa Vista
 
 id: "000"
+inventoryId: "inv_000"
 slug: blend
 name: "Blend"
 featured: true
-soldOut: false
 category: coffee
 
 # Descrição e Notas

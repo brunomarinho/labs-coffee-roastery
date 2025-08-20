@@ -7,10 +7,10 @@ const template = `# Café [ID] - [Variedade]
 # [Produtor] - [Fazenda]
 
 id: "[ID]"
+inventoryId: "inv_[ID]"
 slug: cafe-[ID]
 name: "[ID]"
 featured: false
-soldOut: false
 category: coffee
 
 # Descrição e Notas

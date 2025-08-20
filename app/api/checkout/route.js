@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server'
 import Stripe from 'stripe'
 import getProductsData from '../../../utils/loadProducts'
+import { getInventory } from '@/lib/redis'
 
 // Initialize Stripe only when needed to avoid build-time errors
 let stripe
@@ -70,8 +71,12 @@ export async function POST(request) {
       return NextResponse.json({ error: 'Produto não encontrado' }, { status: 404 })
     }
 
-    if (product.soldOut) {
-      return NextResponse.json({ error: 'Produto esgotado' }, { status: 400 })
+    // Check inventory if inventoryId is present
+    if (product.inventoryId) {
+      const inventory = await getInventory(product.inventoryId)
+      if (inventory !== null && inventory <= 0) {
+        return NextResponse.json({ error: 'Produto esgotado' }, { status: 400 })
+      }
     }
 
     // Get the base URL for redirect URLs
@@ -126,6 +131,7 @@ export async function POST(request) {
         product_id: product.id,
         product_name: product.name,
         product_slug: product.slug,
+        inventory_id: product.inventoryId || '',
       },
     })
 

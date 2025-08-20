@@ -2,6 +2,7 @@
 
 import Image from 'next/image'
 import { useState } from 'react'
+import InventoryStatus from './InventoryStatus'
 
 
 export default function ProductDetailClient({ product, categories }) {
@@ -74,23 +75,41 @@ export default function ProductDetailClient({ product, categories }) {
               <div className="tag">
                 {product.quantity} | R$ {product.price}
               </div>
-              {product.soldOut ? (
-                <button 
-                  className="btn btn-secondary btn-buy"
-                  disabled
-                  style={{ cursor: 'not-allowed', opacity: 0.6 }}
-                >
-                  Esgotado
-                </button>
-            ) : (
-              <button 
-                onClick={handleCheckout}
-                className="btn btn-primary btn-buy"
-                disabled={isLoading}
-              >
-                {isLoading ? 'Processando...' : 'Comprar'}
-              </button>
-            )}
+              
+              <InventoryStatus inventoryId={product.inventoryId}>
+                {({ loading, available, quantity, lowStock }) => {
+                  // Show sold out if inventory unavailable (quantity is 0 or null)
+                  const isOutOfStock = !loading && !available
+                  
+                  return (
+                    <>
+                      {lowStock && available && (
+                        <div className="low-stock-warning">
+                          Apenas {quantity} unidades disponíveis
+                        </div>
+                      )}
+                      
+                      {isOutOfStock ? (
+                        <button 
+                          className="btn btn-secondary btn-buy"
+                          disabled
+                          style={{ cursor: 'not-allowed', opacity: 0.6 }}
+                        >
+                          Esgotado
+                        </button>
+                      ) : (
+                        <button 
+                          onClick={handleCheckout}
+                          className="btn btn-primary btn-buy"
+                          disabled={isLoading || loading}
+                        >
+                          {isLoading ? 'Processando...' : loading ? 'Verificando...' : 'Comprar'}
+                        </button>
+                      )}
+                    </>
+                  )
+                }}
+              </InventoryStatus>
               
             </div>
           </div>

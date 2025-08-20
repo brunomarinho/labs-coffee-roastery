@@ -109,13 +109,22 @@ export function getFeaturedProducts() {
 }
 
 // Helper function to get available (not sold out) products
+// Note: These functions now work with YAML data only, 
+// inventory-based soldOut logic should be handled in components
 export function getAvailableProducts() {
   const { products } = getProductsData()
-  return products.filter(product => product.soldOut !== true)
+  return products // Return all products since soldOut is removed from YAML
 }
 
-// Helper function to get sold out products
+// Helper function to get sold out products  
+// Note: This is deprecated - use inventory-based logic instead
 export function getSoldOutProducts() {
   const { products } = getProductsData()
-  return products.filter(product => product.soldOut === true)
+  return [] // Return empty array since soldOut is removed from YAML
+}
+
+// Named export for loadProducts (used by inventory system)
+export async function loadProducts() {
+  const { products } = getProductsData()
+  return products
 }

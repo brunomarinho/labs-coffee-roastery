@@ -21,6 +21,7 @@ This is a Next.js ecommerce template that uses server-side Stripe checkout with 
 - Server-side Stripe Checkout with Custom Fields
 - Brazilian Business Requirements (CPF, Cellphone)
 - YAML-based Product Management with js-yaml parser
+- Upstash Redis for Real-time Inventory Management
 - Remark for markdown processing (CommonMark + GFM)
 - Gray Matter for frontmatter parsing in blog posts
 
@@ -30,6 +31,11 @@ This is a Next.js ecommerce template that uses server-side Stripe checkout with 
 /app              # Next.js App Router pages
   /api            # API routes for server-side functionality
     /checkout     # Stripe checkout session creation
+    /inventory    # Inventory management API
+    /admin        # Admin inventory management
+    /webhooks     # Stripe webhook handlers
+  /admin          # Admin interface pages
+    /inventory    # Inventory management UI
   /blog           # Blog listing and post pages
 /components       # React components
 /content         # Markdown content files
@@ -37,6 +43,8 @@ This is a Next.js ecommerce template that uses server-side Stripe checkout with 
 /data            # Product data
   categories.yaml         # Category definitions
   /products/             # Individual product YAML files
+/lib             # Utility libraries
+  redis.js       # Redis client and inventory functions
 /public          # Static assets and images
 /scripts         # Utility scripts for product management
 /styles          # Global CSS
@@ -75,16 +83,21 @@ node scripts/new-product.js <product-id>
 3. YAML loader utility (`/utils/loadProducts.js`) reads and combines all product data
 4. Static pages are generated at build time using this data
 5. Product images are stored in `/public/images/products/`
-6. Server-side API creates Stripe checkout sessions with custom fields
-7. Checkout process collects CPF and cellphone data through Stripe's hosted interface
-8. Markdown content is processed at build time using Remark
-9. Blog posts are stored as markdown files in `/content/blog/`
-10. Blog pages are statically generated from markdown content
+6. **Inventory data is stored in Upstash Redis using inventoryId keys**
+7. Server-side API creates Stripe checkout sessions with custom fields
+8. **Checkout process validates inventory before payment**
+9. Checkout process collects CPF and cellphone data through Stripe's hosted interface
+10. **Stripe webhooks automatically update inventory after successful payments**
+11. Markdown content is processed at build time using Remark
+12. Blog posts are stored as markdown files in `/content/blog/`
+13. Blog pages are statically generated from markdown content
 
 ### Key Components
 - **Header**: Navigation with centered SVG logo
 - **ProductCard**: Product display with background image effect and action buttons
 - **ProductDetailClient**: Client component for product details and checkout initiation
+- **InventoryStatus**: Real-time inventory checking component
+- **ProductsWithInventory**: Server component that fetches inventory data
 - **Hero**: Homepage hero section
 - **SelectedProducts**: Featured products display
 - **Footer**: Site footer with links
@@ -135,10 +148,10 @@ Each product is stored in `/data/products/<id>.yaml`:
 # Ivan Santana - Fazenda Jangada
 
 id: "001"
+inventoryId: "inv_001"
 slug: cafe-001
 name: "001"
 featured: false
-soldOut: true
 category: coffee
 
 # Descrição e Notas
@@ -198,6 +211,59 @@ visibility: true  # Set to false to hide post
 Markdown content here...
 ```
 
+### Inventory Management System
+
+The ecommerce platform includes a real-time inventory management system powered by Upstash Redis.
+
+#### Key Features
+- **Real-time stock tracking** with automatic updates
+- **Admin interface** for inventory management at `/admin/inventory`
+- **Checkout validation** prevents overselling
+- **Low stock warnings** when inventory < 5 units
+- **Stripe webhook integration** for automatic inventory decrements
+- **Fallback handling** when Redis is unavailable (fail-open approach)
+
+#### Environment Variables Required
+```bash
+# Upstash Redis Configuration
+UPSTASH_REDIS_REST_URL=https://your-url.upstash.io
+UPSTASH_REDIS_REST_TOKEN=your-token
+
+# Admin Configuration
+ADMIN_PASSWORD=your-secure-password-here
+
+# Stripe Webhook Secret
+STRIPE_WEBHOOK_SECRET=whsec_your_webhook_secret
+```
+
+#### Inventory Architecture
+1. **Product YAML files** include `inventoryId` field (e.g., `inv_001`)
+2. **Redis storage** uses keys like `inventory:inv_001` 
+3. **API endpoints** for checking and updating inventory
+4. **Admin interface** provides GUI for stock management
+5. **Stripe webhooks** automatically decrement on successful purchases
+6. **Client components** check inventory in real-time
+
+#### API Endpoints
+- `POST /api/inventory/check` - Check inventory for a product
+- `GET /api/admin/inventory` - Get all inventory levels (admin only)
+- `POST /api/admin/inventory` - Update inventory levels (admin only)
+- `POST /api/admin/inventory/sync` - Initialize inventory for new products
+- `POST /api/webhooks/stripe` - Handle Stripe payment webhooks
+
+#### Inventory Logic
+- Products with `quantity: 0` show "Esgotado" (Sold Out)
+- Products with `quantity < 5` show low stock warning
+- Checkout is prevented when inventory reaches 0
+- The `soldOut` field has been removed from YAML files in favor of inventory-based logic
+
+#### InventoryId Naming Convention
+- Format: `inv_{productId}` (e.g., `inv_001`, `inv_002`, `inv_blend`)
+- Each product YAML file must include an `inventoryId` field
+- The inventoryId links the product to its Redis inventory record
+- When creating new products, use: `inventoryId: "inv_{productId}"`
+- Example: For product with `id: "005"`, use `inventoryId: "inv_005"`
+
 ## SEO Considerations
 
 - Dynamic metadata generation for all pages
@@ -241,13 +307,16 @@ Markdown content here...
 2. Edit the generated YAML file in `/data/products/<product-id>.yaml`
 3. Add product images to `/public/images/products/`
 4. Create Stripe price and update `stripePriceId` in the YAML file
-5. For production, run `npm run build` to regenerate static pages
+5. Set initial inventory: Visit `/admin/inventory` and sync products, then set stock levels
+6. For production, run `npm run build` to regenerate static pages
 
-### Managing Sold Out Products
-1. Set `soldOut: true` in the product YAML file to mark as sold out
-2. Product will display "Esgotado" badge next to "Detalhes" button
-3. Sold out products appear in "Cafés anteriores" section on products page
-4. Section automatically hides when no products are sold out
+### Managing Inventory (Sold Out Products)
+1. Visit `/admin/inventory` with admin password to manage stock levels
+2. Set inventory to `0` to mark products as sold out
+3. Products with zero inventory automatically show "Esgotado" badge
+4. Sold out products appear in "Cafés anteriores" section on products page
+5. Section automatically hides when no products are sold out
+6. Use the sync button to initialize inventory for new products
 
 ### Editing Products
 1. Edit individual YAML files in `/data/products/` directly

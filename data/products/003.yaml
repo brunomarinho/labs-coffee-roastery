@@ -2,10 +2,10 @@
 # José Silva - Santa Maria
 
 id: "003"
+inventoryId: "inv_003"
 slug: cafe-003
 name: "003"
 featured: true
-soldOut: false
 category: coffee
 
 # Descrição e Notas

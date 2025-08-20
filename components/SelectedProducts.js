@@ -4,7 +4,7 @@ import getProductsData from '../utils/loadProducts'
 export default function SelectedProducts() {
   const productsData = getProductsData()
   const featuredProducts = productsData.products
-    .filter(product => product.featured && !product.soldOut)
+    .filter(product => product.featured)
     .slice(0, 4)
 
   return (

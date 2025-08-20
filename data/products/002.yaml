@@ -2,10 +2,10 @@
 # Raquel Meirelles - Santa Maria
 
 id: "002"
+inventoryId: "inv_002"
 slug: cafe-002
 name: "002"
 featured: true
-soldOut: false
 category: coffee
 
 # Descrição e Notas
