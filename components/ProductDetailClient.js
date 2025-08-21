@@ -83,12 +83,6 @@ export default function ProductDetailClient({ product, categories }) {
                   
                   return (
                     <>
-                      {lowStock && available && (
-                        <div className="low-stock-warning">
-                          Apenas {quantity} unidades disponíveis
-                        </div>
-                      )}
-                      
                       {isOutOfStock ? (
                         <button 
                           className="btn btn-secondary btn-buy"
