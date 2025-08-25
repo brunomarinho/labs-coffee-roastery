@@ -6,6 +6,8 @@ import styles from './inventory.module.css'
 export default function InventoryAdmin() {
   const [isAuthenticated, setIsAuthenticated] = useState(false)
   const [password, setPassword] = useState('')
+  const [sessionToken, setSessionToken] = useState('')
+  const [sessionExpiry, setSessionExpiry] = useState(null)
   const [products, setProducts] = useState([])
   const [localChanges, setLocalChanges] = useState({})
   const [loading, setLoading] = useState(false)
@@ -13,48 +15,151 @@ export default function InventoryAdmin() {
   const [error, setError] = useState('')
   const [success, setSuccess] = useState('')
   const [lastUpdated, setLastUpdated] = useState(null)
+  const [loginAttempts, setLoginAttempts] = useState(0)
 
   useEffect(() => {
-    const savedAuth = sessionStorage.getItem('adminAuth')
-    if (savedAuth) {
-      setIsAuthenticated(true)
-      setPassword(savedAuth)
-      fetchInventory(savedAuth)
+    const savedToken = sessionStorage.getItem('adminSessionToken')
+    const savedExpiry = sessionStorage.getItem('adminSessionExpiry')
+    
+    if (savedToken && savedExpiry) {
+      const expiryDate = new Date(savedExpiry)
+      if (expiryDate > new Date()) {
+        setIsAuthenticated(true)
+        setSessionToken(savedToken)
+        setSessionExpiry(expiryDate)
+        fetchInventory(savedToken)
+        
+        // Set up auto-refresh timer
+        setupSessionTimer(expiryDate)
+      } else {
+        // Session expired, clean up
+        sessionStorage.removeItem('adminSessionToken')
+        sessionStorage.removeItem('adminSessionExpiry')
+      }
     }
   }, [])
 
   useEffect(() => {
-    if (isAuthenticated) {
+    if (isAuthenticated && sessionToken) {
       const interval = setInterval(() => {
-        fetchInventory(password)
+        fetchInventory(sessionToken)
       }, 30000)
       
       return () => clearInterval(interval)
     }
-  }, [isAuthenticated, password])
+  }, [isAuthenticated, sessionToken])
 
-  const handleAuth = (e) => {
-    e.preventDefault()
-    sessionStorage.setItem('adminAuth', password)
-    setIsAuthenticated(true)
-    fetchInventory(password)
+  const setupSessionTimer = (expiryDate) => {
+    const now = new Date()
+    const timeUntilExpiry = expiryDate.getTime() - now.getTime()
+    
+    if (timeUntilExpiry > 0) {
+      // Auto-logout 5 minutes before expiry
+      const warningTime = Math.max(0, timeUntilExpiry - 5 * 60 * 1000)
+      
+      setTimeout(() => {
+        setError('Sua sessão expirará em 5 minutos. Salve suas alterações.')
+      }, warningTime)
+      
+      // Auto-logout at expiry
+      setTimeout(() => {
+        handleLogout()
+      }, timeUntilExpiry)
+    }
   }
 
-  const fetchInventory = async (authPassword) => {
+  const handleAuth = async (e) => {
+    e.preventDefault()
+    setError('')
+    setLoading(true)
+    
+    try {
+      const response = await fetch('/api/admin/auth', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-Requested-With': 'XMLHttpRequest'
+        },
+        body: JSON.stringify({ password })
+      })
+      
+      const data = await response.json()
+      
+      if (!response.ok) {
+        if (response.status === 429) {
+          setError(data.error)
+          setLoginAttempts(prev => prev + 1)
+        } else {
+          setError(data.error || 'Erro de autenticação')
+          setLoginAttempts(prev => prev + 1)
+        }
+        return
+      }
+      
+      // Success
+      const expiryDate = new Date(data.expiresAt)
+      setIsAuthenticated(true)
+      setSessionToken(data.sessionToken)
+      setSessionExpiry(expiryDate)
+      setLoginAttempts(0)
+      
+      // Store in session storage
+      sessionStorage.setItem('adminSessionToken', data.sessionToken)
+      sessionStorage.setItem('adminSessionExpiry', data.expiresAt)
+      
+      // Set up session timer
+      setupSessionTimer(expiryDate)
+      
+      // Fetch inventory
+      fetchInventory(data.sessionToken)
+      
+    } catch (err) {
+      setError('Erro de conexão. Tente novamente.')
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  const handleLogout = async () => {
+    try {
+      if (sessionToken) {
+        await fetch('/api/admin/auth', {
+          method: 'DELETE',
+          headers: {
+            'Authorization': `Bearer ${sessionToken}`,
+            'X-Requested-With': 'XMLHttpRequest'
+          }
+        })
+      }
+    } catch (err) {
+      console.error('Logout error:', err)
+    } finally {
+      // Clean up regardless of API call result
+      setIsAuthenticated(false)
+      setSessionToken('')
+      setSessionExpiry(null)
+      setPassword('')
+      setLocalChanges({})
+      sessionStorage.removeItem('adminSessionToken')
+      sessionStorage.removeItem('adminSessionExpiry')
+    }
+  }
+
+  const fetchInventory = async (token) => {
     setLoading(true)
     setError('')
     
     try {
       const response = await fetch('/api/admin/inventory', {
         headers: {
-          'Authorization': authPassword
+          'Authorization': `Bearer ${token}`,
+          'X-Requested-With': 'XMLHttpRequest'
         }
       })
       
       if (response.status === 401) {
-        setIsAuthenticated(false)
-        sessionStorage.removeItem('adminAuth')
-        setError('Senha incorreta')
+        handleLogout()
+        setError('Sessão expirada. Faça login novamente.')
         return
       }
       
@@ -66,7 +171,11 @@ export default function InventoryAdmin() {
       setProducts(data.products)
       setLastUpdated(new Date().toLocaleString('pt-BR'))
     } catch (err) {
-      setError(err.message)
+      if (err.name === 'TypeError') {
+        setError('Erro de conexão. Verifique sua internet.')
+      } else {
+        setError(err.message)
+      }
     } finally {
       setLoading(false)
     }
@@ -122,20 +231,28 @@ export default function InventoryAdmin() {
         const response = await fetch('/api/admin/inventory', {
           method: 'POST',
           headers: {
-            'Authorization': password,
-            'Content-Type': 'application/json'
+            'Authorization': `Bearer ${sessionToken}`,
+            'Content-Type': 'application/json',
+            'X-Requested-With': 'XMLHttpRequest'
           },
           body: JSON.stringify(update)
         })
         
+        if (response.status === 401) {
+          handleLogout()
+          setError('Sessão expirada. Faça login novamente.')
+          return
+        }
+        
         if (!response.ok) {
-          throw new Error(`Erro ao atualizar ${update.inventoryId}`)
+          const errorData = await response.json()
+          throw new Error(errorData.error || `Erro ao atualizar ${update.inventoryId}`)
         }
       }
       
       setSuccess(`${updates.length} produto(s) atualizado(s) com sucesso`)
       setLocalChanges({})
-      fetchInventory(password)
+      fetchInventory(sessionToken)
       
       setTimeout(() => setSuccess(''), 3000)
     } catch (err) {
@@ -160,17 +277,25 @@ export default function InventoryAdmin() {
       const response = await fetch('/api/admin/inventory/sync', {
         method: 'POST',
         headers: {
-          'Authorization': password
+          'Authorization': `Bearer ${sessionToken}`,
+          'X-Requested-With': 'XMLHttpRequest'
         }
       })
       
+      if (response.status === 401) {
+        handleLogout()
+        setError('Sessão expirada. Faça login novamente.')
+        return
+      }
+      
       if (!response.ok) {
-        throw new Error('Erro ao sincronizar produtos')
+        const errorData = await response.json()
+        throw new Error(errorData.error || 'Erro ao sincronizar produtos')
       }
       
       const data = await response.json()
       setSuccess(data.message)
-      fetchInventory(password)
+      fetchInventory(sessionToken)
       
       setTimeout(() => setSuccess(''), 5000)
     } catch (err) {
@@ -198,11 +323,19 @@ export default function InventoryAdmin() {
               className={styles.passwordInput}
               required
             />
-            <button type="submit" className={styles.submitButton}>
-              Entrar
+            <button type="submit" className={styles.submitButton} disabled={loading}>
+              {loading ? 'Entrando...' : 'Entrar'}
             </button>
           </form>
           {error && <div className={styles.error}>{error}</div>}
+          {loginAttempts > 0 && (
+            <div className={styles.warningText}>
+              Tentativas de login: {loginAttempts}/5
+              {loginAttempts >= 3 && (
+                <div>Após 5 tentativas, você será bloqueado por 1 hora.</div>
+              )}
+            </div>
+          )}
         </div>
       </div>
     )
@@ -211,7 +344,14 @@ export default function InventoryAdmin() {
   return (
     <div className={styles.container}>
       <div className={styles.header}>
-        <h1>Gerenciamento de Estoque</h1>
+        <div>
+          <h1>Gerenciamento de Estoque</h1>
+          {sessionExpiry && (
+            <div className={styles.sessionInfo}>
+              Sessão expira em: {sessionExpiry.toLocaleString('pt-BR')}
+            </div>
+          )}
+        </div>
         <div className={styles.actions}>
           {hasUnsavedChanges() && (
             <>
@@ -239,11 +379,18 @@ export default function InventoryAdmin() {
             Sincronizar Produtos
           </button>
           <button 
-            onClick={() => fetchInventory(password)} 
+            onClick={() => fetchInventory(sessionToken)} 
             disabled={loading || saving}
             className={styles.refreshButton}
           >
             Atualizar
+          </button>
+          <button 
+            onClick={handleLogout}
+            disabled={loading || saving}
+            className={styles.logoutButton}
+          >
+            Sair
           </button>
         </div>
       </div>

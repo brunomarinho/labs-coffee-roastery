@@ -1,27 +1,10 @@
 import { NextResponse } from 'next/server'
 import { getAllInventory, setInventory, incrementInventory, decrementInventory } from '@/lib/redis'
 import { loadProducts } from '@/utils/loadProducts'
+import { requireAdminAuth, getClientIP } from '@/lib/auth-middleware'
+import { logAdminAction } from '@/lib/audit-log'
 
-function checkAuth(req) {
-  const authHeader = req.headers.get('Authorization')
-  const adminPassword = process.env.ADMIN_PASSWORD
-  
-  if (!adminPassword) {
-    console.error('ADMIN_PASSWORD not configured')
-    return false
-  }
-  
-  return authHeader === adminPassword
-}
-
-export async function GET(req) {
-  if (!checkAuth(req)) {
-    return NextResponse.json(
-      { error: 'Não autorizado' },
-      { status: 401 }
-    )
-  }
-  
+export const GET = requireAdminAuth(async (req) => {
   try {
     const products = await loadProducts()
     const inventory = await getAllInventory()
@@ -38,6 +21,15 @@ export async function GET(req) {
         soldOut: quantity === 0
       }
     })
+
+    // Log the admin action
+    await logAdminAction({
+      action: 'view_inventory',
+      ip: getClientIP(req),
+      sessionToken: req.adminAuth?.sessionToken,
+      timestamp: new Date().toISOString(),
+      details: `Viewed inventory for ${products.length} products`
+    })
     
     return NextResponse.json({
       products: productsWithInventory,
@@ -50,16 +42,9 @@ export async function GET(req) {
       { status: 500 }
     )
   }
-}
+})
 
-export async function POST(req) {
-  if (!checkAuth(req)) {
-    return NextResponse.json(
-      { error: 'Não autorizado' },
-      { status: 401 }
-    )
-  }
-  
+export const POST = requireAdminAuth(async (req) => {
   try {
     const { inventoryId, quantity, operation } = await req.json()
     
@@ -69,6 +54,10 @@ export async function POST(req) {
         { status: 400 }
       )
     }
+    
+    // Get old quantity for audit logging
+    const oldInventory = await getAllInventory()
+    const oldQuantity = oldInventory[inventoryId] || 0
     
     let newQuantity
     
@@ -89,6 +78,19 @@ export async function POST(req) {
       }
       newQuantity = quantity
     }
+
+    // Log the admin action
+    await logAdminAction({
+      action: 'update_inventory',
+      ip: getClientIP(req),
+      sessionToken: req.adminAuth?.sessionToken,
+      timestamp: new Date().toISOString(),
+      inventoryId,
+      oldValue: oldQuantity,
+      newValue: newQuantity,
+      operation: operation || 'set',
+      details: `Updated ${inventoryId} from ${oldQuantity} to ${newQuantity}`
+    })
     
     return NextResponse.json({
       inventoryId,
@@ -102,4 +104,4 @@ export async function POST(req) {
       { status: 500 }
     )
   }
-}
+})

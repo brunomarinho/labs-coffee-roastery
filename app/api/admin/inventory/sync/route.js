@@ -1,27 +1,10 @@
 import { NextResponse } from 'next/server'
 import { setInventory, getAllInventory } from '@/lib/redis'
 import { loadProducts } from '@/utils/loadProducts'
+import { requireAdminAuth, getClientIP } from '@/lib/auth-middleware'
+import { logAdminAction } from '@/lib/audit-log'
 
-function checkAuth(req) {
-  const authHeader = req.headers.get('Authorization')
-  const adminPassword = process.env.ADMIN_PASSWORD
-  
-  if (!adminPassword) {
-    console.error('ADMIN_PASSWORD not configured')
-    return false
-  }
-  
-  return authHeader === adminPassword
-}
-
-export async function POST(req) {
-  if (!checkAuth(req)) {
-    return NextResponse.json(
-      { error: 'Não autorizado' },
-      { status: 401 }
-    )
-  }
-  
+export const POST = requireAdminAuth(async (req) => {
   try {
     const products = await loadProducts()
     const existingInventory = await getAllInventory()
@@ -54,6 +37,21 @@ export async function POST(req) {
     const created = syncResults.filter(r => r.status === 'created').length
     const existing = syncResults.filter(r => r.status === 'exists').length
     const failed = syncResults.filter(r => r.status === 'failed').length
+
+    // Log the admin action
+    await logAdminAction({
+      action: 'sync_inventory',
+      ip: getClientIP(req),
+      sessionToken: req.adminAuth?.sessionToken,
+      timestamp: new Date().toISOString(),
+      details: `Sync completed: ${created} created, ${existing} existing, ${failed} failed`,
+      summary: {
+        created,
+        existing,
+        failed,
+        total: products.length
+      }
+    })
     
     return NextResponse.json({
       message: `Sincronização concluída: ${created} criados, ${existing} existentes, ${failed} falhas`,
@@ -72,4 +70,4 @@ export async function POST(req) {
       { status: 500 }
     )
   }
-}
+})

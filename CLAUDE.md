@@ -32,7 +32,10 @@ This is a Next.js ecommerce template that uses server-side Stripe checkout with 
   /api            # API routes for server-side functionality
     /checkout     # Stripe checkout session creation
     /inventory    # Inventory management API
-    /admin        # Admin inventory management
+    /admin        # Admin management (auth, inventory, audit)
+      /auth       # Authentication endpoints
+      /inventory  # Inventory management API
+      /audit      # Audit log API
     /webhooks     # Stripe webhook handlers
   /admin          # Admin interface pages
     /inventory    # Inventory management UI
@@ -44,7 +47,9 @@ This is a Next.js ecommerce template that uses server-side Stripe checkout with 
   categories.yaml         # Category definitions
   /products/             # Individual product YAML files
 /lib             # Utility libraries
-  redis.js       # Redis client and inventory functions
+  redis.js           # Redis client and inventory functions
+  auth-middleware.js # Admin authentication middleware
+  audit-log.js       # Audit logging system
 /public          # Static assets and images
 /scripts         # Utility scripts for product management
 /styles          # Global CSS
@@ -217,7 +222,9 @@ The ecommerce platform includes a real-time inventory management system powered 
 
 #### Key Features
 - **Real-time stock tracking** with automatic updates
-- **Admin interface** for inventory management at `/admin/inventory`
+- **Secure admin interface** for inventory management at `/admin/inventory`
+- **Session-based authentication** with 1-hour expiration and rate limiting
+- **Comprehensive audit logging** of all admin actions
 - **Checkout validation** prevents overselling
 - **Low stock warnings** when inventory < 5 units
 - **Stripe webhook integration** for automatic inventory decrements
@@ -232,6 +239,9 @@ UPSTASH_REDIS_REST_TOKEN=your-token
 # Admin Configuration
 ADMIN_PASSWORD=your-secure-password-here
 
+# Optional: Allowed IPs (comma-separated, leave empty to allow all)
+ADMIN_ALLOWED_IPS=
+
 # Stripe Webhook Secret
 STRIPE_WEBHOOK_SECRET=whsec_your_webhook_secret
 ```
@@ -245,11 +255,20 @@ STRIPE_WEBHOOK_SECRET=whsec_your_webhook_secret
 6. **Client components** check inventory in real-time
 
 #### API Endpoints
+
+**Public Endpoints:**
 - `POST /api/inventory/check` - Check inventory for a product
-- `GET /api/admin/inventory` - Get all inventory levels (admin only)
-- `POST /api/admin/inventory` - Update inventory levels (admin only)
-- `POST /api/admin/inventory/sync` - Initialize inventory for new products
 - `POST /api/webhooks/stripe` - Handle Stripe payment webhooks
+
+**Admin Authentication:**
+- `POST /api/admin/auth` - Admin login (returns session token)
+- `DELETE /api/admin/auth` - Admin logout (invalidates session)
+
+**Admin Endpoints (require authentication):**
+- `GET /api/admin/inventory` - Get all inventory levels
+- `POST /api/admin/inventory` - Update inventory levels
+- `POST /api/admin/inventory/sync` - Initialize inventory for new products
+- `GET /api/admin/audit` - View audit logs and statistics
 
 #### Inventory Logic
 - Products with `quantity: 0` show "Esgotado" (Sold Out)
@@ -282,12 +301,26 @@ STRIPE_WEBHOOK_SECRET=whsec_your_webhook_secret
 
 ## Security Guidelines
 
-1. **Stripe Integration**: Server-side checkout with secure API key handling
-2. **Hybrid Architecture**: Static pages with secure server-side API routes
-3. **Environment Variables**: Sensitive keys (STRIPE_SECRET_KEY) never exposed to client
-4. **Input Validation**: Server-side validation of product data before checkout
-5. **Content Security**: Markdown content is parsed safely without executing scripts
-6. **Image Optimization**: Next.js Image component prevents XSS through images
+### Authentication & Authorization
+1. **Session-Based Authentication**: Secure token-based sessions with 1-hour expiration
+2. **Rate Limiting**: Max 5 login attempts per IP per hour to prevent brute force
+3. **IP Binding**: Sessions are tied to IP addresses to prevent hijacking
+4. **Time-Safe Operations**: Constant-time password comparison prevents timing attacks
+5. **Audit Logging**: All admin actions logged with timestamps, IPs, and change tracking
+
+### Application Security
+6. **Stripe Integration**: Server-side checkout with secure API key handling
+7. **Hybrid Architecture**: Static pages with secure server-side API routes
+8. **Environment Variables**: Sensitive keys never exposed to client
+9. **Input Validation**: Server-side validation of all user inputs
+10. **Content Security**: Markdown content parsed safely without script execution
+11. **Image Optimization**: Next.js Image component prevents XSS through images
+
+### Admin Panel Security
+12. **Bearer Token Authentication**: All admin endpoints require valid session tokens
+13. **Automatic Session Cleanup**: Sessions expire and are cleaned up automatically
+14. **Security Headers**: `X-Requested-With` and proper CORS handling
+15. **Optional IP Allowlist**: Restrict admin access to specific IP addresses
 
 ## Development Guidelines
 
@@ -311,12 +344,14 @@ STRIPE_WEBHOOK_SECRET=whsec_your_webhook_secret
 6. For production, run `npm run build` to regenerate static pages
 
 ### Managing Inventory (Sold Out Products)
-1. Visit `/admin/inventory` with admin password to manage stock levels
-2. Set inventory to `0` to mark products as sold out
-3. Products with zero inventory automatically show "Esgotado" badge
-4. Sold out products appear in "Cafés anteriores" section on products page
-5. Section automatically hides when no products are sold out
-6. Use the sync button to initialize inventory for new products
+1. Visit `/admin/inventory` and authenticate with admin password
+2. Session tokens are valid for 1 hour with automatic warnings before expiry
+3. Set inventory to `0` to mark products as sold out
+4. Products with zero inventory automatically show "Esgotado" badge
+5. Sold out products appear in "Cafés anteriores" section on products page
+6. Section automatically hides when no products are sold out
+7. Use the sync button to initialize inventory for new products
+8. All inventory changes are logged in audit trail
 
 ### Editing Products
 1. Edit individual YAML files in `/data/products/` directly
@@ -347,6 +382,24 @@ STRIPE_WEBHOOK_SECRET=whsec_your_webhook_secret
 3. Posts are automatically sorted by date (newest first)
 4. Run `npm run build` to regenerate static pages
 5. Blog supports full CommonMark + GitHub Flavored Markdown
+
+### Admin Authentication & Security
+1. **Initial Setup**: Set `ADMIN_PASSWORD` in environment variables
+2. **Login Process**: Visit `/admin/inventory`, enter password to get session token
+3. **Session Management**: 
+   - Sessions expire after 1 hour automatically
+   - Warning displayed 5 minutes before expiry
+   - Sessions tied to IP address for security
+   - Automatic logout on session expiry
+4. **Rate Limiting**: Maximum 5 failed login attempts per IP per hour
+5. **Audit Trail**: All admin actions logged with timestamps and IP addresses
+6. **Security Features**:
+   - Time-safe password comparison
+   - Secure session token generation
+   - Automatic session cleanup
+   - Optional IP allowlist (`ADMIN_ALLOWED_IPS`)
+7. **Viewing Audit Logs**: Access via API at `/api/admin/audit?stats=true` for statistics
+8. **Logout**: Use logout button or sessions expire automatically
 
 ### Server-Side Checkout Implementation
 

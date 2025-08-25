@@ -6,7 +6,8 @@ A modern ecommerce template built with Next.js 14 App Router and Stripe's server
 
 - 🛍️ **Product Catalog** - Organized by categories with detail pages
 - 💳 **Stripe Server-Side Checkout** - Custom checkout with required CPF and cellphone fields for Brazilian businesses
-- 📊 **Real-Time Inventory Management** - Redis-powered inventory system with admin interface
+- 📊 **Real-Time Inventory Management** - Redis-powered inventory system with secure admin interface
+- 🔐 **Enterprise Security** - Session-based admin authentication with audit logging and rate limiting
 - 📱 **Fully Responsive** - Mobile-first design with responsive breakpoints
 - 🚀 **Hybrid Rendering** - Static site generation with dynamic API routes for checkout processing
 - 🎨 **Tokenized CSS System** - Consistent design with CSS variables
@@ -16,6 +17,7 @@ A modern ecommerce template built with Next.js 14 App Router and Stripe's server
 - 🎯 **Modern UI Design** - Clean interface with sharp corners and minimalist aesthetics
 - 🖼️ **Background Image Effects** - Product cards with subtle background images using opacity and blend modes
 - 📰 **Blog System** - Markdown-based blog with static generation and SEO optimization
+- 🛡️ **Audit Trail** - Complete logging of admin actions with timestamps and IP tracking
 
 ## Project Structure
 
@@ -24,8 +26,10 @@ A modern ecommerce template built with Next.js 14 App Router and Stripe's server
   /api
     /checkout/route.js     # Server-side Stripe checkout API
     /inventory/check/route.js  # Inventory checking API
+    /admin/auth/route.js   # Admin authentication (login/logout)
     /admin/inventory/route.js  # Admin inventory management API
     /admin/inventory/sync/route.js  # Product inventory sync
+    /admin/audit/route.js  # Admin audit log API
     /webhooks/stripe/route.js  # Stripe webhook handler
   /admin/inventory/page.js   # Admin inventory management interface
   /about/page.js          # About page (renders markdown)
@@ -64,6 +68,8 @@ A modern ecommerce template built with Next.js 14 App Router and Stripe's server
     blend.yaml
 /lib
   redis.js              # Redis client and inventory management functions
+  auth-middleware.js    # Admin authentication middleware
+  audit-log.js          # Audit logging system
 /public
   /images
     /products           # Product images directory
@@ -120,6 +126,9 @@ UPSTASH_REDIS_REST_TOKEN=your-token
 # Admin Configuration
 ADMIN_PASSWORD=your-secure-password-here
 
+# Optional: Allowed IPs (comma-separated, leave empty to allow all)
+ADMIN_ALLOWED_IPS=
+
 # Stripe Webhook Secret (for production)
 STRIPE_WEBHOOK_SECRET=whsec_your_webhook_secret
 ```
@@ -133,9 +142,10 @@ Open [http://localhost:3000](http://localhost:3000) to see your site.
 
 7. Set up inventory (first time only):
    - Visit http://localhost:3000/admin/inventory
-   - Enter your admin password
+   - Enter your admin password (session expires after 1 hour)
    - Click "Sincronizar Produtos" to initialize inventory
    - Set stock levels for your products
+   - All actions are logged for security audit
 
 ## Configuration
 
@@ -241,13 +251,21 @@ Place your product images in `/public/images/products/`. Use the filenames refer
 
 ### 4. Managing Inventory
 
-The template includes a real-time inventory management system:
+The template includes a secure, real-time inventory management system:
+
+#### Admin Authentication
+- **Login**: Visit `/admin/inventory` and enter your admin password
+- **Session Security**: Sessions expire after 1 hour with 5-minute warning
+- **Rate Limiting**: Maximum 5 failed login attempts per IP per hour
+- **IP Binding**: Sessions are tied to IP addresses to prevent hijacking
+- **Audit Logging**: All admin actions are logged with timestamps and IP addresses
 
 #### Admin Interface
-- Visit `/admin/inventory` and enter your admin password
-- Use "Sincronizar Produtos" to initialize inventory for new products
-- Set stock levels using the input fields or quick action buttons (+10, +1, -1, -10)
-- Inventory updates in real-time and affects product availability immediately
+- **Product Sync**: Use "Sincronizar Produtos" to initialize inventory for new products
+- **Stock Management**: Set levels using input fields or quick action buttons (+10, +1, -1, -10)
+- **Real-time Updates**: Inventory changes affect product availability immediately
+- **Session Info**: View current session expiry time in the admin header
+- **Logout**: Use logout button or sessions expire automatically
 
 #### Inventory Features  
 - **Real-time updates**: Inventory changes are immediately reflected on the frontend
@@ -331,7 +349,53 @@ The checkout system includes custom fields required for Brazilian businesses:
 - Secure handling of Stripe secret keys server-side
 - Portuguese error messages for all scenarios
 
-### 8. Update Site URLs
+### 8. Security Configuration
+
+The template includes enterprise-grade security features:
+
+#### Authentication Security
+- **Password-based login** with secure session token generation
+- **Time-safe comparison** prevents timing attacks during login
+- **Rate limiting** blocks brute force attacks (5 attempts/hour per IP)
+- **Session expiration** automatically logs out after 1 hour of inactivity
+- **IP allowlist** (optional) restricts admin access to specific IP addresses
+
+#### Audit & Monitoring
+- **Comprehensive logging** of all admin actions in Redis
+- **30-day retention** for audit logs with automatic cleanup
+- **IP tracking** for all login attempts and admin actions
+- **Change tracking** logs old and new values for inventory updates
+- **Security events** logged including IP mismatches and failed logins
+
+#### API Security
+- **Bearer token authentication** for all admin API endpoints
+- **Session invalidation** on security violations or suspicious activity
+- **Secure headers** including `X-Requested-With` validation
+- **Input validation** and sanitization on all endpoints
+
+#### Configuration
+Set these optional security environment variables:
+```bash
+# Restrict admin access to specific IPs (comma-separated)
+ADMIN_ALLOWED_IPS=192.168.1.1,10.0.0.1
+
+# Strong admin password (required)
+ADMIN_PASSWORD=your-very-secure-password-here
+```
+
+#### Monitoring Admin Activity
+View audit logs and statistics:
+```bash
+# Get audit statistics
+curl -H "Authorization: Bearer YOUR_SESSION_TOKEN" \
+     "http://localhost:3000/api/admin/audit?stats=true"
+
+# Get recent admin actions
+curl -H "Authorization: Bearer YOUR_SESSION_TOKEN" \
+     "http://localhost:3000/api/admin/audit"
+```
+
+### 9. Update Site URLs
 
 Update the site URL in:
 - `/app/sitemap.js` - Change baseUrl
@@ -396,6 +460,7 @@ Set environment variables in Vercel dashboard:
 - `UPSTASH_REDIS_REST_URL`
 - `UPSTASH_REDIS_REST_TOKEN`
 - `ADMIN_PASSWORD`
+- `ADMIN_ALLOWED_IPS` (optional)
 - `STRIPE_WEBHOOK_SECRET` (for webhook handling)
 
 ### Netlify
