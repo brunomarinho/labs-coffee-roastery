@@ -386,6 +386,13 @@ export default function InventoryAdmin() {
             Atualizar
           </button>
           <button 
+            onClick={() => window.location.href = '/admin/inventory/cleanup'}
+            disabled={loading || saving}
+            className={styles.cleanupButton}
+          >
+            Limpeza
+          </button>
+          <button 
             onClick={handleLogout}
             disabled={loading || saving}
             className={styles.logoutButton}

@@ -1,12 +1,79 @@
 'use client'
 
 import Image from 'next/image'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import InventoryStatus from './InventoryStatus'
 
 
 export default function ProductDetailClient({ product, categories }) {
   const [isLoading, setIsLoading] = useState(false)
+  const [isReleasingReservation, setIsReleasingReservation] = useState(false)
+  
+  // Check if returning from Stripe checkout and release reservation
+  useEffect(() => {
+    const checkAndReleaseReservation = async () => {
+      // Check if we have a pending reservation in localStorage
+      const pendingReservation = localStorage.getItem('pendingReservation')
+      
+      if (pendingReservation) {
+        try {
+          const reservation = JSON.parse(pendingReservation)
+          
+          // Only release if it's for this product and was created recently (within last hour)
+          const createdAt = new Date(reservation.createdAt)
+          const now = new Date()
+          const hourAgo = new Date(now.getTime() - 60 * 60 * 1000)
+          
+          if (reservation.productId === product.id && createdAt > hourAgo) {
+            console.log('User returned from checkout, releasing reservation:', reservation.sessionId)
+            setIsReleasingReservation(true)
+            
+            // Call API to release the reservation
+            const response = await fetch('/api/checkout/release', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({
+                sessionId: reservation.sessionId,
+                inventoryId: reservation.inventoryId
+              }),
+            })
+            
+            const data = await response.json()
+            
+            if (data.released) {
+              console.log('Reservation released successfully')
+              // Trigger a refresh of inventory status
+              window.dispatchEvent(new Event('inventoryUpdated'))
+            }
+          }
+        } catch (error) {
+          console.error('Error releasing reservation:', error)
+        } finally {
+          // Clear the pending reservation
+          localStorage.removeItem('pendingReservation')
+          setIsReleasingReservation(false)
+        }
+      }
+    }
+    
+    // Check when page loads (user might have used back button)
+    checkAndReleaseReservation()
+    
+    // Also check when page becomes visible (user switches tabs back)
+    const handleVisibilityChange = () => {
+      if (document.visibilityState === 'visible') {
+        checkAndReleaseReservation()
+      }
+    }
+    
+    document.addEventListener('visibilitychange', handleVisibilityChange)
+    
+    return () => {
+      document.removeEventListener('visibilitychange', handleVisibilityChange)
+    }
+  }, [product.id])
 
   const handleCheckout = async () => {
     // Prevent double-clicks
@@ -32,6 +99,16 @@ export default function ProductDetailClient({ product, categories }) {
 
       if (!response.ok) {
         throw new Error(data.error || 'Erro ao processar pagamento. Tente novamente.')
+      }
+
+      // Store reservation info in localStorage before redirecting
+      if (data.sessionId && data.inventoryId) {
+        localStorage.setItem('pendingReservation', JSON.stringify({
+          sessionId: data.sessionId,
+          inventoryId: data.inventoryId,
+          productId: product.id,
+          createdAt: new Date().toISOString()
+        }))
       }
 
       // Redirect to Stripe checkout
@@ -83,6 +160,11 @@ export default function ProductDetailClient({ product, categories }) {
                   
                   return (
                     <>
+                      {isReleasingReservation && (
+                        <div style={{ marginBottom: '10px', padding: '10px', background: '#d4edda', color: '#155724', borderRadius: '4px' }}>
+                          🔄 Liberando reserva anterior...
+                        </div>
+                      )}
                       {isOutOfStock ? (
                         <button 
                           className="btn btn-secondary btn-buy"

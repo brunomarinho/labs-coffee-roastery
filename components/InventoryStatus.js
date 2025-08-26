@@ -45,7 +45,18 @@ export default function InventoryStatus({ inventoryId, children }) {
     // Refresh inventory every 30 seconds
     const interval = setInterval(checkInventory, 30000)
     
-    return () => clearInterval(interval)
+    // Listen for inventory update events (triggered when reservation is released)
+    const handleInventoryUpdate = () => {
+      console.log('Inventory update event received, refreshing...')
+      checkInventory()
+    }
+    
+    window.addEventListener('inventoryUpdated', handleInventoryUpdate)
+    
+    return () => {
+      clearInterval(interval)
+      window.removeEventListener('inventoryUpdated', handleInventoryUpdate)
+    }
   }, [inventoryId, checkInventory])
 
   if (loading) {

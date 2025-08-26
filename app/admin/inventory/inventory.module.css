@@ -64,6 +64,7 @@
 
 .syncButton,
 .refreshButton,
+.cleanupButton,
 .saveButton,
 .cancelButton {
   padding: var(--space-sm) var(--space-md);
@@ -93,12 +94,14 @@
 }
 
 .syncButton:hover,
-.refreshButton:hover {
+.refreshButton:hover,
+.cleanupButton:hover {
   opacity: 0.8;
 }
 
 .syncButton:disabled,
 .refreshButton:disabled,
+.cleanupButton:disabled,
 .saveButton:disabled,
 .cancelButton:disabled {
   opacity: 0.5;

@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server'
 import Stripe from 'stripe'
 import getProductsData from '../../../utils/loadProducts'
 import { getInventory } from '@/lib/redis'
+import { reserveInventory, getAvailableInventory } from '@/lib/redis-reservations'
 
 // Initialize Stripe only when needed to avoid build-time errors
 let stripe
@@ -71,10 +72,10 @@ export async function POST(request) {
       return NextResponse.json({ error: 'Produto não encontrado' }, { status: 404 })
     }
 
-    // Check inventory if inventoryId is present
+    // Check available inventory (accounting for reservations) if inventoryId is present
     if (product.inventoryId) {
-      const inventory = await getInventory(product.inventoryId)
-      if (inventory !== null && inventory <= 0) {
+      const availableInventory = await getAvailableInventory(product.inventoryId)
+      if (availableInventory <= 0) {
         return NextResponse.json({ error: 'Produto esgotado' }, { status: 400 })
       }
     }
@@ -82,7 +83,7 @@ export async function POST(request) {
     // Get the base URL for redirect URLs
     const origin = request.headers.get('origin') || 'http://localhost:3000'
 
-    // Create Stripe checkout session with custom fields
+    // Create Stripe checkout session first to get session ID
     const session = await stripe.checkout.sessions.create({
       line_items: [
         {
@@ -126,16 +127,60 @@ export async function POST(request) {
           optional: false,
         },
       ],
-      // Add metadata for tracking
+      // Add metadata for tracking and reservation
       metadata: {
         product_id: product.id,
         product_name: product.name,
         product_slug: product.slug,
         inventory_id: product.inventoryId || '',
+        reservation_created: 'false', // Will be updated after successful reservation
       },
     })
 
-    return NextResponse.json({ url: session.url })
+    // Reserve inventory atomically after session creation
+    if (product.inventoryId) {
+      console.log(`Attempting to reserve inventory for product ${product.id}, session ${session.id}`);
+      
+      // Get client IP for rate limiting
+      const clientIP = request.headers.get('x-forwarded-for')?.split(',')[0] || 
+                      request.headers.get('x-real-ip') || 
+                      request.ip || 
+                      'unknown';
+      
+      const reservationResult = await reserveInventory(product.inventoryId, session.id, 1, clientIP);
+      
+      if (!reservationResult.success) {
+        // Inventory reservation failed - cancel the Stripe session
+        try {
+          await stripe.checkout.sessions.expire(session.id);
+        } catch (expireError) {
+          console.error('Failed to expire session after reservation failure:', expireError);
+        }
+        
+        console.log(`Reservation failed for product ${product.id}, session ${session.id}: ${reservationResult.error}`);
+        return NextResponse.json({ error: reservationResult.error || 'Produto esgotado' }, { status: 400 })
+      }
+
+      // Update session metadata to indicate successful reservation
+      try {
+        await stripe.checkout.sessions.update(session.id, {
+          metadata: {
+            ...session.metadata,
+            reservation_created: 'true',
+          },
+        });
+        console.log(`Successfully reserved inventory for product ${product.id}, session ${session.id}`);
+      } catch (updateError) {
+        console.error('Failed to update session metadata:', updateError);
+        // Don't fail the checkout for this - the reservation is still valid
+      }
+    }
+
+    return NextResponse.json({ 
+      url: session.url,
+      sessionId: session.id,
+      inventoryId: product.inventoryId || null
+    })
   } catch (error) {
     console.error('Checkout session creation failed:', error)
     return NextResponse.json(

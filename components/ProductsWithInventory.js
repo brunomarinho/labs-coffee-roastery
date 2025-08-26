@@ -1,27 +1,29 @@
 import { getAllInventory } from '@/lib/redis'
+import { getAvailableInventory } from '@/lib/redis-reservations'
 import ProductCard from './ProductCard'
 
 export default async function ProductsWithInventory({ products, categories }) {
-  // Get inventory data on the server side
-  let inventory = {}
-  try {
-    inventory = await getAllInventory()
-  } catch (error) {
-    console.error('Error fetching inventory:', error)
-    // Continue without inventory data
-  }
-  
-  // Add inventory status to products
-  const productsWithInventory = products.map(product => {
-    const inventoryId = product.inventoryId || `inv_${product.id}`
-    const quantity = inventory[inventoryId] || 0
-    
-    return {
-      ...product,
-      soldOut: quantity === 0,
-      quantity: quantity
-    }
-  })
+  // Add inventory status to products using available inventory (accounting for reservations)
+  const productsWithInventory = await Promise.all(
+    products.map(async product => {
+      const inventoryId = product.inventoryId || `inv_${product.id}`
+      let availableQuantity = 0
+      
+      try {
+        availableQuantity = await getAvailableInventory(inventoryId)
+      } catch (error) {
+        console.error(`Error fetching available inventory for ${inventoryId}:`, error)
+        // Continue with 0 quantity
+      }
+      
+      return {
+        ...product,
+        soldOut: availableQuantity === 0,
+        quantity: availableQuantity,
+        lowStock: availableQuantity > 0 && availableQuantity <= 5
+      }
+    })
+  )
   
   const availableProducts = productsWithInventory.filter(product => !product.soldOut)
   const soldOutProducts = productsWithInventory.filter(product => product.soldOut)

@@ -1,6 +1,7 @@
 import Header from '../../components/Header'
 import Footer from '../../components/Footer'
 import Link from 'next/link'
+import ClearReservation from '../../components/ClearReservation'
 
 export const metadata = {
   title: 'Obrigado pela sua compra - Mameluca',
@@ -10,6 +11,7 @@ export const metadata = {
 export default function Obrigado() {
   return (
     <>
+      <ClearReservation />
       <Header />
       <main className="container">
         <div className="thank-you-content">

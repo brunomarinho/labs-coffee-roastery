@@ -3,24 +3,48 @@ import { getAllInventory, setInventory, incrementInventory, decrementInventory }
 import { loadProducts } from '@/utils/loadProducts'
 import { requireAdminAuth, getClientIP } from '@/lib/auth-middleware'
 import { logAdminAction } from '@/lib/audit-log'
+import { getAvailableInventory } from '@/lib/redis-reservations'
+import redis from '@/lib/redis'
 
 export const GET = requireAdminAuth(async (req) => {
   try {
     const products = await loadProducts()
     const inventory = await getAllInventory()
     
-    const productsWithInventory = products.map(product => {
-      const inventoryId = product.inventoryId || `inv_${product.id}`
-      const quantity = inventory[inventoryId] || 0
-      return {
-        id: product.id,
-        inventoryId,
-        name: product.name,
-        category: product.category,
-        quantity,
-        soldOut: quantity === 0
+    // Get reserved quantities for all inventory items
+    const reservedQuantities = {}
+    if (redis) {
+      try {
+        const reservedKeys = await redis.keys('reserved:*')
+        for (const key of reservedKeys) {
+          const inventoryId = key.replace('reserved:', '')
+          const reserved = await redis.get(key)
+          reservedQuantities[inventoryId] = parseInt(reserved || 0)
+        }
+      } catch (error) {
+        console.warn('Failed to get reserved quantities:', error)
       }
-    })
+    }
+    
+    const productsWithInventory = await Promise.all(
+      products.map(async product => {
+        const inventoryId = product.inventoryId || `inv_${product.id}`
+        const quantity = inventory[inventoryId] || 0
+        const reserved = reservedQuantities[inventoryId] || 0
+        const available = await getAvailableInventory(inventoryId)
+        
+        return {
+          id: product.id,
+          inventoryId,
+          name: product.name,
+          category: product.category,
+          quantity,
+          reserved,
+          available,
+          soldOut: available <= 0
+        }
+      })
+    )
 
     // Log the admin action
     await logAdminAction({

@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server'
 import Stripe from 'stripe'
 import { decrementInventory } from '@/lib/redis'
+import { confirmPurchase, releaseReservation } from '@/lib/redis-reservations'
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY)
 const endpointSecret = process.env.STRIPE_WEBHOOK_SECRET
@@ -36,25 +37,50 @@ export async function POST(req) {
         
         // Get inventory ID from metadata
         const inventoryId = session.metadata?.inventory_id
+        const reservationCreated = session.metadata?.reservation_created === 'true'
         
         if (inventoryId) {
-          // Decrement inventory by 1
-          const newQuantity = await decrementInventory(inventoryId, 1)
+          let purchaseQuantity = 0;
           
-          console.log(`Inventory updated for ${inventoryId}: new quantity = ${newQuantity}`)
+          if (reservationCreated) {
+            // Use atomic confirmation (decrements inventory and releases reservation)
+            purchaseQuantity = await confirmPurchase(inventoryId, session.id);
+            
+            if (purchaseQuantity > 0) {
+              console.log(`Purchase confirmed for ${inventoryId}: ${purchaseQuantity} units processed via reservation system`);
+            } else {
+              console.warn(`No reservation found for session ${session.id}, falling back to direct inventory decrement`);
+              // Fallback to direct inventory decrement
+              const newQuantity = await decrementInventory(inventoryId, 1);
+              console.log(`Fallback: Inventory decremented for ${inventoryId}: new quantity = ${newQuantity}`);
+              purchaseQuantity = 1;
+            }
+          } else {
+            // No reservation system - use legacy direct decrement
+            const newQuantity = await decrementInventory(inventoryId, 1);
+            console.log(`Legacy: Inventory decremented for ${inventoryId}: new quantity = ${newQuantity}`);
+            purchaseQuantity = 1;
+          }
           
-          // You could also update product soldOut status in a database here
-          // if newQuantity === 0
+          // Log successful payment with purchase details
+          console.log('Payment successful:', {
+            sessionId: session.id,
+            productId: session.metadata?.product_id,
+            inventoryId: inventoryId,
+            purchaseQuantity: purchaseQuantity,
+            customerEmail: session.customer_details?.email,
+            amount: session.amount_total / 100, // Convert from cents
+            reservationUsed: reservationCreated,
+          });
+        } else {
+          // Product without inventory tracking
+          console.log('Payment successful (no inventory):', {
+            sessionId: session.id,
+            productId: session.metadata?.product_id,
+            customerEmail: session.customer_details?.email,
+            amount: session.amount_total / 100,
+          });
         }
-        
-        // Log successful payment
-        console.log('Payment successful:', {
-          sessionId: session.id,
-          productId: session.metadata?.product_id,
-          inventoryId: inventoryId,
-          customerEmail: session.customer_details?.email,
-          amount: session.amount_total / 100, // Convert from cents
-        })
         
         break
       }
@@ -62,8 +88,26 @@ export async function POST(req) {
       case 'checkout.session.expired': {
         const session = event.data.object
         
-        // If you implement inventory holds, release them here
-        console.log('Checkout session expired:', session.id)
+        // Release reservation if it exists
+        const inventoryId = session.metadata?.inventory_id
+        const reservationCreated = session.metadata?.reservation_created === 'true'
+        
+        if (inventoryId && reservationCreated) {
+          const releasedQuantity = await releaseReservation(inventoryId, session.id);
+          
+          if (releasedQuantity > 0) {
+            console.log(`Released reservation: ${releasedQuantity} units of ${inventoryId} from expired session ${session.id}`);
+          } else {
+            console.log(`No reservation to release for expired session ${session.id}`);
+          }
+        }
+        
+        console.log('Checkout session expired:', {
+          sessionId: session.id,
+          productId: session.metadata?.product_id,
+          inventoryId: inventoryId,
+          hadReservation: reservationCreated,
+        });
         
         break
       }
