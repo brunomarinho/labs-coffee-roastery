@@ -6,11 +6,15 @@
     "dev": "next dev --turbopack",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "test": "playwright test",
+    "test:ui": "playwright test --ui",
+    "test:debug": "playwright test --debug",
+    "test:report": "playwright show-report",
+    "test:headed": "playwright test --headed"
   },
   "dependencies": {
     "@upstash/redis": "^1.35.3",
-    "dotenv": "^17.2.1",
     "gray-matter": "^4.0.3",
     "js-yaml": "^4.1.0",
     "next": "15.3.3",
@@ -24,6 +28,8 @@
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
+    "@playwright/test": "^1.55.0",
+    "dotenv": "^17.2.1",
     "eslint": "^9",
     "eslint-config-next": "15.3.3"
   }

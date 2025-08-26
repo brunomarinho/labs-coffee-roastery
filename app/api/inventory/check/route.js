@@ -5,7 +5,18 @@ import redis from '@/lib/redis'
 
 export async function POST(req) {
   try {
-    const { inventoryId } = await req.json()
+    let body;
+    try {
+      body = await req.json();
+    } catch (jsonError) {
+      console.error('JSON parsing error:', jsonError);
+      return NextResponse.json(
+        { error: 'Formato de requisição inválido' },
+        { status: 400 }
+      );
+    }
+    
+    const { inventoryId } = body;
     
     if (!inventoryId) {
       return NextResponse.json(
