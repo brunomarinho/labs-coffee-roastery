@@ -5,7 +5,13 @@ export default function robots() {
     rules: {
       userAgent: '*',
       allow: '/',
-      disallow: '/api/',
+      disallow: [
+        '/api/',
+        '/admin/',
+        '/_next/',
+        '/admin/*',
+        '/api/admin/*'
+      ],
     },
     sitemap: 'https://mystore.com/sitemap.xml',
   }
