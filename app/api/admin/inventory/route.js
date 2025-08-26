@@ -8,8 +8,8 @@ import redis from '@/lib/redis'
 
 export const GET = requireAdminAuth(async (req) => {
   try {
+    // Load all products from YAML files
     const products = await loadProducts()
-    const inventory = await getAllInventory()
     
     // Get reserved quantities for all inventory items
     const reservedQuantities = {}
@@ -26,12 +26,35 @@ export const GET = requireAdminAuth(async (req) => {
       }
     }
     
+    // Process each product and check Redis entries individually
     const productsWithInventory = await Promise.all(
       products.map(async product => {
+        // Use inventoryId from YAML or generate standard format inv_XXX
         const inventoryId = product.inventoryId || `inv_${product.id}`
-        const quantity = inventory[inventoryId] || 0
+        
+        // Check if Redis entry exists for this inventory
+        let quantity = 0
+        let hasRedisEntry = false
+        
+        if (redis) {
+          try {
+            const redisQuantity = await redis.get(`inventory:${inventoryId}`)
+            if (redisQuantity !== null) {
+              quantity = parseInt(redisQuantity, 10)
+              hasRedisEntry = true
+            }
+          } catch (error) {
+            console.warn(`Failed to get quantity for ${inventoryId}:`, error)
+          }
+        }
+        
         const reserved = reservedQuantities[inventoryId] || 0
-        const available = await getAvailableInventory(inventoryId)
+        let available = 0
+        
+        // Only calculate availability if Redis entry exists
+        if (hasRedisEntry) {
+          available = await getAvailableInventory(inventoryId)
+        }
         
         return {
           id: product.id,
@@ -41,7 +64,9 @@ export const GET = requireAdminAuth(async (req) => {
           quantity,
           reserved,
           available,
-          soldOut: available <= 0
+          hasRedisEntry,
+          isNew: !hasRedisEntry, // Mark as new if no Redis entry
+          soldOut: hasRedisEntry ? available <= 0 : true // Treat unconfigured as sold out
         }
       })
     )
@@ -79,9 +104,22 @@ export const POST = requireAdminAuth(async (req) => {
       )
     }
     
-    // Get old quantity for audit logging
-    const oldInventory = await getAllInventory()
-    const oldQuantity = oldInventory[inventoryId] || 0
+    // Check if inventory entry exists in Redis
+    let oldQuantity = 0
+    let isNewEntry = false
+    
+    if (redis) {
+      try {
+        const existingQuantity = await redis.get(`inventory:${inventoryId}`)
+        if (existingQuantity !== null) {
+          oldQuantity = parseInt(existingQuantity, 10)
+        } else {
+          isNewEntry = true
+        }
+      } catch (error) {
+        console.warn(`Failed to check existing inventory for ${inventoryId}:`, error)
+      }
+    }
     
     let newQuantity
     
@@ -96,16 +134,28 @@ export const POST = requireAdminAuth(async (req) => {
           { status: 400 }
         )
       }
-      const success = await setInventory(inventoryId, quantity)
-      if (!success) {
+      
+      // Auto-create Redis entry if it doesn't exist
+      if (!redis) {
+        throw new Error('Redis not available')
+      }
+      
+      try {
+        await redis.set(`inventory:${inventoryId}`, quantity)
+        newQuantity = quantity
+        
+        if (isNewEntry) {
+          console.log(`Created new inventory entry for ${inventoryId} with quantity ${quantity}`)
+        }
+      } catch (error) {
+        console.error(`Failed to set inventory for ${inventoryId}:`, error)
         throw new Error('Failed to set inventory')
       }
-      newQuantity = quantity
     }
 
     // Log the admin action
     await logAdminAction({
-      action: 'update_inventory',
+      action: isNewEntry ? 'create_inventory' : 'update_inventory',
       ip: getClientIP(req),
       sessionToken: req.adminAuth?.sessionToken,
       timestamp: new Date().toISOString(),
@@ -113,7 +163,10 @@ export const POST = requireAdminAuth(async (req) => {
       oldValue: oldQuantity,
       newValue: newQuantity,
       operation: operation || 'set',
-      details: `Updated ${inventoryId} from ${oldQuantity} to ${newQuantity}`
+      isNewEntry,
+      details: isNewEntry 
+        ? `Created new inventory entry ${inventoryId} with quantity ${newQuantity}`
+        : `Updated ${inventoryId} from ${oldQuantity} to ${newQuantity}`
     })
     
     return NextResponse.json({

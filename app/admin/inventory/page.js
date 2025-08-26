@@ -188,11 +188,6 @@ export default function InventoryAdmin() {
     }))
   }
 
-  const adjustLocalInventory = (inventoryId, amount) => {
-    const currentQuantity = getCurrentQuantity(inventoryId)
-    const newQuantity = Math.max(0, currentQuantity + amount)
-    updateLocalInventory(inventoryId, newQuantity)
-  }
 
   const getCurrentQuantity = (inventoryId) => {
     if (inventoryId in localChanges) {
@@ -268,42 +263,6 @@ export default function InventoryAdmin() {
     setSuccess('')
   }
 
-  const syncProducts = async () => {
-    setError('')
-    setSuccess('')
-    setLoading(true)
-    
-    try {
-      const response = await fetch('/api/admin/inventory/sync', {
-        method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${sessionToken}`,
-          'X-Requested-With': 'XMLHttpRequest'
-        }
-      })
-      
-      if (response.status === 401) {
-        handleLogout()
-        setError('Sessão expirada. Faça login novamente.')
-        return
-      }
-      
-      if (!response.ok) {
-        const errorData = await response.json()
-        throw new Error(errorData.error || 'Erro ao sincronizar produtos')
-      }
-      
-      const data = await response.json()
-      setSuccess(data.message)
-      fetchInventory(sessionToken)
-      
-      setTimeout(() => setSuccess(''), 5000)
-    } catch (err) {
-      setError(err.message)
-    } finally {
-      setLoading(false)
-    }
-  }
 
   const handleQuantityChange = (inventoryId, newQuantity) => {
     updateLocalInventory(inventoryId, newQuantity)
@@ -372,13 +331,6 @@ export default function InventoryAdmin() {
             </>
           )}
           <button 
-            onClick={() => syncProducts()} 
-            disabled={loading || saving}
-            className={styles.syncButton}
-          >
-            Sincronizar Produtos
-          </button>
-          <button 
             onClick={() => fetchInventory(sessionToken)} 
             disabled={loading || saving}
             className={styles.refreshButton}
@@ -426,16 +378,32 @@ export default function InventoryAdmin() {
               <tr>
                 <th>ID</th>
                 <th>Nome</th>
+                <th>Inventory ID</th>
                 <th>Estoque Atual</th>
+                <th>Reservado</th>
+                <th>Disponível</th>
                 <th>Status</th>
-                <th>Ações</th>
               </tr>
             </thead>
             <tbody>
               {getDisplayedProducts().map((product) => (
-                <tr key={product.inventoryId} className={product.hasChanges ? styles.hasChanges : ''}>
-                  <td>{product.id}</td>
+                <tr 
+                  key={product.inventoryId} 
+                  className={`
+                    ${product.hasChanges ? styles.hasChanges : ''}
+                    ${product.isNew ? styles.newProduct : ''}
+                  `}
+                >
+                  <td>
+                    {product.id}
+                    {product.isNew && (
+                      <span className={styles.newBadge}>Novo!</span>
+                    )}
+                  </td>
                   <td>{product.name}</td>
+                  <td>
+                    <code className={styles.inventoryId}>{product.inventoryId}</code>
+                  </td>
                   <td>
                     <input
                       type="number"
@@ -444,46 +412,37 @@ export default function InventoryAdmin() {
                       className={`${styles.quantityInput} ${product.hasChanges ? styles.modified : ''}`}
                       min="0"
                       disabled={saving}
+                      placeholder={product.isNew ? "0" : undefined}
                     />
                   </td>
                   <td>
-                    <span className={product.quantity > 0 ? styles.available : styles.soldOut}>
-                      {product.quantity > 0 ? 'Disponível' : 'Esgotado'}
-                    </span>
+                    {product.hasRedisEntry ? (
+                      <span className={styles.reservedCount}>
+                        {product.reserved || 0}
+                      </span>
+                    ) : (
+                      <span className={styles.notConfigured}>-</span>
+                    )}
                   </td>
-                  <td className={styles.actionButtons}>
-                    <button
-                      onClick={() => adjustLocalInventory(product.inventoryId, 10)}
-                      className={styles.actionButton}
-                      title="Adicionar 10"
-                      disabled={saving}
-                    >
-                      +10
-                    </button>
-                    <button
-                      onClick={() => adjustLocalInventory(product.inventoryId, 1)}
-                      className={styles.actionButton}
-                      title="Adicionar 1"
-                      disabled={saving}
-                    >
-                      +1
-                    </button>
-                    <button
-                      onClick={() => adjustLocalInventory(product.inventoryId, -1)}
-                      className={styles.actionButton}
-                      title="Remover 1"
-                      disabled={product.quantity === 0 || saving}
-                    >
-                      -1
-                    </button>
-                    <button
-                      onClick={() => adjustLocalInventory(product.inventoryId, -10)}
-                      className={styles.actionButton}
-                      title="Remover 10"
-                      disabled={product.quantity < 10 || saving}
-                    >
-                      -10
-                    </button>
+                  <td>
+                    {product.hasRedisEntry ? (
+                      <span className={styles.availableCount}>
+                        {product.available}
+                      </span>
+                    ) : (
+                      <span className={styles.notConfigured}>-</span>
+                    )}
+                  </td>
+                  <td>
+                    {product.isNew ? (
+                      <span className={styles.notConfigured}>Não configurado</span>
+                    ) : product.hasRedisEntry ? (
+                      <span className={product.available > 0 ? styles.available : styles.soldOut}>
+                        {product.available > 0 ? 'Disponível' : 'Esgotado'}
+                      </span>
+                    ) : (
+                      <span className={styles.notConfigured}>Erro</span>
+                    )}
                   </td>
                 </tr>
               ))}

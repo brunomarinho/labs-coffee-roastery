@@ -266,3 +266,54 @@
     width: 60px;
   }
 }
+
+/* Visual indicators for new/unconfigured products */
+.newProduct {
+  background-color: #fff9c4 !important;
+  border-left: 4px solid #f59e0b;
+}
+
+.newBadge {
+  background: #10b981;
+  color: white;
+  font-size: 0.75rem;
+  padding: 2px 6px;
+  border-radius: 4px;
+  margin-left: 8px;
+  font-weight: 500;
+}
+
+.inventoryId {
+  font-family: 'Courier New', monospace;
+  background: #f3f4f6;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 0.85rem;
+  color: #374151;
+}
+
+.notConfigured {
+  color: #6b7280;
+  font-style: italic;
+  font-size: 0.9rem;
+}
+
+.reservedCount {
+  color: #f59e0b;
+  font-weight: 500;
+}
+
+.availableCount {
+  color: #10b981;
+  font-weight: 500;
+}
+
+.available {
+  color: #10b981;
+  font-weight: 500;
+}
+
+.soldOut {
+  color: #ef4444;
+  font-weight: 500;
+}

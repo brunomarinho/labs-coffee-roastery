@@ -168,7 +168,7 @@ notas: Acidez Média, Fruta Vermelha, Suculento
 
 # Comercial
 price: 60
-quantity: 100g
+quantity: 100g                                    # Package size (NOT inventory stock)
 stripePriceId: price_1RsXgZ7jQouLiFSsNcGbtoZy
 
 # Informações do Café
@@ -447,6 +447,37 @@ The checkout session includes these required fields for Brazilian compliance:
 NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=pk_test_... # Client-side key
 STRIPE_SECRET_KEY=sk_test_...                   # Server-side key (never exposed)
 ```
+
+## Inventory Management System
+
+This project uses a **dual-system approach** that separates product catalog from inventory management:
+
+- **YAML Files**: Store product information (name, price, description, images)
+- **Redis + Admin Panel**: Manage inventory levels (stock quantities, reservations)
+
+### Key Principles
+
+1. **Separation of Concerns**: 
+   - YAML `quantity` field = Package size (e.g., "100g", "250g")
+   - Redis inventory = Stock levels (e.g., 25 units available)
+
+2. **Auto-Detection**: Admin panel automatically detects all YAML products
+3. **Zero Configuration**: New products start with 0 inventory (safe default)
+4. **On-Demand Creation**: Redis entries created when first setting inventory
+
+### Inventory ID Convention
+- Format: `inv_{productId}`
+- Examples: `inv_001`, `inv_002`, `inv_blend`
+- Must be included in every product YAML file
+
+### Admin Workflow
+1. Create YAML product file (no inventory/stock fields needed)
+2. Deploy to production
+3. Visit `/admin/inventory` - product appears with "Não configurado" status
+4. Set desired stock quantity - Redis entry created automatically
+5. Product immediately available for sale with reservation system
+
+See `INVENTORY.md` for complete documentation.
 
 ## Important Notes
 
