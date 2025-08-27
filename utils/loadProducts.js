@@ -64,25 +64,21 @@ function loadAllProducts() {
 
 // Cache for production to avoid re-reading files on every request
 let cachedData = null
-let lastCacheTime = null
-const CACHE_DURATION = 5 * 60 * 1000 // 5 minutes in development, indefinite in production
 
 export default function getProductsData() {
   const isDevelopment = process.env.NODE_ENV === 'development'
-  const now = Date.now()
   
-  // In development, cache for a short time to allow for quick editing
+  // In development, always reload fresh data (no caching)
   // In production, cache indefinitely until restart
-  const shouldRefreshCache = !cachedData || 
-    (isDevelopment && lastCacheTime && (now - lastCacheTime > CACHE_DURATION))
+  if (isDevelopment) {
+    const data = loadAllProducts()
+    console.log(`🔄 Loaded product data (${data.products.length} products)`)
+    return data
+  }
   
-  if (shouldRefreshCache) {
+  // Production caching
+  if (!cachedData) {
     cachedData = loadAllProducts()
-    lastCacheTime = now
-    
-    if (isDevelopment) {
-      console.log(`🔄 Reloaded product data (${cachedData.products.length} products)`)
-    }
   }
   
   return cachedData

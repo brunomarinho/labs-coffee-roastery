@@ -20,8 +20,9 @@ export async function POST(request) {
                       request.headers.get('x-test-mode') === 'true' ||
                       request.headers.get('user-agent')?.includes('Playwright');
     
+    const rateLimitKey = `rate_limit:admin:${ip}`;
+    
     if (!isTestEnv) {
-      const rateLimitKey = `rate_limit:admin:${ip}`;
       const attempts = await redis.incr(rateLimitKey);
       if (attempts === 1) {
         await redis.expire(rateLimitKey, 3600); // 1 hour window

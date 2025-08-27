@@ -14,6 +14,9 @@ export default function ProductCard({ product, categories }) {
           className="product-image"
           sizes="(max-width: 768px) 100vw, 50vw"
         />
+        {product.soldOut && (
+          <div className="sold-out-badge">Esgotado</div>
+        )}
       </div>
       <h2 className="product-title">{product.name}</h2>
       <h3 className="product-subtitle">

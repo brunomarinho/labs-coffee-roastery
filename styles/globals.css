@@ -372,6 +372,20 @@ p {
   overflow: hidden;
 }
 
+.sold-out-badge {
+  position: absolute;
+  top: var(--space-md);
+  right: var(--space-md);
+  background-color: var(--color-primary);
+  color: var(--color-background);
+  padding: var(--space-xs) var(--space-sm);
+  font-size: var(--font-sm);
+  font-weight: var(--font-weight-medium);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  z-index: 1;
+}
+
 .product-image {
   object-fit: cover;
   width: 100%;
