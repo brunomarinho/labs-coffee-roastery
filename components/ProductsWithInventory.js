@@ -35,7 +35,21 @@ export default async function ProductsWithInventory({ products, categories }) {
   
   const soldOutProductsByCategory = categories.map(category => ({
     ...category,
-    products: soldOutProducts.filter(product => product.category === category.id)
+    products: soldOutProducts
+      .filter(product => product.category === category.id)
+      .sort((a, b) => {
+        // Sort sold out products from most recent to least recent (reverse order)
+        const aId = a.id.toString()
+        const bId = b.id.toString()
+        
+        // If both are numeric, sort numerically in reverse
+        if (/^\d+$/.test(aId) && /^\d+$/.test(bId)) {
+          return parseInt(bId) - parseInt(aId)
+        }
+        
+        // Otherwise sort alphabetically in reverse
+        return bId.localeCompare(aId)
+      })
   })).filter(category => category.products.length > 0)
 
   return (
