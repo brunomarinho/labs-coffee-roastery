@@ -19,12 +19,18 @@ quantity: 100g
 stripePriceId: price_1RsXip7jQouLiFSsnPYcvasU
 
 # Informações do Café
-produtor: José Silva
+produtor: Raquel Meirelles
 fazenda: Santa Maria
-variedade: Arara
-processo: Honey
+regiao: Boa Vista, MG
+variedade: Matiello
+processo: Natural
+torra: Clara
+
+# Recomendações de Preparo
+descanso: 2-3 semanas pós torra
+filtrados: 85c, 1:17, pouca agitação
+espresso: 94c, 1:3
 
 # Imagens
 images:
-  - /images/products/002a.jpg
-  - /images/products/002b.jpg
+  - /images/products/003.jpg

@@ -5,7 +5,7 @@ id: "001"
 inventoryId: "inv_001"
 slug: cafe-001
 name: "001"
-featured: false
+featured: true
 category: coffee
 
 # Descrição e Notas
@@ -33,5 +33,4 @@ espresso: 94c, 1:3
 
 # Imagens
 images:
-  - /images/products/001a.jpg
-  - /images/products/001b.jpg
+  - /images/products/001.jpg

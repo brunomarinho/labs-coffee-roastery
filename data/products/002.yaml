@@ -5,7 +5,7 @@ id: "002"
 inventoryId: "inv_002"
 slug: cafe-002
 name: "002"
-featured: false
+featured: true
 category: coffee
 
 # Descrição e Notas
@@ -21,10 +21,16 @@ stripePriceId: price_1RsXip7jQouLiFSsnPYcvasU
 # Informações do Café
 produtor: Raquel Meirelles
 fazenda: Santa Maria
-variedade: Topazio
-processo: Honey
+regiao: Boa Vista, MG
+variedade: Topázio
+processo: Natural
+torra: Clara
+
+# Recomendações de Preparo
+descanso: 2-3 semanas pós torra
+filtrados: 85c, 1:17, pouca agitação
+espresso: 94c, 1:3
 
 # Imagens
 images:
-  - /images/products/002a.jpg
-  - /images/products/002b.jpg
+  - /images/products/002.png
