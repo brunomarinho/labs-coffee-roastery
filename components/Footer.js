@@ -5,7 +5,7 @@ export default function Footer() {
   const currentYear = new Date().getFullYear()
   
   const menuItems = [
-    { href: '/produtos', label: 'Produtos' },
+    { href: '/produtos', label: 'Cafés' },
     { href: '/blog', label: 'Blog' },
     { href: '/sobre', label: 'Sobre' },
     { href: '/contato', label: 'Contato' }

@@ -50,6 +50,7 @@
 
   /* Layout */
   --max-width: 60rem;
+  --max-width--blog: 48rem;
 }
 
 /* Reset */
@@ -93,11 +94,22 @@ img {
 
 
 .container h1 {
-  font-family: 'Objektiv VF';
   font-style: italic;
   font-weight: var(--font-weight-light);
   font-size: var(--font-hero);
   line-height: 110%;
+  margin-bottom: var(--space-xl);
+
+}
+
+.hero { 
+  display: block;
+}
+
+.hero span {
+  font-size: 24px;
+  font-style: normal;
+  font-weight: var(--font-weight-regular);
 }
 
 .container p {
@@ -318,15 +330,14 @@ p {
 }
 
 .nav a {
-  font-size: var(--font-sm);
+  
   color: var(--color-text);
   text-decoration: none;
   font-weight: var(--font-weight-medium);
   transition: color 0.2s ease;
 }
-
 .nav a:hover {
-  color: var(--color-primary);
+  text-decoration: underline;
 }
 
 .mobile-menu-button {
@@ -362,8 +373,8 @@ p {
 .product-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: var(--space-xl);
-  margin: var(--space-lg) 0;
+  gap: var(--space-lg);
+  
 }
 
 .product-card {
@@ -425,7 +436,7 @@ p {
 
 
 .product-card-price {
-  font-size: var(--font-md);
+  font-size: var(--font-post);
   font-weight: var(--font-weight-regular);
 }
 
@@ -595,7 +606,8 @@ p {
 }
 
 /* Footer */
-.footer {
+.footer a:hover {
+  text-decoration: underline;
 
 }
 
@@ -682,7 +694,7 @@ p {
 
 /* Category Section */
 .category-section {
-  margin: var(--space-lg) 0 var(--space-xxl) 0;
+  margin:0;
 }
 
 .category-title {
@@ -715,6 +727,11 @@ p {
 }
 
 /* Markdown Content */
+
+.markdown-content {
+  max-width: var(--max-width--blog);
+}
+
 .markdown-content h1,
 .markdown-content h2,
 .markdown-content h3 {
@@ -724,6 +741,7 @@ p {
 
 .markdown-content p {
   margin-bottom: var(--space-md);
+  font-size: var(--font-post);
   line-height: 1.7;
 }
 
@@ -809,10 +827,7 @@ p {
   }
   
 
-  
-  .hero {
-    padding: 2rem 0;
-  }
+
   
   .product-detail {
     grid-template-columns: 1fr;
@@ -934,7 +949,7 @@ p {
 .blog-post-content {
   line-height: 1.7;
   color: var(--color-text);
-  max-width: 48rem;
+  max-width: var(--max-width--blog)
 }
 
 .blog-post-content h1,

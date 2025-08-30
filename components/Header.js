@@ -3,7 +3,7 @@ import Image from 'next/image'
 
 export default function Header() {
   const menuItems = [
-    { href: '/produtos', label: 'Produtos' },
+    { href: '/produtos', label: 'Cafés' },
     { href: '/blog', label: 'Blog' },
   ]
 

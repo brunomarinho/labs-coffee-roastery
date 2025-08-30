@@ -56,31 +56,36 @@ export default async function ProductsWithInventory({ products, categories }) {
     <>
       {availableProductsByCategory.length > 0 && (
         <>
-          <h2>Cafés disponíveis</h2>
-          {availableProductsByCategory.map((category) => (
-            <div key={category.id} className="category-section">
-              <div className="product-grid">
-                {category.products.map((product) => (
-                  <ProductCard key={product.id} product={product} categories={categories} />
-                ))}
+          <div className="category-section">
+            <h2>Disponíveis</h2>
+            {availableProductsByCategory.map((category) => (
+              <div key={category.id}>
+                <div className="product-grid">
+                  {category.products.map((product) => (
+                    <ProductCard key={product.id} product={product} categories={categories} />
+                  ))}
+                </div>
               </div>
-            </div>
-          ))}
+              
+            ))}
+          </div>
         </>
       )}
       
       {soldOutProductsByCategory.length > 0 && (
         <>
-          <h2>Cafés anteriores</h2>
-          {soldOutProductsByCategory.map((category) => (
-            <div key={category.id} className="category-section">
-              <div className="product-grid">
-                {category.products.map((product) => (
-                  <ProductCard key={product.id} product={product} categories={categories} />
-                ))}
+          <div className="category-section">
+            <h2>Anteriores</h2>
+            {soldOutProductsByCategory.map((category) => (
+              <div key={category.id} className="category-section">
+                <div className="product-grid">
+                  {category.products.map((product) => (
+                    <ProductCard key={product.id} product={product} categories={categories} />
+                  ))}
+                </div>
               </div>
-            </div>
-          ))}
+            ))}
+          </div>
         </>
       )}
     </>

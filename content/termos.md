@@ -6,7 +6,7 @@ Bem-vindo à Mameluca. Somos uma nano-torrefação experimental focada em cafés
 
 A Mameluca é operada por Bruno Marinho, uma nano-torrefação baseada no Rio de Janeiro, RJ. Torramos pequenos lotes de cafés especiais brasileiros.
 
-## 2. Nossos Produtos
+## 2. Nossos Cafés
 
 Todos os nossos cafés são torrados sob demanda em pequenos lotes. Cada café é único e disponível em quantidade limitada. Quando um lote acaba, ele realmente acaba - não é uma estratégia de marketing, é a realidade de uma nano-torrefação que trabalha com poucas quantidades de café verde.
 

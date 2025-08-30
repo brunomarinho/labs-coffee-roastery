@@ -7,7 +7,7 @@ import getProductsData from '../../utils/loadProducts'
 export const dynamic = 'force-dynamic'
 
 export const metadata = {
-  title: 'Produtos - Mameluca',
+  title: 'Cafés - Mameluca',
   description: 'Explore nossa coleção completa de cafés brasileiros de torra clara.',
 }
 
@@ -18,7 +18,7 @@ export default function Products() {
     <>
       <Header />
       <main className="container">
-        <h1>Todos os Produtos</h1>
+        <h1>Cafés</h1>
         <ProductsWithInventory 
           products={productsData.products} 
           categories={productsData.categories} 

@@ -127,7 +127,7 @@ export default function ProductDetailClient({ product, categories }) {
       <div className="breadcrumb">
         <Link href="/">Início</Link>
         <span className="breadcrumb-separator">/</span>
-        <Link href="/produtos">Produtos</Link>
+        <Link href="/produtos">Cafés</Link>
         <span className="breadcrumb-separator">/</span>
         <span>{product.name}</span>
       </div>
