@@ -112,7 +112,7 @@ node scripts/new-product.js <product-id>
 - Homepage: Hero + Featured Products + About snippet
 - Products: Category-grouped product listing with available/sold out sections
 - Product Detail: Image gallery + Product info + Buy button (disabled for sold out)
-- Content Pages: Markdown-rendered About, FAQ, Contact
+- Content Pages: Markdown-rendered About, Contact
 - Blog: Post listing page + Individual blog post pages
 
 ### Blog Architecture
@@ -232,6 +232,9 @@ The ecommerce platform includes a real-time inventory management system powered 
 
 #### Environment Variables Required
 ```bash
+# Site Configuration
+NEXT_PUBLIC_SITE_URL=https://mamelucacafe.com.br
+
 # Upstash Redis Configuration
 UPSTASH_REDIS_REST_URL=https://your-url.upstash.io
 UPSTASH_REDIS_REST_TOKEN=your-token
@@ -283,13 +286,24 @@ STRIPE_WEBHOOK_SECRET=whsec_your_webhook_secret
 - When creating new products, use: `inventoryId: "inv_{productId}"`
 - Example: For product with `id: "005"`, use `inventoryId: "inv_005"`
 
-## SEO Considerations
+## SEO Configuration
 
-- Dynamic metadata generation for all pages
-- Open Graph tags for social sharing
-- Automatic sitemap generation
-- robots.txt configuration
-- Semantic HTML structure
+### Environment Variables
+```bash
+# Site Configuration (required for proper SEO)
+NEXT_PUBLIC_SITE_URL=https://mamelucacafe.com.br
+```
+
+### SEO Features
+- **Dynamic Metadata Generation**: All pages generate contextual meta tags
+- **Structured Data**: JSON-LD schema for products with pricing and availability
+- **Open Graph & Twitter Cards**: Optimized social sharing with proper image dimensions
+- **Canonical URLs**: Prevents duplicate content issues across all pages
+- **Automatic Sitemap**: Includes products, blog posts, and static pages with proper dates
+- **robots.txt**: Dynamic configuration with sitemap reference
+- **Blog SEO**: Auto-extracted descriptions from content, article-specific metadata
+- **metadataBase**: Proper URL resolution for all relative paths
+- **Keywords**: Context-aware keyword generation for products and blog posts
 
 ## Client vs Server Components
 

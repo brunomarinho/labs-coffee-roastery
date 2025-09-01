@@ -12,7 +12,7 @@ A modern ecommerce template built with Next.js 14 App Router and Stripe's server
 - 🚀 **Hybrid Rendering** - Static site generation with dynamic API routes for checkout processing
 - 🎨 **Tokenized CSS System** - Consistent design with CSS variables
 - 📝 **Markdown Content** - Easy content management with full CommonMark support via Remark
-- 🔍 **SEO Ready** - Dynamic meta tags, sitemap, and Open Graph support
+- 🔍 **Advanced SEO** - Structured data, canonical URLs, Twitter Cards, and auto-generated blog metadata
 - ⚡ **Low Stock Warnings** - Automatic alerts when products are running low
 - 🎯 **Modern UI Design** - Clean interface with sharp corners and minimalist aesthetics
 - 🖼️ **Background Image Effects** - Product cards with subtle background images using opacity and blend modes
@@ -35,7 +35,6 @@ A modern ecommerce template built with Next.js 14 App Router and Stripe's server
   /about/page.js          # About page (renders markdown)
   /blog/page.js          # Blog listing page
   /blog/[slug]/page.js   # Individual blog post pages
-  /faq/page.js           # FAQ page (renders markdown)
   /contact/page.js       # Contact page (renders markdown)
   /products/page.js      # Product listing page
   /products/[slug]/      # Dynamic product detail pages
@@ -56,7 +55,6 @@ A modern ecommerce template built with Next.js 14 App Router and Stripe's server
   ProductsWithInventory.js # Server component for inventory-aware product listing
 /content
   about.md               # About page content
-  faq.md                 # FAQ page content
   contact.md             # Contact page content
   /blog/                 # Blog posts directory
     post-slug.md         # Individual blog posts
@@ -115,6 +113,9 @@ cp .env.local.example .env.local
 
 5. Add your environment variables to `.env.local`:
 ```
+# Site Configuration
+NEXT_PUBLIC_SITE_URL=https://yourdomain.com.br
+
 # Stripe Configuration
 NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=pk_test_your_key_here
 STRIPE_SECRET_KEY=sk_test_your_key_here
@@ -282,7 +283,7 @@ The template includes a secure, real-time inventory management system:
 
 ### 5. Customize Content
 
-- Edit markdown files in `/content/` for About, FAQ, and Contact pages
+- Edit markdown files in `/content/` for About and Contact pages
 - Markdown supports full CommonMark specification plus GitHub Flavored Markdown
 - Update store name and metadata in `/app/layout.js`
 - Modify hero text in `/components/Hero.js`
