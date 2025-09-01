@@ -1,6 +1,7 @@
 import '../styles/globals.css'
 
 export const metadata = {
+  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'https://mamelucacafe.com.br'),
   title: 'Mameluca - Cafés Brasileiros de Torra Clara',
   description: 'Descubra nossa coleção curada de cafés brasileiros especiais com torra clara, destacando os sabores únicos de cada região.',
   keywords: 'café, torra clara, café brasileiro, café especial, cafés gourmet',
@@ -9,8 +10,16 @@ export const metadata = {
     description: 'Descubra nossa coleção curada de cafés brasileiros especiais',
     type: 'website',
     locale: 'pt_BR',
-    url: 'https://mameluca.com.br',
+    url: process.env.NEXT_PUBLIC_SITE_URL || 'https://mamelucacafe.com.br',
     siteName: 'Mameluca',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Mameluca - Cafés Brasileiros de Torra Clara',
+    description: 'Descubra nossa coleção curada de cafés brasileiros especiais',
+  },
+  alternates: {
+    canonical: process.env.NEXT_PUBLIC_SITE_URL || 'https://mamelucacafe.com.br',
   }
 }
 

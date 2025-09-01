@@ -13,6 +13,6 @@ export default function robots() {
         '/api/admin/*'
       ],
     },
-    sitemap: 'https://mystore.com/sitemap.xml',
+    sitemap: `${process.env.NEXT_PUBLIC_SITE_URL || 'https://mamelucacafe.com.br'}/sitemap.xml`,
   }
 }

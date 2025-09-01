@@ -9,6 +9,9 @@ export const dynamic = 'force-dynamic'
 export const metadata = {
   title: 'Cafés - Mameluca',
   description: 'Explore nossa coleção completa de cafés brasileiros de torra clara.',
+  alternates: {
+    canonical: `${process.env.NEXT_PUBLIC_SITE_URL || 'https://mamelucacafe.com.br'}/produtos`,
+  },
 }
 
 export default function Products() {

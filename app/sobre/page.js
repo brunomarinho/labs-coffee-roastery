@@ -19,7 +19,6 @@ export default async function About() {
       <Header />
       
       <main className="container">
-        <h1>Sobre</h1>
         <div className="markdown-content" dangerouslySetInnerHTML={{ __html: htmlContent }} />
       </main>
       <Footer />

@@ -1,4 +1,5 @@
 import { notFound } from 'next/navigation'
+import Script from 'next/script'
 import Header from '../../../components/Header'
 import Footer from '../../../components/Footer'
 import ProductDetailClient from '../../../components/ProductDetailClient'
@@ -22,13 +23,31 @@ export async function generateMetadata({ params }) {
     }
   }
 
+  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://mamelucacafe.com.br'
+  
   return {
     title: `${product.name} - Mameluca`,
     description: product.description,
+    keywords: `${product.name}, café ${product.processo}, ${product.regiao}, ${product.variedade}, café especial brasileiro`,
     openGraph: {
-      title: product.name,
+      title: `${product.name} - Mameluca`,
+      description: product.description,
+      images: [{
+        url: product.images[0],
+        width: 1200,
+        height: 630,
+        alt: `${product.name} - ${product.notas}`,
+      }],
+      type: 'website',
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: `${product.name} - Mameluca`,
       description: product.description,
       images: [product.images[0]],
+    },
+    alternates: {
+      canonical: `${baseUrl}/produtos/${slug}`,
     },
   }
 }
@@ -42,8 +61,65 @@ export default async function ProductDetail({ params }) {
     notFound()
   }
 
+  // Generate structured data for the product
+  const structuredData = {
+    '@context': 'https://schema.org',
+    '@type': 'Product',
+    name: product.name,
+    description: product.description,
+    image: product.images,
+    brand: {
+      '@type': 'Brand',
+      name: 'Mameluca'
+    },
+    offers: {
+      '@type': 'Offer',
+      price: product.price,
+      priceCurrency: 'BRL',
+      availability: 'https://schema.org/InStock',
+      seller: {
+        '@type': 'Organization',
+        name: 'Mameluca'
+      }
+    },
+    aggregateRating: product.rating ? {
+      '@type': 'AggregateRating',
+      ratingValue: product.rating,
+      reviewCount: product.reviewCount || 1
+    } : undefined,
+    additionalProperty: [
+      {
+        '@type': 'PropertyValue',
+        name: 'Produtor',
+        value: product.produtor
+      },
+      {
+        '@type': 'PropertyValue',
+        name: 'Processo',
+        value: product.processo
+      },
+      {
+        '@type': 'PropertyValue',
+        name: 'Região',
+        value: product.regiao
+      },
+      {
+        '@type': 'PropertyValue',
+        name: 'Variedade',
+        value: product.variedade
+      }
+    ].filter(prop => prop.value)
+  }
+
   return (
     <>
+      <Script
+        id="product-structured-data"
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(structuredData)
+        }}
+      />
       <Header />
       <main className="container">
         <ProductDetailClient product={product} categories={productsData.categories} />

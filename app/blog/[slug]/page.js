@@ -20,6 +20,12 @@ async function getPostData(slug) {
       return null;
     }
     
+    // Extract first paragraph for description
+    const firstParagraph = content.split('\n\n')[0]
+      .replace(/[#*_\[\]]/g, '')
+      .trim()
+      .substring(0, 160);
+    
     const processedContent = await remark()
       .use(gfm)
       .use(html)
@@ -29,7 +35,9 @@ async function getPostData(slug) {
       slug,
       title: data.title || 'Sem título',
       date: data.date || '',
+      description: data.description || firstParagraph,
       content: processedContent.toString(),
+      image: data.image,
     };
   } catch (error) {
     console.error(`Error reading blog post ${slug}:`, error);
@@ -57,16 +65,39 @@ export async function generateStaticParams() {
 export async function generateMetadata({ params }) {
   const { slug } = await params;
   const post = await getPostData(slug);
+  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://mamelucacafe.com.br';
   
   if (!post) {
     return {
-      title: 'Artigo não encontrado | Labs Coffee Roastery',
+      title: 'Artigo não encontrado | Mameluca',
     };
   }
   
   return {
-    title: `${post.title} | Labs Coffee Roastery`,
-    description: `Leia sobre ${post.title} em nosso blog sobre café especial`,
+    title: `${post.title} | Mameluca`,
+    description: post.description,
+    keywords: `${post.title}, café especial, blog café, mameluca blog`,
+    openGraph: {
+      title: `${post.title} | Mameluca`,
+      description: post.description,
+      type: 'article',
+      publishedTime: post.date,
+      images: post.image ? [{
+        url: post.image,
+        width: 1200,
+        height: 630,
+        alt: post.title,
+      }] : [],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: `${post.title} | Mameluca`,
+      description: post.description,
+      images: post.image ? [post.image] : [],
+    },
+    alternates: {
+      canonical: `${baseUrl}/blog/${slug}`,
+    },
   };
 }
 
