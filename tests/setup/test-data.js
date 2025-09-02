@@ -8,10 +8,10 @@ export const TEST_PRODUCTS = {
     inventoryId: 'inv_002'
   },
   featured: {
-    id: '000',
-    slug: 'blend',
-    name: 'Blend',
-    inventoryId: 'inv_000'
+    id: '001',
+    slug: 'cafe-001',
+    name: '001',
+    inventoryId: 'inv_001'
   },
   // Product that can be marked as sold out for testing
   testSoldOut: {
