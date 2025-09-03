@@ -71,7 +71,7 @@ export default async function BlogPage() {
                       {formatDate(post.date)}
                     </time>
                   </div>
-                  <span className="blog-card-cta">Ler artigo →</span>
+                  
                 </Link>
               </article>
             ))

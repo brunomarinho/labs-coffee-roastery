@@ -1,7 +1,7 @@
 export default function NoProductsPlaceholder() {
   return (
     <p className="no-products-placeholder">
-      Em breve, novos cafés especiais selecionados para você.
+      Nosso primeiro café será lançado em breve.<br /> Siga <a href="https://www.instagram.com/mamelucacafe">@mamelucacafe</a> para ficar por dentro das novidades.
     </p>
   )
 }

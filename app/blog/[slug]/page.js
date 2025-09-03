@@ -126,9 +126,7 @@ export default async function BlogPostPage({ params }) {
       <main className="container">
         <article className="blog-post">
           <header className="blog-post-header">
-            <Link href="/blog" className="back-link">
-              ← Voltar ao blog
-            </Link>
+            
             <h1>{post.title}</h1>
             <time className="blog-post-date" dateTime={post.date}>
               {formatDate(post.date)}
@@ -140,11 +138,7 @@ export default async function BlogPostPage({ params }) {
           dangerouslySetInnerHTML={{ __html: post.content }}
         />
         
-          <footer className="blog-post-footer">
-            <Link href="/blog" className="button button-secondary">
-              Ver mais artigos
-            </Link>
-          </footer>
+
         </article>
       </main>
       <Footer />

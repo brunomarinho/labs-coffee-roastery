@@ -4,20 +4,14 @@ date: "2025-08-10"
 visibility: true
 ---
 
-Esse guia é menos sobre receitas e mais sobre como pensar em extrações, algo que pode ser extremamente simples de executar ou extremamente complexo. Muitos iniciantes se preocupam em excesso com detalhes de extração ou tentam começar por métodos mais complexos.
+Mameluca é um experimento, uma opinião. É uma mistura da minha apreciação e obsessão pelo universo do café — que começou em 2013 — com a oportunidade de mostrar para mais pessoas que o café é, antes de tudo, uma fruta.
 
-### A filosofia da Mameluca
+Sempre tive curiosidade de empreender com algo relacionado ao café. Uma nano-torrefação foi o modelo mais apropriado para o meu estilo de vida atual, comparado a servir café numa cafeteria, onde existiriam muito mais dependências e custos iniciais. Tenho o privilégio de poder dedicar tempo a esse projeto onde a qualidade vem antes do lucro — e entendo que nem todos têm essa oportunidade no Brasil.
 
-Mameluca gosta de métodos simples, executados com intenção e calma. Mameluca também gosta de experimentos, de errar com propósito de aprender.
+Mameluca é também uma oportunidade para mais pessoas conhecerem torras claras de cafés brasileiros. São torras que evoluem com o tempo, geralmente atingindo seu melhor momento entre duas e quatro semanas. Nossas torras geralmente tem um perfil suculento, meio que suco de fruta, com acidez média-alta e corpo leve.
 
-Os métodos mais simples que muitos deveriam experimentar mais vezes são o cupping e a prensa francesa. São métodos descomplicados e eficientes para aprendizado. Coloca-se café, água e espera um determinado tempo. Por ser descomplicado e fácil experimentar o café ao longo de períodos mais longos (e temperaturas diversas), esses métodos são fundamentais para entender que raramente um café superextrai e que adstringencia e amargor não necessariamente aparecem com cafés de qualidade e bem torrados.
+Nossos cafés existem intencionalmente em quantidades limitadas. Não é jogada de marketing — algo que me incomoda profundamente no mercado brasileiro, onde "edições limitadas" aparecem toda semana e tudo é "exclusivo". Nossa limitação é real: uso um torrador de prova com baixa capacidade, sou apenas eu cuidando de todo o processo e dependo de produtores que vendam quantidades pequenas (de 1-3kg).
 
-Para uma extração mais tradicional, como v60 ou Origami ou prensa francesa, em geral, definir um alvo em minutos é uma boa estratégia, visto que ajuda a ter consistencia e a melhor definir as outras variáveis. Por exemplo se o seu alvo é 3 minutos e o café extraiu em 4 minutos, você deveria ajustar a moágem, assumindo que 4 minutos de extração não foram agradáveis ao seu paladar.
+Essa escolha de não escalar é proposital. Permite experimentar sem medo. Posso, por exemplo, torrar o mesmo café em dois perfis diferentes — um mais ácido e floral, outro equilibrado — e vender como experimento para quiser comparar como a curva de torra transforma completamente a bebida. É uma forma de educar através da experiência direta.
 
-É importante ressaltar que fundamentalmente não existe nada errado com longas extrações. O que acontece é que elas tendem a causar um pouco de adstringencia, dependendo do café e torra, ou em algumas cafés fermentados, podem exagerar notas que ficariam muito enjoativas.
-
-### Variáveis
-
-As variáveis principais são tempo, moagem e temperatura da água. De uma maneira simplificada, uma moagem fina extraída por um minuto vai gerar uma extração (concetração de compostos) maior do que uma moagem grossa por um minuto. Água mais quente vai extrair mais rápido do que água mais fria.
-
-Uma variável pouco observada é a qualidade do café. Um café verde de baixa qualidade ou mal torrado, nunca vai gerar uma xícara excelente e nesse caso, o processo de extração é focado em como esconder os defeitos, ou como não extrair os compostos de qualidade inferior que necessariamente vão deixar a xícara ou amarga ou adstringente ou com uma nota não desejada.
+No final, Mameluca existe porque acredito que precisamos repensar nossa relação com o café. Não como commodity que bebemos no automático, mas como experiência que merece atenção. E isso me leva a uma reflexão maior sobre como consumimos café no Brasil — mas essa é conversa para outro momento.
