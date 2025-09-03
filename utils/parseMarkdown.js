@@ -1,6 +1,7 @@
 import { remark } from 'remark'
 import html from 'remark-html'
 import remarkGfm from 'remark-gfm'
+import { processExternalLinks } from './processMarkdownLinks'
 
 export async function parseMarkdown(content) {
   const result = await remark()
@@ -8,5 +9,6 @@ export async function parseMarkdown(content) {
     .use(html)
     .process(content)
   
-  return result.toString()
+  // Automatically add target="_blank" to external links
+  return processExternalLinks(result.toString())
 }

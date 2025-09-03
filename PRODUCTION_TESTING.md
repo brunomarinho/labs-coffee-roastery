@@ -194,13 +194,45 @@ The codebase now supports a `visible` field in product YAML files:
 - [ ] Customer email received
 - [ ] CPF and phone collected in Stripe
 
+### Stripe Payment Testing Strategies
+
+#### Option 1: Test Mode in Production (Recommended)
+1. Deploy to Vercel with Stripe TEST keys initially
+2. Use test cards: `4242 4242 4242 4242` (Visa), `5555 5555 5555 4444` (Mastercard)
+3. Complete full purchase flow including webhook processing
+4. Verify inventory updates and email confirmations
+5. Switch to LIVE keys only after full validation
+
+#### Option 2: Real Payment Testing (Live Mode)
+1. Use your own payment method
+2. Purchase R$1.00 test product
+3. Immediately refund in Stripe Dashboard → Payments
+4. Net cost: ~R$0.05 in Stripe fees
+5. Validates real payment processing end-to-end
+
+#### Option 3: Stripe CLI Testing (Webhooks Only)
+```bash
+# Install Stripe CLI and test webhook processing
+stripe listen --forward-to https://mamelucacafe.com.br/api/webhooks/stripe
+stripe trigger checkout.session.completed
+```
+
+#### Test Cards for Different Scenarios
+- **Success**: `4242 4242 4242 4242`
+- **Declined**: `4000 0000 0000 0002`
+- **Insufficient Funds**: `4000 0000 0000 9995`
+- **3D Secure**: `4000 0000 0000 3220`
+
 ### Go-Live Steps (In Order)
-1. [ ] Complete test purchase with hidden product
-2. [ ] Verify all systems working
-3. [ ] Delete or set test product inventory to 0
-4. [ ] Set real product inventory levels
-5. [ ] Announce launch
-6. [ ] Monitor first real orders closely
+1. [ ] Deploy with TEST keys first
+2. [ ] Complete test purchase with test cards
+3. [ ] Verify webhook processing and inventory updates
+4. [ ] Switch to LIVE keys in Vercel environment
+5. [ ] Complete real test purchase (R$1.00, then refund)
+6. [ ] Delete or set test product inventory to 0
+7. [ ] Set real product inventory levels
+8. [ ] Announce launch
+9. [ ] Monitor first real orders closely
 
 ## Success Criteria
 - [ ] Test purchase completes without errors

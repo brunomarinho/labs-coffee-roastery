@@ -8,6 +8,7 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import Header from '../../../components/Header';
 import Footer from '../../../components/Footer';
+import { processExternalLinks } from '../../../utils/processMarkdownLinks';
 
 async function getPostData(slug) {
   const filePath = path.join(process.cwd(), 'content', 'blog', `${slug}.md`);
@@ -31,12 +32,15 @@ async function getPostData(slug) {
       .use(html)
       .process(content);
     
+    // Process external links to open in new tab
+    const contentWithExternalLinks = processExternalLinks(processedContent.toString());
+    
     return {
       slug,
       title: data.title || 'Sem título',
       date: data.date || '',
       description: data.description || firstParagraph,
-      content: processedContent.toString(),
+      content: contentWithExternalLinks,
       image: data.image,
     };
   } catch (error) {
