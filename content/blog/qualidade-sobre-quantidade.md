@@ -1,12 +1,10 @@
 ---
-title: "Qualidade sobre Quantidade: Um Manifesto"
-date: "2025-09-22"
+title: "Qualidade vs Quantidade: Um Manifesto"
+date: "2025-09-3"
 visibility: true
 ---
 
-A cultura de escassez em que muitos brasileiros (inclusive eu) cresceram geralmente reflete num padrão de consumo de quantidade sobre qualidade. E sabemos que mudar um hábito ou padrão de consumo é extremamente difícil.
-
-O café, assim como muitas outras bebidas, oferece um caminho para começar essa mudança. Priorizar o ritual, a calmaria, o momento — ao invés da quantidade. Em vez de mais xícaras por dia, a melhor xícara possível em momentos especiais.
+A cultura de escassez em que muitos brasileiros (inclusive eu) cresceram geralmente reflete num padrão de consumo de quantidade sobre qualidade. E sabemos que mudar um hábito ou padrão de consumo é extremamente difícil. O café, assim como muitas outras bebidas, oferece um caminho para começar essa mudança. Priorizar o ritual, a calmaria, o momento — ao invés da quantidade. Em vez de mais xícaras por dia, a melhor xícara possível em momentos especiais.
 
 A primeira vez que eu refleti sobre qualidade foi com uma garrafa *mais cara* de whisky. Comprada em 2014 e, em vez de "guardar para uma ocasião especial" que nunca chegava (e nunca chega!), decidi fazer diferente. Tomava uma dose a cada conquista pequena: um projeto entregue, um domingo chuvoso perfeito, uma conversa interessante, ouvindo música. A garrafa durou quase uma década. Não pelo simples motivo de economizar, mas porque cada gole tinha significado. Cafés acima da média podem ser assim também — congelado em porções, para momentos que importam.
 

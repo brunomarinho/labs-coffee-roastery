@@ -160,12 +160,11 @@ h1 {
 
 h2 {
   font-size: var(--font-lg);
-  font-weight: 500;
+  font-weight: var(--font-weight-regular);
 }
 
 h3 {
- font-size: var(--font-post);
-    font-weight: 600;
+  font-size: var(--font-md);
 }
 
 h4 {
@@ -320,7 +319,12 @@ p {
   opacity: 0.8;
 }
 
-
+/* For retina displays */
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+  .logo-symbol {
+    shape-rendering: geometricPrecision;
+  }
+}
 
 
 .nav {
@@ -559,6 +563,39 @@ p {
   line-height: 1.5;
 }
 
+
+/* Responsive grid for custom attributes */
+@media (max-width: 1024px) {
+  .custom-attributes-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .custom-attributes-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .product-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .product-detail-hero-image {
+    height: 40vh;
+  }
+  
+  .product-detail-name {
+    font-size: var(--font-3xl);
+  }
+  
+  .product-detail-subtitle {
+    font-size: var(--font-lg);
+  }
+  
+  .product-detail-card {
+    padding: var(--space-lg);
+  }
+}
 
 
 .product-description {
@@ -804,6 +841,10 @@ p.error-message {
 
 
 
+@media (min-width: 768px) and (max-width: 1024px) {
+  /* Product grid now uses default single column layout */
+}
+
 /* Blog Styles */
 .blog-grid {
   display: grid;
@@ -923,7 +964,7 @@ h2.blog-card-title {
 
 .blog-post-content h3 {
   font-size: var(--font-post);
-  font-weight: 600;
+  font-weight: var(--font-weight-bold);
 }
 
 .blog-post-content p {
@@ -985,6 +1026,21 @@ h2.blog-card-title {
   text-align: center;
 }
 
+/* Blog Mobile Styles */
+@media (max-width: 768px) {
+  .blog-grid {
+    grid-template-columns: 1fr;
+    gap: var(--space-md);
+  }
+  
+  .blog-post-title {
+    font-size: 2rem;
+  }
+  
+  .blog-post-content {
+    font-size: 1rem;
+  }
+}
 
 /* Inventory Status Styles */
 .low-stock-warning {
@@ -1006,27 +1062,11 @@ h2.blog-card-title {
   font-size: var(--font-md);
 }
 
-
-
-/* ========================================
-   MEDIA QUERIES - CONSOLIDATED
-   ======================================== */
-
-/* Tablet - Landscape */
-@media (min-width: 768px) and (max-width: 1024px) {
-  /* Product grid now uses default single column layout */
-}
-
-/* Tablet - Portrait and below */
-@media (max-width: 1024px) {
-  .custom-attributes-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
-
-/* Mobile - Large */
+/* Responsive Design */
 @media (max-width: 768px) {
-  /* Typography */
+
+
+
   h1 {
     font-size: 2rem;
   }
@@ -1034,13 +1074,8 @@ h2.blog-card-title {
   h2 {
     font-size: 1.5rem;
   }
-
-  /* Product Grid */
-  .product-grid {
-    grid-template-columns: 1fr;
-  }
-
-  /* Product Detail */
+  
+  
   .product-detail {
     grid-template-columns: 1fr;
   }
@@ -1057,59 +1092,22 @@ h2.blog-card-title {
   .main-image {
     height: 300px;
   }
-
-  .product-detail-hero-image {
-    height: 40vh;
-  }
   
-  .product-detail-name {
-    font-size: var(--font-3xl);
-  }
-  
-  .product-detail-subtitle {
-    font-size: var(--font-lg);
-  }
-  
-
-
-  /* Custom Attributes */
-  .custom-attributes-grid {
-    grid-template-columns: 1fr;
-  }
-
-  /* Footer */
   .footer-links {
     gap: var(--space-md);
   }
-
-  /* Blog */
-  .blog-grid {
-    grid-template-columns: 1fr;
-    gap: var(--space-md);
-  }
   
-  .blog-post-title {
-    font-size: 2rem;
-  }
-  
-  .blog-post-content {
-    font-size: 1rem;
-  }
 }
 
-/* Mobile - Small */
 @media (max-width: 480px) {
-  .container {
-    padding: var(--space-md) 0;
-    text-align: left;
-  }
-
   .container h1 {
-    font-size: 3.8rem;
+    font-size: 4rem;
     max-width: 100%;
   }
 
-  .coffee-tasting-cta {
-    padding-top: var(--space-md);
-  }
+  .container {
+  padding: var(--space-md) 0;
+  text-align: left;
+}
+
 }
