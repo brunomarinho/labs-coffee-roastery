@@ -7,9 +7,12 @@ import getProductsData from '../../../utils/loadProducts'
 
 export async function generateStaticParams() {
   const productsData = getProductsData()
-  return productsData.products.map((product) => ({
-    slug: product.slug,
-  }))
+  // Only generate static params for visible products
+  return productsData.products
+    .filter(product => product.visible !== false)
+    .map((product) => ({
+      slug: product.slug,
+    }))
 }
 
 export async function generateMetadata({ params }) {
@@ -57,7 +60,8 @@ export default async function ProductDetail({ params }) {
   const productsData = getProductsData()
   const product = productsData.products.find(p => p.slug === slug)
 
-  if (!product) {
+  // Return 404 if product doesn't exist or is hidden
+  if (!product || product.visible === false) {
     notFound()
   }
 

@@ -1,11 +1,15 @@
 import { getAllInventory } from '@/lib/redis'
 import { getAvailableInventory } from '@/lib/redis-reservations'
 import ProductCard from './ProductCard'
+import NoProductsPlaceholder from './NoProductsPlaceholder'
 
 export default async function ProductsWithInventory({ products, categories }) {
-  // Add inventory status to products using available inventory (accounting for reservations)
+  // Filter out products where visible is explicitly false
+  const visibleProducts = products.filter(product => product.visible !== false)
+  
+  // Add inventory status to visible products using available inventory (accounting for reservations)
   const productsWithInventory = await Promise.all(
-    products.map(async product => {
+    visibleProducts.map(async product => {
       const inventoryId = product.inventoryId || `inv_${product.id}`
       let availableQuantity = 0
       
@@ -51,6 +55,11 @@ export default async function ProductsWithInventory({ products, categories }) {
         return bId.localeCompare(aId)
       })
   })).filter(category => category.products.length > 0)
+
+  // Show placeholder if no visible products
+  if (visibleProducts.length === 0) {
+    return <NoProductsPlaceholder />
+  }
 
   return (
     <>

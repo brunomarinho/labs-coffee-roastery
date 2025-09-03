@@ -157,6 +157,7 @@ inventoryId: "inv_001"
 slug: cafe-001
 name: "001"
 featured: false
+visible: true  # Optional: set to false to hide product (defaults to true)
 category: coffee
 
 # Descrição e Notas

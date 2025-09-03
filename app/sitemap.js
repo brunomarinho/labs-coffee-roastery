@@ -23,13 +23,15 @@ export default function sitemap() {
     priority: route === '' ? 1 : 0.8,
   }))
   
-  // Product pages
-  const productPages = productsData.products.map((product) => ({
-    url: `${baseUrl}/produtos/${product.slug}`,
-    lastModified: new Date(),
-    changeFrequency: 'weekly',
-    priority: 0.6,
-  }))
+  // Product pages (only visible products)
+  const productPages = productsData.products
+    .filter(product => product.visible !== false)
+    .map((product) => ({
+      url: `${baseUrl}/produtos/${product.slug}`,
+      lastModified: new Date(),
+      changeFrequency: 'weekly',
+      priority: 0.6,
+    }))
   
   // Blog pages
   const blogDirectory = path.join(process.cwd(), 'content', 'blog')

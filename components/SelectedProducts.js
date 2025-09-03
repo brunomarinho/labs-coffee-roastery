@@ -1,4 +1,5 @@
 import ProductCard from './ProductCard'
+import NoProductsPlaceholder from './NoProductsPlaceholder'
 import getProductsData from '../utils/loadProducts'
 import { getInventory } from '../lib/redis'
 import { getAvailableInventory } from '../lib/redis-reservations'
@@ -6,9 +7,12 @@ import { getAvailableInventory } from '../lib/redis-reservations'
 export default async function SelectedProducts() {
   const productsData = getProductsData()
   
+  // Filter out products where visible is explicitly false
+  const visibleProducts = productsData.products.filter(product => product.visible !== false)
+  
   // Get featured products with inventory status
   const featuredProductsWithInventory = await Promise.all(
-    productsData.products
+    visibleProducts
       .filter(product => product.featured)
       .slice(0, 4)
       .map(async (product) => {
@@ -33,8 +37,8 @@ export default async function SelectedProducts() {
   
   // If we have less than 2 featured products, fill remaining slots with sold out products
   if (featuredProductsWithInventory.length < 2) {
-    // Get all non-featured products with inventory status
-    const nonFeaturedProducts = productsData.products
+    // Get all non-featured visible products with inventory status
+    const nonFeaturedProducts = visibleProducts
       .filter(product => !product.featured)
     
     const nonFeaturedWithInventory = await Promise.all(
@@ -72,6 +76,15 @@ export default async function SelectedProducts() {
     
     // Combine featured products with sold out fillers
     productsToShow = [...featuredProductsWithInventory, ...fillerProducts]
+  }
+
+  // Show placeholder if no visible products
+  if (visibleProducts.length === 0) {
+    return (
+      <section className="container">
+        <NoProductsPlaceholder />
+      </section>
+    )
   }
 
   return (
