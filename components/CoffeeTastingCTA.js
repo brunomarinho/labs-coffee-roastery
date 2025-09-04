@@ -1,4 +1,4 @@
-import Link from 'next/link'
+import ExternalLink from './ExternalLink'
 
 export default function CoffeeTastingCTA() {
   return (
@@ -11,9 +11,9 @@ export default function CoffeeTastingCTA() {
           Mameluca. Cada e-mail tem uma chance, e quem já foi selecionado sai da 
           próxima rodada — assim mais gente tem oportunidade de experimentar.
         </p>
-        <Link href="/contato" className="btn btn-primary">
+        <ExternalLink href="https://docs.google.com/forms/d/e/1FAIpQLSdljjitU0gtP1kCssu-lP9VrLLogjLOnFhCxOLgpjT0WZslPg/viewform?usp=header" className="btn btn-primary">
           CADASTRE-SE
-        </Link>
+        </ExternalLink>
       </section>
     </>
   )
