@@ -250,6 +250,12 @@ Place your product images in `/public/images/products/`. Use the filenames refer
    - Custom fields (CPF and cellphone) will appear in checkout form
    - Test data will appear in your Stripe dashboard after successful payment
 
+4. **Set Up Stripe Webhooks (For Production):**
+   - Go to Stripe Dashboard → Developers → Webhooks
+   - Add endpoint: `https://www.yourdomain.com/api/webhooks/stripe` (**must include www if your site uses it**)
+   - Select events: `checkout.session.completed` and `checkout.session.expired`
+   - Copy the signing secret to `STRIPE_WEBHOOK_SECRET` environment variable
+
 ### 4. Managing Inventory
 
 The template includes a secure, real-time inventory management system:
@@ -445,7 +451,63 @@ npm run lint         # Run ESLint
 
 # Product Management
 node scripts/new-product.js <id>  # Create new product template
+
+# Debugging & Maintenance
+node scripts/debug-webhook.js     # Check current reservation status
+node scripts/debug-webhook.js clear <session_id>  # Clear specific reservation
+node scripts/fix-reservations.js  # Diagnose and fix reservation mismatches
 ```
+
+## Troubleshooting
+
+### Webhook Issues
+
+#### Problem: Inventory not updating after payment
+**Symptoms**: Reservations remain after successful payment, products still show as reserved
+
+**Solutions**:
+1. **Check webhook URL**: Ensure it matches your domain exactly (include/exclude www as needed)
+2. **Verify webhook events**: `checkout.session.completed` and `checkout.session.expired` must be selected
+3. **Check environment variables**: `STRIPE_WEBHOOK_SECRET` must match the webhook secret from Stripe
+4. **Monitor webhook logs**: Check Vercel/hosting logs for webhook processing messages
+
+#### Problem: 307 redirects on webhook endpoint
+**Cause**: Domain mismatch or redirect configuration
+**Solution**: Update Stripe webhook URL to match your exact production domain
+
+#### Problem: `cleanUrls` causing API issues
+**Cause**: `"cleanUrls": true` in `vercel.json` interferes with Next.js App Router
+**Solution**: Remove `cleanUrls` and `trailingSlash` settings from `vercel.json`
+
+### Debugging Tools
+
+Use the included debugging scripts to diagnose issues:
+
+```bash
+# Check current reservations
+node scripts/debug-webhook.js
+
+# Clear a specific stale reservation  
+node scripts/debug-webhook.js clear cs_live_abc123...
+
+# Check and fix reservation mismatches
+node scripts/fix-reservations.js
+```
+
+### Admin Access Issues
+
+#### Problem: Session expires quickly
+**Solution**: Sessions last 1 hour by design for security. Use the admin interface regularly or increase session duration in code if needed.
+
+#### Problem: Rate limiting blocking access
+**Solution**: Wait 1 hour or clear rate limiting in Redis. Max 5 failed attempts per IP per hour.
+
+### Production Logging
+
+The template uses environment-aware logging:
+- **Development**: Full console logging for debugging
+- **Production**: Logs suppressed for clean deployment
+- **Never use `console.log` directly** - always use `import logger from '@/lib/logger'`
 
 ## Deployment
 

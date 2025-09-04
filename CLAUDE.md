@@ -494,6 +494,74 @@ This project uses a **dual-system approach** that separates product catalog from
 
 See `INVENTORY.md` for complete documentation.
 
+## Webhook & Payment Processing
+
+### Stripe Webhook Configuration
+
+**Critical**: Webhook URL must match your production domain exactly:
+- ✅ `https://www.mamelucacafe.com.br/api/webhooks/stripe` (correct)
+- ❌ `https://mamelucacafe.com.br/api/webhooks/stripe` (will cause 307 redirects)
+
+### Required Events
+- `checkout.session.completed` - For inventory updates after payment
+- `checkout.session.expired` - For releasing reservations
+
+### Environment Variables
+```bash
+# Stripe Configuration
+NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=pk_live_...
+STRIPE_SECRET_KEY=sk_live_...
+STRIPE_WEBHOOK_SECRET=whsec_...  # Must match webhook endpoint secret
+
+# Site Configuration (required for proper URL handling)
+NEXT_PUBLIC_SITE_URL=https://www.mamelucacafe.com.br
+```
+
+### Webhook Processing Flow
+1. **Payment completed** → Stripe sends `checkout.session.completed`
+2. **Webhook validates** signature and payment status
+3. **Inventory updated** via `confirmPurchase()` - atomic operation
+4. **Reservation cleared** - frees up stock for other customers
+5. **Fallback handling** - cleans up stale reservations if needed
+
+### Common Webhook Issues & Solutions
+
+#### Issue: Webhook returns 307 redirects
+**Cause**: Domain mismatch or URL redirects
+**Solution**: Ensure webhook URL matches production domain exactly (including www)
+
+#### Issue: Reservations not clearing after payment
+**Cause**: Webhook not processing due to async/await issues
+**Solution**: Process webhook synchronously, not fire-and-forget
+
+#### Issue: `cleanUrls` interference
+**Cause**: Vercel `cleanUrls: true` setting conflicts with Next.js App Router
+**Solution**: Remove `cleanUrls` and `trailingSlash` from `vercel.json`
+
+### Debugging Tools
+- `scripts/debug-webhook.js` - Check reservation status and clear manually
+- `scripts/fix-reservations.js` - Diagnose and fix reservation mismatches
+- `/api/admin/inventory/clear-reservations` - Admin endpoint to clear all stale reservations
+
+## Production Logging
+
+### Logger Implementation
+- Development: Full console logging for debugging
+- Production: Logs suppressed for clean deployment
+- Location: `/lib/logger.js`
+
+### Usage
+```javascript
+import logger from '@/lib/logger';
+
+// Only logs in development
+logger.log('Debug information');
+logger.error('Error details');
+logger.warn('Warning message');
+```
+
+**Never use `console.log` directly in production code** - always use the logger.
+
 ## Important Notes
 
 - Uses hybrid rendering - static pages with dynamic API routes
@@ -505,4 +573,5 @@ See `INVENTORY.md` for complete documentation.
 - Markdown pages use async components due to Remark's async processing
 - Blog posts include SEO-optimized metadata generation
 - Dynamic route parameters must be awaited in Next.js 15 (e.g., `const { slug } = await params`)
-- Requires environment variables: `NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY` and `STRIPE_SECRET_KEY`
+- **Webhook URL must include www subdomain** to avoid 307 redirects
+- **Never use `cleanUrls: true` in vercel.json** with Next.js App Router - causes API route conflicts
