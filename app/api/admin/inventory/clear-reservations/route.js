@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
-import { withAuth } from '@/lib/auth-middleware';
+import { requireAdminAuth } from '@/lib/auth-middleware';
 import { Redis } from '@upstash/redis';
-import { addAuditLog } from '@/lib/audit-log';
+import { logAdminAction } from '@/lib/audit-log';
 import logger from '@/lib/logger';
 
 const redis = process.env.UPSTASH_REDIS_REST_URL && process.env.UPSTASH_REDIS_REST_TOKEN
@@ -53,7 +53,7 @@ async function handler(req) {
     }
 
     // Log the action
-    await addAuditLog({
+    await logAdminAction({
       action: 'clear_all_reservations',
       userId: 'admin',
       details: {
@@ -75,5 +75,5 @@ async function handler(req) {
   }
 }
 
-export const POST = withAuth(handler);
-export const DELETE = withAuth(handler);
+export const POST = requireAdminAuth(handler);
+export const DELETE = requireAdminAuth(handler);
