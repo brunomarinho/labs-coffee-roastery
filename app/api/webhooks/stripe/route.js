@@ -8,17 +8,10 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY)
 const endpointSecret = process.env.STRIPE_WEBHOOK_SECRET
 
 export async function POST(req) {
-  // Debug: Log that webhook was received
-  console.log('[WEBHOOK] Received webhook request');
-  
   const payload = await req.text()
   const sig = req.headers.get('stripe-signature')
   
-  console.log('[WEBHOOK] Signature present:', !!sig);
-  console.log('[WEBHOOK] Webhook secret configured:', !!endpointSecret);
-  
   if (!endpointSecret) {
-    console.error('[WEBHOOK] STRIPE_WEBHOOK_SECRET not configured');
     logger.error('STRIPE_WEBHOOK_SECRET not configured')
     return NextResponse.json(
       { error: 'Webhook secret not configured' },
@@ -52,13 +45,6 @@ export async function POST(req) {
 
 async function processWebhook(event) {
   try {
-    // TEMPORARY: Debug logging for production issue
-    console.log(`[WEBHOOK DEBUG] Processing: ${event.type}`, {
-      sessionId: event.data.object?.id,
-      inventoryId: event.data.object?.metadata?.inventory_id,
-      reservationCreated: event.data.object?.metadata?.reservation_created,
-    });
-    
     // Log the incoming event for debugging
     logger.log(`Processing Stripe webhook: ${event.type}`, {
       sessionId: event.data.object?.id,
@@ -91,15 +77,11 @@ async function processWebhook(event) {
           
           if (reservationCreated) {
             // Use atomic confirmation (decrements inventory and releases reservation)
-            console.log(`[WEBHOOK DEBUG] Calling confirmPurchase for ${inventoryId}, session ${session.id}`);
             purchaseQuantity = await confirmPurchase(inventoryId, session.id);
-            console.log(`[WEBHOOK DEBUG] confirmPurchase returned: ${purchaseQuantity}`);
             
             if (purchaseQuantity > 0) {
-              console.log(`[WEBHOOK DEBUG] ✅ Success: cleared ${purchaseQuantity} units`);
               logger.log(`✅ Purchase confirmed for ${inventoryId}: ${purchaseQuantity} units processed via reservation system`);
             } else {
-              console.log(`[WEBHOOK DEBUG] ⚠️ No reservation found for session ${session.id}`);
               logger.warn(`⚠️ No reservation found for session ${session.id}, checking for stale reservation...`);
               
               // Try to clean up any stale reservations for this session
