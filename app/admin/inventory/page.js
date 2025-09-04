@@ -37,7 +37,7 @@ export default function InventoryAdmin() {
         sessionStorage.removeItem('adminSessionExpiry')
       }
     }
-  }, [])
+  }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
     if (isAuthenticated && sessionToken) {
@@ -47,7 +47,7 @@ export default function InventoryAdmin() {
       
       return () => clearInterval(interval)
     }
-  }, [isAuthenticated, sessionToken])
+  }, [isAuthenticated, sessionToken]) // eslint-disable-line react-hooks/exhaustive-deps
 
   const setupSessionTimer = (expiryDate) => {
     const now = new Date()
