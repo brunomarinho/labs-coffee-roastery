@@ -31,18 +31,27 @@ export async function POST(req) {
     )
   }
   
-  // Return early to optimize response time
-  // Process the webhook asynchronously
-  processWebhookAsync(event).catch(error => {
-    logger.error('Error processing webhook async:', error);
-  });
+  // Process the webhook synchronously but efficiently
+  // We need to ensure it actually runs
+  try {
+    await processWebhook(event);
+  } catch (error) {
+    logger.error('Error processing webhook:', error);
+    // Still return success to Stripe to prevent retries for processing errors
+  }
   
-  // Return success immediately to Stripe
   return NextResponse.json({ received: true });
 }
 
-async function processWebhookAsync(event) {
+async function processWebhook(event) {
   try {
+    // TEMPORARY: Debug logging for production issue
+    console.log(`[WEBHOOK DEBUG] Processing: ${event.type}`, {
+      sessionId: event.data.object?.id,
+      inventoryId: event.data.object?.metadata?.inventory_id,
+      reservationCreated: event.data.object?.metadata?.reservation_created,
+    });
+    
     // Log the incoming event for debugging
     logger.log(`Processing Stripe webhook: ${event.type}`, {
       sessionId: event.data.object?.id,
@@ -75,11 +84,15 @@ async function processWebhookAsync(event) {
           
           if (reservationCreated) {
             // Use atomic confirmation (decrements inventory and releases reservation)
+            console.log(`[WEBHOOK DEBUG] Calling confirmPurchase for ${inventoryId}, session ${session.id}`);
             purchaseQuantity = await confirmPurchase(inventoryId, session.id);
+            console.log(`[WEBHOOK DEBUG] confirmPurchase returned: ${purchaseQuantity}`);
             
             if (purchaseQuantity > 0) {
+              console.log(`[WEBHOOK DEBUG] ✅ Success: cleared ${purchaseQuantity} units`);
               logger.log(`✅ Purchase confirmed for ${inventoryId}: ${purchaseQuantity} units processed via reservation system`);
             } else {
+              console.log(`[WEBHOOK DEBUG] ⚠️ No reservation found for session ${session.id}`);
               logger.warn(`⚠️ No reservation found for session ${session.id}, checking for stale reservation...`);
               
               // Try to clean up any stale reservations for this session
