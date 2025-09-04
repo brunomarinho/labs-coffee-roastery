@@ -3,6 +3,7 @@ import { requireAdminAuth, getClientIP } from '@/lib/auth-middleware'
 import { logAdminAction } from '@/lib/audit-log'
 import { cleanupOrphanedReservations } from '@/lib/redis-reservations'
 import redis from '@/lib/redis'
+import logger from '@/lib/logger'
 
 export const POST = requireAdminAuth(async (req) => {
   try {
@@ -37,7 +38,7 @@ export const POST = requireAdminAuth(async (req) => {
         await redis.del(key)
       }
       
-      console.log(`Force cleanup: removed ${cleanedReservations} reservations`)
+      logger.log(`Force cleanup: removed ${cleanedReservations} reservations`)
     } else {
       // Run normal cleanup operation
       cleanedReservations = await cleanupOrphanedReservations()
@@ -68,7 +69,7 @@ export const POST = requireAdminAuth(async (req) => {
       stats: cleanupStats
     })
   } catch (error) {
-    console.error('Error during reservation cleanup:', error)
+    logger.error('Error during reservation cleanup:', error)
     return NextResponse.json(
       { error: 'Erro durante limpeza de reservas' },
       { status: 500 }
@@ -158,7 +159,7 @@ export const GET = requireAdminAuth(async (req) => {
       lastUpdated: new Date().toISOString()
     })
   } catch (error) {
-    console.error('Error analyzing reservations:', error)
+    logger.error('Error analyzing reservations:', error)
     return NextResponse.json(
       { error: 'Erro ao analisar reservas' },
       { status: 500 }

@@ -1,11 +1,12 @@
 import redis from '@/lib/redis';
 import crypto from 'crypto';
+import logger from '@/lib/logger';
 
 export async function POST(request) {
   try {
     // Check if Redis is available
     if (!redis) {
-      console.error('Redis not available for authentication');
+      logger.error('Redis not available for authentication');
       return Response.json({ 
         error: 'Sistema de autenticação indisponível.' 
       }, { status: 503 });
@@ -38,7 +39,7 @@ export async function POST(request) {
     // Verify password using constant-time comparison
     const adminPassword = process.env.ADMIN_PASSWORD;
     if (!adminPassword) {
-      console.error('ADMIN_PASSWORD environment variable not set');
+      logger.error('ADMIN_PASSWORD environment variable not set');
       return Response.json({ 
         error: 'Configuração do servidor inválida.' 
       }, { status: 500 });
@@ -115,7 +116,7 @@ export async function POST(request) {
     });
 
   } catch (error) {
-    console.error('Admin login error:', error);
+    logger.error('Admin login error:', error);
     return Response.json({ 
       error: 'Erro interno do servidor.' 
     }, { status: 500 });
@@ -150,7 +151,7 @@ export async function DELETE(request) {
     return Response.json({ success: true });
 
   } catch (error) {
-    console.error('Admin logout error:', error);
+    logger.error('Admin logout error:', error);
     return Response.json({ 
       error: 'Erro interno do servidor.' 
     }, { status: 500 });
@@ -183,6 +184,6 @@ async function logAuditEvent(event) {
     await redis.ltrim(auditKey, 0, 999);
     await redis.expire(auditKey, 2592000); // 30 days
   } catch (error) {
-    console.error('Failed to log audit event:', error);
+    logger.error('Failed to log audit event:', error);
   }
 }

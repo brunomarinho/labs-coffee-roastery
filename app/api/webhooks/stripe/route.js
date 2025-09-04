@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server'
 import Stripe from 'stripe'
 import { decrementInventory } from '@/lib/redis'
 import { confirmPurchase, releaseReservation } from '@/lib/redis-reservations'
+import logger from '@/lib/logger'
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY)
 const endpointSecret = process.env.STRIPE_WEBHOOK_SECRET
@@ -11,7 +12,7 @@ export async function POST(req) {
   const sig = req.headers.get('stripe-signature')
   
   if (!endpointSecret) {
-    console.error('STRIPE_WEBHOOK_SECRET not configured')
+    logger.error('STRIPE_WEBHOOK_SECRET not configured')
     return NextResponse.json(
       { error: 'Webhook secret not configured' },
       { status: 500 }
@@ -23,14 +24,31 @@ export async function POST(req) {
   try {
     event = stripe.webhooks.constructEvent(payload, sig, endpointSecret)
   } catch (err) {
-    console.error('Webhook signature verification failed:', err.message)
+    logger.error('Webhook signature verification failed:', err.message)
     return NextResponse.json(
       { error: `Webhook Error: ${err.message}` },
       { status: 400 }
     )
   }
   
+  // Return early to optimize response time
+  // Process the webhook asynchronously
+  processWebhookAsync(event).catch(error => {
+    logger.error('Error processing webhook async:', error);
+  });
+  
+  // Return success immediately to Stripe
+  return NextResponse.json({ received: true });
+}
+
+async function processWebhookAsync(event) {
   try {
+    // Log the incoming event for debugging
+    logger.log(`Processing Stripe webhook: ${event.type}`, {
+      sessionId: event.data.object?.id,
+      metadata: event.data.object?.metadata,
+    });
+    
     switch (event.type) {
       case 'checkout.session.completed': {
         const session = event.data.object
@@ -38,6 +56,19 @@ export async function POST(req) {
         // Get inventory ID from metadata
         const inventoryId = session.metadata?.inventory_id
         const reservationCreated = session.metadata?.reservation_created === 'true'
+        
+        logger.log('Processing completed checkout:', {
+          sessionId: session.id,
+          inventoryId,
+          reservationCreated,
+          paymentStatus: session.payment_status,
+        });
+        
+        // Only process if payment was successful
+        if (session.payment_status !== 'paid') {
+          logger.log('Payment not completed, skipping inventory update');
+          break;
+        }
         
         if (inventoryId) {
           let purchaseQuantity = 0;
@@ -47,23 +78,30 @@ export async function POST(req) {
             purchaseQuantity = await confirmPurchase(inventoryId, session.id);
             
             if (purchaseQuantity > 0) {
-              console.log(`Purchase confirmed for ${inventoryId}: ${purchaseQuantity} units processed via reservation system`);
+              logger.log(`✅ Purchase confirmed for ${inventoryId}: ${purchaseQuantity} units processed via reservation system`);
             } else {
-              console.warn(`No reservation found for session ${session.id}, falling back to direct inventory decrement`);
+              logger.warn(`⚠️ No reservation found for session ${session.id}, checking for stale reservation...`);
+              
+              // Try to clean up any stale reservations for this session
+              const releasedQty = await releaseReservation(inventoryId, session.id);
+              if (releasedQty > 0) {
+                logger.log(`🧹 Cleaned up stale reservation: ${releasedQty} units`);
+              }
+              
               // Fallback to direct inventory decrement
               const newQuantity = await decrementInventory(inventoryId, 1);
-              console.log(`Fallback: Inventory decremented for ${inventoryId}: new quantity = ${newQuantity}`);
+              logger.log(`📉 Fallback: Inventory decremented for ${inventoryId}: new quantity = ${newQuantity}`);
               purchaseQuantity = 1;
             }
           } else {
             // No reservation system - use legacy direct decrement
             const newQuantity = await decrementInventory(inventoryId, 1);
-            console.log(`Legacy: Inventory decremented for ${inventoryId}: new quantity = ${newQuantity}`);
+            logger.log(`📉 Legacy: Inventory decremented for ${inventoryId}: new quantity = ${newQuantity}`);
             purchaseQuantity = 1;
           }
           
           // Log successful payment with purchase details
-          console.log('Payment successful:', {
+          logger.log('Payment successful:', {
             sessionId: session.id,
             productId: session.metadata?.product_id,
             inventoryId: inventoryId,
@@ -74,7 +112,7 @@ export async function POST(req) {
           });
         } else {
           // Product without inventory tracking
-          console.log('Payment successful (no inventory):', {
+          logger.log('Payment successful (no inventory):', {
             sessionId: session.id,
             productId: session.metadata?.product_id,
             customerEmail: session.customer_details?.email,
@@ -96,13 +134,13 @@ export async function POST(req) {
           const releasedQuantity = await releaseReservation(inventoryId, session.id);
           
           if (releasedQuantity > 0) {
-            console.log(`Released reservation: ${releasedQuantity} units of ${inventoryId} from expired session ${session.id}`);
+            logger.log(`Released reservation: ${releasedQuantity} units of ${inventoryId} from expired session ${session.id}`);
           } else {
-            console.log(`No reservation to release for expired session ${session.id}`);
+            logger.log(`No reservation to release for expired session ${session.id}`);
           }
         }
         
-        console.log('Checkout session expired:', {
+        logger.log('Checkout session expired:', {
           sessionId: session.id,
           productId: session.metadata?.product_id,
           inventoryId: inventoryId,
@@ -113,16 +151,11 @@ export async function POST(req) {
       }
       
       default:
-        console.log(`Unhandled event type ${event.type}`)
+        logger.log(`Unhandled event type ${event.type}`)
     }
-    
-    return NextResponse.json({ received: true })
   } catch (error) {
-    console.error('Error processing webhook:', error)
-    return NextResponse.json(
-      { error: 'Error processing webhook' },
-      { status: 500 }
-    )
+    logger.error('Error processing webhook:', error)
+    // Don't throw here since we already returned success to Stripe
   }
 }
 

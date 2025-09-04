@@ -3,6 +3,7 @@ import Stripe from 'stripe'
 import getProductsData from '../../../utils/loadProducts'
 import { getInventory } from '@/lib/redis'
 import { reserveInventory, getAvailableInventory } from '@/lib/redis-reservations'
+import logger from '@/lib/logger'
 
 // Initialize Stripe only when needed to avoid build-time errors
 let stripe
@@ -139,7 +140,7 @@ export async function POST(request) {
 
     // Reserve inventory atomically after session creation
     if (product.inventoryId) {
-      console.log(`Attempting to reserve inventory for product ${product.id}, session ${session.id}`);
+      logger.log(`Attempting to reserve inventory for product ${product.id}, session ${session.id}`);
       
       // Get client IP for rate limiting
       const clientIP = request.headers.get('x-forwarded-for')?.split(',')[0] || 
@@ -154,10 +155,10 @@ export async function POST(request) {
         try {
           await stripe.checkout.sessions.expire(session.id);
         } catch (expireError) {
-          console.error('Failed to expire session after reservation failure:', expireError);
+          logger.error('Failed to expire session after reservation failure:', expireError);
         }
         
-        console.log(`Reservation failed for product ${product.id}, session ${session.id}: ${reservationResult.error}`);
+        logger.log(`Reservation failed for product ${product.id}, session ${session.id}: ${reservationResult.error}`);
         return NextResponse.json({ error: reservationResult.error || 'Produto esgotado' }, { status: 400 })
       }
 
@@ -169,9 +170,9 @@ export async function POST(request) {
             reservation_created: 'true',
           },
         });
-        console.log(`Successfully reserved inventory for product ${product.id}, session ${session.id}`);
+        logger.log(`Successfully reserved inventory for product ${product.id}, session ${session.id}`);
       } catch (updateError) {
-        console.error('Failed to update session metadata:', updateError);
+        logger.error('Failed to update session metadata:', updateError);
         // Don't fail the checkout for this - the reservation is still valid
       }
     }
@@ -182,7 +183,7 @@ export async function POST(request) {
       inventoryId: product.inventoryId || null
     })
   } catch (error) {
-    console.error('Checkout session creation failed:', error)
+    logger.error('Checkout session creation failed:', error)
     return NextResponse.json(
       { error: 'Erro ao processar pagamento. Tente novamente.' },
       { status: 500 }

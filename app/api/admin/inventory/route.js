@@ -5,6 +5,7 @@ import { requireAdminAuth, getClientIP } from '@/lib/auth-middleware'
 import { logAdminAction } from '@/lib/audit-log'
 import { getAvailableInventory } from '@/lib/redis-reservations'
 import redis from '@/lib/redis'
+import logger from '@/lib/logger'
 
 export const GET = requireAdminAuth(async (req) => {
   try {
@@ -22,7 +23,7 @@ export const GET = requireAdminAuth(async (req) => {
           reservedQuantities[inventoryId] = parseInt(reserved || 0)
         }
       } catch (error) {
-        console.warn('Failed to get reserved quantities:', error)
+        logger.warn('Failed to get reserved quantities:', error)
       }
     }
     
@@ -44,7 +45,7 @@ export const GET = requireAdminAuth(async (req) => {
               hasRedisEntry = true
             }
           } catch (error) {
-            console.warn(`Failed to get quantity for ${inventoryId}:`, error)
+            logger.warn(`Failed to get quantity for ${inventoryId}:`, error)
           }
         }
         
@@ -85,7 +86,7 @@ export const GET = requireAdminAuth(async (req) => {
       lastUpdated: new Date().toISOString()
     })
   } catch (error) {
-    console.error('Error getting inventory:', error)
+    logger.error('Error getting inventory:', error)
     return NextResponse.json(
       { error: 'Erro ao buscar inventário' },
       { status: 500 }
@@ -117,7 +118,7 @@ export const POST = requireAdminAuth(async (req) => {
           isNewEntry = true
         }
       } catch (error) {
-        console.warn(`Failed to check existing inventory for ${inventoryId}:`, error)
+        logger.warn(`Failed to check existing inventory for ${inventoryId}:`, error)
       }
     }
     
@@ -145,10 +146,10 @@ export const POST = requireAdminAuth(async (req) => {
         newQuantity = quantity
         
         if (isNewEntry) {
-          console.log(`Created new inventory entry for ${inventoryId} with quantity ${quantity}`)
+          logger.log(`Created new inventory entry for ${inventoryId} with quantity ${quantity}`)
         }
       } catch (error) {
-        console.error(`Failed to set inventory for ${inventoryId}:`, error)
+        logger.error(`Failed to set inventory for ${inventoryId}:`, error)
         throw new Error('Failed to set inventory')
       }
     }
@@ -175,7 +176,7 @@ export const POST = requireAdminAuth(async (req) => {
       message: 'Estoque atualizado com sucesso'
     })
   } catch (error) {
-    console.error('Error updating inventory:', error)
+    logger.error('Error updating inventory:', error)
     return NextResponse.json(
       { error: 'Erro ao atualizar estoque' },
       { status: 500 }

@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server'
 import { requireAdminAuth, getClientIP } from '@/lib/auth-middleware'
 import { getAuditLog, getAuditLogStats, logAdminAction } from '@/lib/audit-log'
+import logger from '@/lib/logger'
 
 export const GET = requireAdminAuth(async (req) => {
   try {
@@ -32,7 +33,7 @@ export const GET = requireAdminAuth(async (req) => {
     
     return NextResponse.json(response)
   } catch (error) {
-    console.error('Error getting audit log:', error)
+    logger.error('Error getting audit log:', error)
     return NextResponse.json(
       { error: 'Erro ao buscar log de auditoria' },
       { status: 500 }
