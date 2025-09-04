@@ -8,10 +8,17 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY)
 const endpointSecret = process.env.STRIPE_WEBHOOK_SECRET
 
 export async function POST(req) {
+  // Debug: Log that webhook was received
+  console.log('[WEBHOOK] Received webhook request');
+  
   const payload = await req.text()
   const sig = req.headers.get('stripe-signature')
   
+  console.log('[WEBHOOK] Signature present:', !!sig);
+  console.log('[WEBHOOK] Webhook secret configured:', !!endpointSecret);
+  
   if (!endpointSecret) {
+    console.error('[WEBHOOK] STRIPE_WEBHOOK_SECRET not configured');
     logger.error('STRIPE_WEBHOOK_SECRET not configured')
     return NextResponse.json(
       { error: 'Webhook secret not configured' },
@@ -172,8 +179,5 @@ async function processWebhook(event) {
   }
 }
 
-export const config = {
-  api: {
-    bodyParser: false,
-  },
-}
+// Note: In App Router, we handle raw body directly with req.text()
+// No need for the Pages Router config export
