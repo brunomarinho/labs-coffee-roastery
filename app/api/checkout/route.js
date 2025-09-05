@@ -105,7 +105,7 @@ export async function POST(request) {
           key: 'cpf',
           label: {
             type: 'custom',
-            custom: 'CPF (000.000.000-00 ou 00000000000)',
+            custom: 'CPF (Necessário para entrega)',
           },
           type: 'text',
           text: {
