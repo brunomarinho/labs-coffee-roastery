@@ -95,6 +95,7 @@ export async function POST(request) {
       mode: 'payment',
       success_url: `${origin}/obrigado`,
       cancel_url: `${origin}/produtos/${product.slug}`,
+      locale: 'auto', // Automatically detect customer's preferred language
       // Shipping address collection for Brazil
       shipping_address_collection: {
         allowed_countries: ['BR'],
