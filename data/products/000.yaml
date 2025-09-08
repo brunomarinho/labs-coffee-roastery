@@ -1,14 +1,14 @@
 id: "teste"
 inventoryId: "inv_000"
 slug: produto-teste
-name: "001"
+name: "000"
 featured: true
 category: coffee
-visible: true
+visible: false
 
 # Descrição e Notas
 description: >
-  Escolha óbvia no cupping — e também o primeiro café que comprei do Ivan. Acidez média, morango maduro que evolui para framboesa, suculento. É o tipo de café que mostra o que a torra clara pode proporcionar. O Ivan é um dos raros produtores brasileiros que atende pequenas torrefações e torradores “caseiros”. Enquanto a maioria vende sacas, ele vende cafés verdes direto para quem quer experimentar. Isso já diz muito sobre a filosofia dele — e combina com a nossa.
+  Testing product
 notas: Acidez Média, Fruta Vermelha, Suculento
 
 # Comercial

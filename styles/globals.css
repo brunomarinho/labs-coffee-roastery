@@ -567,8 +567,12 @@ p.small {
 }
 
 .product-description.markdown-content p {
-  line-height: 1.6;
+  
   color: var(--color-gray-dark);
+}
+
+body > main > div.product-description.markdown-content {
+  max-width: 100%;
 }
 
 .product-description.markdown-content a {
