@@ -8,7 +8,7 @@ Mameluca é também uma oportunidade para mais pessoas conhecerem torras claras 
 
 Nossos cafés existem intencionalmente em quantidades limitadas. Não é jogada de marketing — algo que me incomoda profundamente no mercado brasileiro, onde "edições limitadas" aparecem toda semana e tudo é "exclusivo". Nossa limitação é real: uso um torrador de prova com baixa capacidade, sou apenas eu cuidando de todo o processo e dependo de produtores que vendam quantidades pequenas (de 1-3kg).
 
-Essa escolha de não escalar é proposital. Permite experimentar sem medo. Posso, por exemplo, torrar o mesmo café em dois perfis diferentes — um mais ácido e floral, outro equilibrado — e vender como experimento para quiser comparar como a curva de torra transforma completamente a bebida. É uma forma de educar através da experiência direta.
+Essa escolha de não escalar é proposital. Permite experimentar sem medo. Posso, por exemplo, torrar o mesmo café em dois perfis diferentes — um mais ácido e floral, outro equilibrado — e vender como experimento para quem tem curiosidade de comparar como a curva de torra transforma completamente a bebida. É uma forma de educar através da experiência direta.
 
 No final, Mameluca existe porque acredito que precisamos repensar nossa relação com o café. Não como commodity que bebemos no automático, mas como experiência que merece atenção. E isso me leva a uma reflexão maior sobre como consumimos café no Brasil — mas essa é conversa para outro momento.
 

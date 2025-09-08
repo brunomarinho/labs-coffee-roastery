@@ -4,6 +4,7 @@ import Header from '../../../components/Header'
 import Footer from '../../../components/Footer'
 import ProductDetailClient from '../../../components/ProductDetailClient'
 import getProductsData from '../../../utils/loadProducts'
+import { parseMarkdown } from '../../../utils/parseMarkdown'
 
 export async function generateStaticParams() {
   const productsData = getProductsData()
@@ -64,6 +65,9 @@ export default async function ProductDetail({ params }) {
   if (!product) {
     notFound()
   }
+
+  // Process markdown description to HTML with links
+  const descriptionHtml = await parseMarkdown(product.description || '')
 
   // Generate structured data for the product
   const structuredData = {
@@ -126,7 +130,11 @@ export default async function ProductDetail({ params }) {
       />
       <Header />
       <main className="container">
-        <ProductDetailClient product={product} categories={productsData.categories} />
+        <ProductDetailClient 
+          product={product} 
+          categories={productsData.categories}
+          descriptionHtml={descriptionHtml}
+        />
       </main>
       <Footer />
     </>

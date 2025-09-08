@@ -35,13 +35,10 @@
   --color-accent: #f97316;
   --color-gray-light: #f3f4f6;
   --color-gray: rgba(55, 65, 81, 0.6);
-  --color-gray-dark: #374151;
+  --color-gray-dark: rgba(0,0,0,0.9);
   --color-border: #e5e7eb;
   
-  /* Shadows */
-  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+
   
   /* Border Radius */
   --radius-sm: 0;
@@ -50,7 +47,7 @@
 
   /* Layout */
   --max-width: 60rem;
-  --max-width--blog: 48rem;
+  --max-width--blog: 64ch;
 }
 
 /* Reset */
@@ -118,6 +115,7 @@ img {
 
 .container p {
   font-size: var(--font-post);
+  font-weight: var(--font-weight-regular);
   
   
 }
@@ -177,17 +175,20 @@ p {
   margin: var(--space-md) 0;
 }
 
+p.small {
+  font-size: var(--font-sm);
+}
+
 /* Buttons & Tags */
 .btn {
-  display: inline-block;
+  display: flex;
+  align-items: center;
   padding: var(--space-sm) var(--space-md);
   border-radius: 0;
   border: none;
   cursor: pointer;
-  font-weight: var(--font-weight-medium);
   font-weight: 600;
   font-size: var(--font-sm);
-  transition: all 0.2s ease;
   text-align: center;
   text-decoration: none;
   text-transform: uppercase;
@@ -196,21 +197,20 @@ p {
   align-items: center;
   justify-content: center;
 
-
-
 }
 
 .tag {
-  display: inline-block;
+  display: flex;
+  align-items: center;
   border-radius: 0;
   border: 2px solid var(--color-primary);
-  font-size: var(--font-md);
-  font-weight: var(--font-weight-medium);
+  font-size: var(--font-sm);
+  font-weight: 600;
   text-align: center;
   cursor: auto;
   height: 44px;
   box-sizing: border-box;
-  padding: var(--space-sm) var(--space-lg);
+  padding: var(--space-sm) var(--space-md);
 }
 
 .btn-primary {
@@ -502,7 +502,7 @@ p {
 .product-detail-hero-image {
   position: relative;
   width: 100%;
-  height: 60vh;
+  aspect-ratio: 3 / 2;
   margin-bottom: var(--space-lg);
 }
 
@@ -564,6 +564,25 @@ p {
 .product-description {
   color: var(--color-gray-dark);
   margin: var(--space-xl) 0;
+}
+
+.product-description.markdown-content p {
+  
+  color: var(--color-gray-dark);
+}
+
+body > main > div.product-description.markdown-content {
+  max-width: 100%;
+}
+
+.product-description.markdown-content a {
+  color: var(--color-primary);
+  text-decoration: underline;
+  transition: opacity 0.2s ease;
+}
+
+.product-description.markdown-content a:hover {
+  opacity: 0.7;
 }
 
 .product-price-large {
@@ -721,6 +740,7 @@ p {
   margin-bottom: var(--space-md);
   font-size: var(--font-post);
   line-height: 1.7;
+  color: var(--color-primary);
 }
 
 .markdown-content ul,
@@ -794,7 +814,7 @@ p.error-message {
   justify-content: center;
   padding: 0 var(--space-lg);
   box-sizing: border-box;
-  border: 2px solid transparent;
+  
 }
 
 /* Image Styles */
@@ -892,7 +912,7 @@ h2.blog-card-title {
 }
 
 .blog-post-date {
-  color: var(--color-gray);
+  color: var(--color-primary);
   font-size: var(--font-md);
 }
 
@@ -1058,9 +1078,6 @@ h2.blog-card-title {
     height: 300px;
   }
 
-  .product-detail-hero-image {
-    height: 40vh;
-  }
   
   .product-detail-name {
     font-size: var(--font-3xl);
@@ -1105,7 +1122,7 @@ h2.blog-card-title {
   }
 
   .container h1 {
-    font-size: 3.8rem;
+    font-size: 3.6rem;
     max-width: 100%;
   }
 

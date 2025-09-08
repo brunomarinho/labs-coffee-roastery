@@ -58,7 +58,7 @@ export default async function BlogPage() {
     <>
       <Header />
       <main className="container">
-        <h1>Blog. Opiniões sobre café.</h1>
+        <h1>Blog</h1>
 
         <div className="blog-grid">
           {posts.length > 0 ? (

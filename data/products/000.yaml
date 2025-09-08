@@ -1,14 +1,14 @@
 id: "teste"
 inventoryId: "inv_000"
 slug: produto-teste
-name: "001"
+name: "000"
 featured: true
 category: coffee
 visible: false
 
 # Descrição e Notas
 description: >
-  Esse café
+  Testing product
 notas: Acidez Média, Fruta Vermelha, Suculento
 
 # Comercial
@@ -17,11 +17,12 @@ quantity: 100g
 stripePriceId: price_1S3cI27gcKVTMW1KhZe8v1bc
 
 # Informações do Café
-produtor: Nome
+produtor: Nome Produtor
 fazenda: Nome
 regiao: Brazil
 variedade: Bourbon
 processo: Natural
+altitude: 1150m
 
 # Recomendações de Preparo
 descanso: 2-3 semanas pós torra

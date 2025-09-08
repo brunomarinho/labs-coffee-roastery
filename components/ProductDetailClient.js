@@ -5,7 +5,7 @@ import { useState, useEffect } from 'react'
 import InventoryStatus from './InventoryStatus'
 
 
-export default function ProductDetailClient({ product, categories }) {
+export default function ProductDetailClient({ product, categories, descriptionHtml }) {
   const [isLoading, setIsLoading] = useState(false)
   const [isReleasingReservation, setIsReleasingReservation] = useState(false)
   
@@ -145,8 +145,8 @@ export default function ProductDetailClient({ product, categories }) {
         <section className="product-detail-card">
           <div className="product-detail-info">
             <h2 className="product-title">{product.name}</h2>
-            <h3 className="product-subtitle">{product.produtor}</h3>
-            <h3 className="product-subtitle">{product.variedade}</h3>
+            <h3 className="product-subtitle">{product.produtor} {product.variedade}</h3>
+            
             <p className="product-notes">{product.notas}</p>
             <div className="product-detail-actions">
               <div className="tag">
@@ -160,16 +160,12 @@ export default function ProductDetailClient({ product, categories }) {
                   
                   return (
                     <>
-                      {isReleasingReservation && (
-                        <div style={{ marginBottom: '10px', padding: '10px', background: '#d4edda', color: '#155724', borderRadius: '4px' }}>
-                          🔄 Liberando reserva anterior...
-                        </div>
-                      )}
+                      
                       {isOutOfStock ? (
                         <button 
                           className="btn btn-secondary btn-buy"
                           disabled
-                          style={{ cursor: 'not-allowed', opacity: 0.6 }}
+                          style={{ cursor: 'not-allowed', opacity: 1 }}
                         >
                           Esgotado
                         </button>
@@ -182,22 +178,29 @@ export default function ProductDetailClient({ product, categories }) {
                           {isLoading ? 'Processando...' : loading ? 'Verificando...' : 'Comprar'}
                         </button>
                       )}
+                     
                     </>
                   )
                 }}
               </InventoryStatus>
               
+              
             </div>
+            
           </div>
+          <p className='small'>Frete incluso</p>
         </section>
-        <p className="product-description">{product.description}</p>
+        <div 
+          className="product-description markdown-content"
+          dangerouslySetInnerHTML={{ __html: descriptionHtml }}
+        />
         
         
         <h2>Detalhes</h2>
         <div className="custom-attributes-grid">
          
           {/* Define which attributes to display */}
-          {['produtor', 'fazenda', 'regiao', 'variedade', 'processo', 'torra'].map((key) => {
+          {['produtor', 'fazenda', 'regiao', 'variedade', 'processo', 'altitude'].map((key) => {
             // Only render if the product has this attribute
             if (!product[key]) return null
             
