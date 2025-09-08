@@ -17,7 +17,7 @@ export default function Obrigado() {
         <div className="thank-you-content">
           <h1>Obrigado pela sua compra!</h1>
           <p>
-            Seu pedido foi recebido com sucesso. Você receberá um email de confirmação 
+            Seu pedido foi recebido com sucesso. Você receberá um email de confirmação do nosso gateway de pagamento Stripe
             com os detalhes da sua compra em breve. Avisaremos por email quando seu pedido for enviado.
           </p>
           <p>
