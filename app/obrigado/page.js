@@ -4,7 +4,7 @@ import Link from 'next/link'
 import ClearReservation from '../../components/ClearReservation'
 
 export const metadata = {
-  title: 'Obrigado pela sua compra - Mameluca',
+  title: 'Obrigado pela sua compra - Mameluca Café',
   description: 'Agradecemos pela sua compra. Você receberá um email de confirmação em breve.',
 }
 

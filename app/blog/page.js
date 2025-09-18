@@ -6,7 +6,7 @@ import Header from '../../components/Header';
 import Footer from '../../components/Footer';
 
 export const metadata = {
-  title: 'Blog | Labs Coffee Roastery',
+  title: 'Blog | Mameluca Café',
   description: 'Artigos sobre café, torra, métodos de preparo e muito mais',
 };
 

@@ -5,8 +5,8 @@ import Footer from '../../components/Footer'
 import { parseMarkdown } from '../../utils/parseMarkdown'
 
 export const metadata = {
-  title: 'Termos de Uso | Labs Coffee Roastery',
-  description: 'Termos de uso e condições gerais da Labs Coffee Roastery',
+  title: 'Termos de Uso | Mameluca Café',
+  description: 'Termos de uso e condições gerais da Mameluca Café',
 }
 
 export default async function TermosPage() {

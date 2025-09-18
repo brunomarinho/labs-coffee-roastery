@@ -5,8 +5,8 @@ import Footer from '../../components/Footer'
 import { parseMarkdown } from '../../utils/parseMarkdown'
 
 export const metadata = {
-  title: 'Política de Privacidade | Labs Coffee Roastery',
-  description: 'Política de privacidade e proteção de dados da Labs Coffee Roastery',
+  title: 'Política de Privacidade | Mameluca Café',
+  description: 'Política de privacidade e proteção de dados da Mameluca Café',
 }
 
 export default async function PrivacidadePage() {

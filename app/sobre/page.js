@@ -5,7 +5,7 @@ import Footer from '../../components/Footer'
 import { parseMarkdown } from '../../utils/parseMarkdown'
 
 export const metadata = {
-  title: 'Sobre Nós - Mameluca',
+  title: 'Sobre Nós - Mameluca Café',
   description: 'Conheça nossa história e missão.',
 }
 
