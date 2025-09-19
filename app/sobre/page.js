@@ -3,11 +3,15 @@ import path from 'path'
 import Header from '../../components/Header'
 import Footer from '../../components/Footer'
 import { parseMarkdown } from '../../utils/parseMarkdown'
+import { generateMetadata as generateSeoMetadata, getPageSeo } from '@/lib/seo'
 
-export const metadata = {
-  title: 'Sobre Nós - Mameluca Café',
-  description: 'Conheça nossa história e missão.',
-}
+const pageSeo = getPageSeo('about')
+export const metadata = generateSeoMetadata({
+  title: pageSeo.title,
+  description: pageSeo.description,
+  keywords: pageSeo.keywords,
+  url: '/sobre'
+})
 
 export default async function About() {
   const filePath = path.join(process.cwd(), 'content', 'sobre.md')

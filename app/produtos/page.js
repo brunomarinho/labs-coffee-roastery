@@ -2,17 +2,18 @@ import Header from '../../components/Header'
 import Footer from '../../components/Footer'
 import ProductsWithInventory from '../../components/ProductsWithInventory'
 import getProductsData from '../../utils/loadProducts'
+import { generateMetadata as generateSeoMetadata, getPageSeo } from '@/lib/seo'
 
 // Force dynamic rendering due to real-time inventory checks
 export const dynamic = 'force-dynamic'
 
-export const metadata = {
-  title: 'Cafés - Mameluca Café',
-  description: 'Explore nossa coleção de cafés brasileiros de torra clara.',
-  alternates: {
-    canonical: `${process.env.NEXT_PUBLIC_SITE_URL || 'https://mamelucacafe.com.br'}/produtos`,
-  },
-}
+const pageSeo = getPageSeo('products')
+export const metadata = generateSeoMetadata({
+  title: pageSeo.title,
+  description: pageSeo.description,
+  keywords: pageSeo.keywords,
+  url: '/produtos'
+})
 
 export default function Products() {
   const productsData = getProductsData()

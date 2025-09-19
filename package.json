@@ -11,7 +11,8 @@
     "test:ui": "playwright test --ui",
     "test:debug": "playwright test --debug",
     "test:report": "playwright show-report",
-    "test:headed": "playwright test --headed"
+    "test:headed": "playwright test --headed",
+    "seo:check": "node scripts/seo-monitor.js"
   },
   "dependencies": {
     "@upstash/redis": "^1.35.3",

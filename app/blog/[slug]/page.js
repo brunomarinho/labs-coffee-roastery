@@ -9,6 +9,7 @@ import { notFound } from 'next/navigation';
 import Header from '../../../components/Header';
 import Footer from '../../../components/Footer';
 import { processExternalLinks } from '../../../utils/processMarkdownLinks';
+import { generateBlogMetadata as generateSeoBlogMetadata, JsonLd, generateArticleSchema, generateBreadcrumbSchema, combineSchemas } from '@/lib/seo';
 
 async function getPostData(slug) {
   const filePath = path.join(process.cwd(), 'content', 'blog', `${slug}.md`);
@@ -69,40 +70,17 @@ export async function generateStaticParams() {
 export async function generateMetadata({ params }) {
   const { slug } = await params;
   const post = await getPostData(slug);
-  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://mamelucacafe.com.br';
-  
+
   if (!post) {
     return {
       title: 'Artigo não encontrado | Mameluca',
     };
   }
-  
-  return {
-    title: `${post.title} | Mameluca`,
-    description: post.description,
-    keywords: `${post.title}, café especial, blog café, mameluca blog`,
-    openGraph: {
-      title: `${post.title} | Mameluca`,
-      description: post.description,
-      type: 'article',
-      publishedTime: post.date,
-      images: post.image ? [{
-        url: post.image,
-        width: 1200,
-        height: 630,
-        alt: post.title,
-      }] : [],
-    },
-    twitter: {
-      card: 'summary_large_image',
-      title: `${post.title} | Mameluca`,
-      description: post.description,
-      images: post.image ? [post.image] : [],
-    },
-    alternates: {
-      canonical: `${baseUrl}/blog/${slug}`,
-    },
-  };
+
+  return generateSeoBlogMetadata({
+    ...post,
+    excerpt: post.description
+  });
 }
 
 function formatDate(dateString) {
@@ -119,13 +97,24 @@ function formatDate(dateString) {
 export default async function BlogPostPage({ params }) {
   const { slug } = await params;
   const post = await getPostData(slug);
-  
+
   if (!post) {
     notFound();
   }
-  
+
+  // Generate structured data
+  const breadcrumbSchema = generateBreadcrumbSchema([
+    { name: 'Home', url: '/' },
+    { name: 'Blog', url: '/blog' },
+    { name: post.title }
+  ]);
+
+  const articleSchema = generateArticleSchema(post);
+  const structuredData = combineSchemas([breadcrumbSchema, articleSchema]);
+
   return (
     <>
+      <JsonLd data={structuredData} id="article-structured-data" />
       <Header />
       <main className="container">
         <article className="blog-post">

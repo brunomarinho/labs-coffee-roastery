@@ -3,11 +3,13 @@ import path from 'path'
 import Header from '../../components/Header'
 import Footer from '../../components/Footer'
 import { parseMarkdown } from '../../utils/parseMarkdown'
+import { generateMetadata as generateSeoMetadata } from '@/lib/seo'
 
-export const metadata = {
-  title: 'Política de Privacidade | Mameluca Café',
+export const metadata = generateSeoMetadata({
+  title: 'Política de Privacidade',
   description: 'Política de privacidade e proteção de dados da Mameluca Café',
-}
+  url: '/privacidade'
+})
 
 export default async function PrivacidadePage() {
   const filePath = path.join(process.cwd(), 'content', 'privacidade.md')

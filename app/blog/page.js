@@ -4,11 +4,15 @@ import matter from 'gray-matter';
 import Link from 'next/link';
 import Header from '../../components/Header';
 import Footer from '../../components/Footer';
+import { generateMetadata as generateSeoMetadata, getPageSeo } from '@/lib/seo';
 
-export const metadata = {
-  title: 'Blog | Mameluca Café',
-  description: 'Artigos sobre café, torra, métodos de preparo e muito mais',
-};
+const pageSeo = getPageSeo('blog');
+export const metadata = generateSeoMetadata({
+  title: pageSeo.title,
+  description: pageSeo.description,
+  keywords: pageSeo.keywords,
+  url: '/blog'
+});
 
 async function getBlogPosts() {
   const blogDirectory = path.join(process.cwd(), 'content', 'blog');

@@ -1,3 +1,5 @@
+import { getBaseUrl } from '@/lib/seo'
+
 export const dynamic = 'force-static'
 
 export default function robots() {
@@ -13,6 +15,6 @@ export default function robots() {
         '/api/admin/*'
       ],
     },
-    sitemap: `${process.env.NEXT_PUBLIC_SITE_URL || 'https://mamelucacafe.com.br'}/sitemap.xml`,
+    sitemap: `${getBaseUrl()}/sitemap.xml`,
   }
 }

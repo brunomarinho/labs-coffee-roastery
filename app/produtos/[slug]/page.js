@@ -1,10 +1,10 @@
 import { notFound } from 'next/navigation'
-import Script from 'next/script'
 import Header from '../../../components/Header'
 import Footer from '../../../components/Footer'
 import ProductDetailClient from '../../../components/ProductDetailClient'
 import getProductsData from '../../../utils/loadProducts'
 import { parseMarkdown } from '../../../utils/parseMarkdown'
+import { generateProductMetadata as generateSeoProductMetadata, JsonLd, generateProductSchema, generateBreadcrumbSchema, combineSchemas } from '@/lib/seo'
 
 export async function generateStaticParams() {
   const productsData = getProductsData()
@@ -19,40 +19,14 @@ export async function generateMetadata({ params }) {
   const { slug } = await params
   const productsData = getProductsData()
   const product = productsData.products.find(p => p.slug === slug)
-  
+
   if (!product) {
     return {
       title: 'Produto Não Encontrado',
     }
   }
 
-  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://mamelucacafe.com.br'
-  
-  return {
-    title: `${product.name} - Mameluca`,
-    description: product.description,
-    keywords: `${product.name}, café ${product.processo}, ${product.regiao}, ${product.variedade}, café especial brasileiro`,
-    openGraph: {
-      title: `${product.name} - Mameluca`,
-      description: product.description,
-      images: [{
-        url: product.images[0],
-        width: 1200,
-        height: 630,
-        alt: `${product.name} - ${product.notas}`,
-      }],
-      type: 'website',
-    },
-    twitter: {
-      card: 'summary_large_image',
-      title: `${product.name} - Mameluca`,
-      description: product.description,
-      images: [product.images[0]],
-    },
-    alternates: {
-      canonical: `${baseUrl}/produtos/${slug}`,
-    },
-  }
+  return generateSeoProductMetadata(product)
 }
 
 export default async function ProductDetail({ params }) {
@@ -69,65 +43,19 @@ export default async function ProductDetail({ params }) {
   // Process markdown description to HTML with links
   const descriptionHtml = await parseMarkdown(product.description || '')
 
-  // Generate structured data for the product
-  const structuredData = {
-    '@context': 'https://schema.org',
-    '@type': 'Product',
-    name: product.name,
-    description: product.description,
-    image: product.images,
-    brand: {
-      '@type': 'Brand',
-      name: 'Mameluca'
-    },
-    offers: {
-      '@type': 'Offer',
-      price: product.price,
-      priceCurrency: 'BRL',
-      availability: 'https://schema.org/InStock',
-      seller: {
-        '@type': 'Organization',
-        name: 'Mameluca'
-      }
-    },
-    aggregateRating: product.rating ? {
-      '@type': 'AggregateRating',
-      ratingValue: product.rating,
-      reviewCount: product.reviewCount || 1
-    } : undefined,
-    additionalProperty: [
-      {
-        '@type': 'PropertyValue',
-        name: 'Produtor',
-        value: product.produtor
-      },
-      {
-        '@type': 'PropertyValue',
-        name: 'Processo',
-        value: product.processo
-      },
-      {
-        '@type': 'PropertyValue',
-        name: 'Região',
-        value: product.regiao
-      },
-      {
-        '@type': 'PropertyValue',
-        name: 'Variedade',
-        value: product.variedade
-      }
-    ].filter(prop => prop.value)
-  }
+  // Generate structured data
+  const breadcrumbSchema = generateBreadcrumbSchema([
+    { name: 'Home', url: '/' },
+    { name: 'Cafés', url: '/produtos' },
+    { name: product.name }
+  ])
+
+  const productSchema = generateProductSchema(product)
+  const structuredData = combineSchemas([breadcrumbSchema, productSchema])
 
   return (
     <>
-      <Script
-        id="product-structured-data"
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify(structuredData)
-        }}
-      />
+      <JsonLd data={structuredData} id="product-structured-data" />
       <Header />
       <main className="container">
         <ProductDetailClient 

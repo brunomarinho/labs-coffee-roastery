@@ -2,12 +2,13 @@ import getProductsData from '../utils/loadProducts'
 import fs from 'fs'
 import path from 'path'
 import matter from 'gray-matter'
+import { getBaseUrl } from '@/lib/seo'
 
 export const dynamic = 'force-static'
 
 export default function sitemap() {
   const productsData = getProductsData()
-  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://mamelucacafe.com.br'
+  const baseUrl = getBaseUrl()
   
   // Static pages
   const staticPages = [
