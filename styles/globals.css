@@ -746,7 +746,7 @@ body > main > div.product-description.markdown-content {
 .markdown-content ul,
 .markdown-content ol {
   margin-left: var(--space-lg);
-  margin-bottom: var(--space-md);
+  margin-bottom: var(--space-xl);
 }
 
 .markdown-content li {

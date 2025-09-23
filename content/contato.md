@@ -9,8 +9,8 @@ Tem alguma pergunta sobre nossos cafés, precisa de ajuda com um pedido ou tem a
 
 ## Perguntas Frequentes
 
-### Por que apenas 100g?
-Compramos café verde em pequenas quantidades (1 a 3kg por vez) e torramos num torrador de prova com capacidade limitada. Isso nos permite focar na qualidade de cada lote, mas significa vender em menores quantidades.
+### Por que os pacotes são pequenos?
+Compramos café verde em pequenas quantidades (1 a 3kg por vez) e torramos num torrador de prova com capacidade limitada. Isso nos permite focar na qualidade e consistência, mas significa vender em menores quantidades.
 
 ### Achei muito caro
 É o custo da pequena escala — mas também é o que permite experimentar sem compromissos com alto volume. Vale lembrar que o preço dos cafés inclui frete, o que muitas vezes é o item mais caro de compras online.
@@ -19,7 +19,7 @@ Compramos café verde em pequenas quantidades (1 a 3kg por vez) e torramos num t
 Recomendo esperar 14 dias após a torra. É quando nossos cafés costumam atingir o seu melhor. Mas a curiosidade também faz parte — se quiser experimentar antes, 7 dias já é um bom começo.
 
 ### Posso comprar mais de uma unidade?
-Por enquanto, não. Como produzimos quantidades bem limitadas, preferimos que mais pessoas tenham a chance de experimentar torra clara.
+Pode, mas vai ter que fazer duas compras separadas. Como produzimos quantidades bem limitadas, preferimos que mais pessoas tenham a chance de experimentar torra clara.
 
 ### As torras funcionam para filtrado ou espresso?
 São otimizadas para filtrados, onde as nuances de uma torra clara bem executada se tornam mais interessantes. Para espresso, depende do seu gosto: funcionam bem em proporções modernas (1:3), resultando em shots mais leves e complexos. Se você prefere espresso clássico — com crema abundante e corpo pesado — nossas torras não são indicadas.

@@ -1,6 +1,6 @@
 id: "001"
 inventoryId: "inv_001"
-slug: cafe-001
+slug: 001-ivan-santana-bourbon-amarelo
 name: "001"
 featured: true
 category: coffee
@@ -18,7 +18,7 @@ stripePriceId: price_1S3M6X7gcKVTMW1Kvtbv2Xai
 
 # Informações do Café
 produtor: Ivan Santana
-fazenda: Fazenda Jangada
+fazenda: Jangada
 regiao: Cabo Verde, MG
 variedade: Bourbon Amarelo
 processo: Natural
