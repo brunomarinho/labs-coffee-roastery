@@ -14,6 +14,7 @@ export default async function SelectedProducts() {
   const featuredProductsWithInventory = await Promise.all(
     visibleProducts
       .filter(product => product.featured)
+      .reverse() // Show most recently added (highest ID) first
       .slice(0, 4)
       .map(async (product) => {
         const inventoryId = product.inventoryId || `inv_${product.id}`

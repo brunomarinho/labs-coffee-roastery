@@ -101,7 +101,9 @@ export function getProductsByCategory(categoryId) {
 // Helper function to get featured products
 export function getFeaturedProducts() {
   const { products } = getProductsData()
-  return products.filter(product => product.featured === true)
+  return products
+    .filter(product => product.featured === true)
+    .reverse() // Show most recently added (highest ID) first
 }
 
 // Helper function to get available (not sold out) products
