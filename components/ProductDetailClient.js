@@ -145,9 +145,11 @@ export default function ProductDetailClient({ product, categories, descriptionHt
         <section className="product-detail-card">
           <div className="product-detail-info">
             <h2 className="product-title">{product.name}</h2>
-            <h3 className="product-subtitle">{product.produtor} {product.variedade}</h3>
-            
-            <p className="product-notes">{product.notas}</p>
+            <h3 className="product-subtitle">{product.subtitle || `${product.produtor} ${product.variedade}`}</h3>
+
+            {product.notas && (
+              <p className="product-notes">{product.notas}</p>
+            )}
             <div className="product-detail-actions">
               <div className="tag">
                 {product.quantity} | R$ {product.price}

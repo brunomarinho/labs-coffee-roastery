@@ -20,11 +20,11 @@ export default function ProductCard({ product, categories }) {
       </div>
       <h2 className="product-title">{product.name}</h2>
       <h3 className="product-subtitle">
-        {product.produtor || 'Ivan Santana'} {product.variedade || 'Bourbon'}
+        {product.subtitle || `${product.produtor || 'Ivan Santana'} ${product.variedade || 'Bourbon'}`}
       </h3>
-      <p className="product-notes">
-        {product.notas || 'Acidez Média, Doce de Laranja, Especiarias.'}
-      </p>
+      {product.notas && (
+        <p className="product-notes">{product.notas}</p>
+      )}
       <div className="product-card-price">
         R$ {product.price.toFixed(2).replace('.', ',')}
       </div>
