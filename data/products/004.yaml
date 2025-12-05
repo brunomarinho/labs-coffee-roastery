@@ -1,0 +1,34 @@
+id: "004"
+inventoryId: "inv_004"
+slug: 004-ivan-santana-catuai-amarelo
+name: "004"
+featured: true
+category: coffee
+visible: true
+
+# Descrição e Notas
+description: >
+  Notas de tangerina se destacam no aroma. E ai vem a acidez, percepção de goiaba que aparece de 5-10 pós extração. É um café que que muda muito a cada momento, surpreendendo.
+notas: "Acidez Alta, Goiaba, Suculento"
+
+# Comercial
+price: 60
+quantity: 140g
+stripePriceId: price_1SaeyZ7gcKVTMW1KijRtL5AS
+
+# Informações do Café
+produtor: Ivan Santana
+fazenda: Jangada
+regiao: Cabo Verde, MG
+variedade: Catuaí Amarelo
+processo: Natural Fermentado
+altitude: 1150m
+
+# Recomendações de Preparo
+descanso: 2-3 semanas pós torra
+filtrados: 90c, 1:17, pouca agitação
+espresso: 94c, 1:3
+
+# Imagens
+images:
+  - /images/products/001.jpg

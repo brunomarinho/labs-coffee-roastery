@@ -3,7 +3,7 @@ subtitle: "Café Surpresa"  # ← Add this field
 inventoryId: "inv_003"
 slug: 003-cafe-surpresa
 name: "003"
-featured: true
+featured: false
 category: coffee
 visible: true
 

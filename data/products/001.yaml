@@ -2,7 +2,7 @@ id: "001"
 inventoryId: "inv_001"
 slug: 001-ivan-santana-bourbon-amarelo
 name: "001"
-featured: true
+featured: false
 category: coffee
 visible: true
 

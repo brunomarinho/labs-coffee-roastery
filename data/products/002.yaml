@@ -2,7 +2,7 @@ id: "002"
 inventoryId: "inv_002"
 slug: 002-raquel-meirelles-topazio
 name: "002"
-featured: true
+featured: false
 category: coffee
 visible: true
 

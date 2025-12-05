@@ -1,0 +1,34 @@
+id: "006"
+inventoryId: "inv_006"
+slug: 006-luiz-alberto-catucai
+name: "006"
+featured: true
+category: coffee
+visible: true
+
+# Descrição e Notas
+description: >
+  Logo após a extração vem aroma de damasco e pêssego. E quando a temperatura abaixa, uma aroma de especiarias aparece no fundo — cardamomo? pimenta branca? — criando uma complexidade inesperada, mas sem ser enjoativo.
+notas: "Acidez Média, Damasco, Suculento"
+
+# Comercial
+price: 50
+quantity: 140g
+stripePriceId: price_1Saf017gcKVTMW1KyH5HZlSg
+
+# Informações do Café
+produtor: Luiz Alberto
+fazenda: D´Castro
+regiao: Juruaia, MG
+variedade: Catucaí Amarelo
+processo: Fermentação Anaeróbica 196h
+altitude: 1000m
+
+# Recomendações de Preparo
+descanso: 2-3 semanas pós torra
+filtrados: 85c, 1:17, pouca agitação
+espresso: 94c, 1:3
+
+# Imagens
+images:
+  - /images/products/005.jpg
