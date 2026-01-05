@@ -1,14 +1,20 @@
-import { remark } from 'remark'
-import html from 'remark-html'
+import { unified } from 'unified'
+import remarkParse from 'remark-parse'
 import remarkGfm from 'remark-gfm'
+import remarkRehype from 'remark-rehype'
+import rehypeRaw from 'rehype-raw'
+import rehypeStringify from 'rehype-stringify'
 import { processExternalLinks } from './processMarkdownLinks'
 
 export async function parseMarkdown(content) {
-  const result = await remark()
+  const result = await unified()
+    .use(remarkParse)
     .use(remarkGfm)
-    .use(html)
+    .use(remarkRehype, { allowDangerousHtml: true })
+    .use(rehypeRaw)
+    .use(rehypeStringify)
     .process(content)
-  
+
   // Automatically add target="_blank" to external links
   return processExternalLinks(result.toString())
 }

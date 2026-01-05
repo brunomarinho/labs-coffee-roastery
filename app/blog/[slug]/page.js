@@ -1,14 +1,19 @@
 import fs from 'fs';
 import path from 'path';
 import matter from 'gray-matter';
-import { remark } from 'remark';
-import html from 'remark-html';
-import gfm from 'remark-gfm';
+import { unified } from 'unified';
+import remarkParse from 'remark-parse';
+import remarkGfm from 'remark-gfm';
+import remarkRehype from 'remark-rehype';
+import rehypeRaw from 'rehype-raw';
+import rehypeStringify from 'rehype-stringify';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import Header from '../../../components/Header';
 import Footer from '../../../components/Footer';
+import InstagramEmbed from '../../../components/InstagramEmbed';
 import { processExternalLinks } from '../../../utils/processMarkdownLinks';
+import { processInstagramEmbeds } from '../../../utils/processInstagramEmbeds';
 import { generateBlogMetadata as generateSeoBlogMetadata, JsonLd, generateArticleSchema, generateBreadcrumbSchema, combineSchemas } from '@/lib/seo';
 
 async function getPostData(slug) {
@@ -28,20 +33,26 @@ async function getPostData(slug) {
       .trim()
       .substring(0, 160);
     
-    const processedContent = await remark()
-      .use(gfm)
-      .use(html)
+    const processedContent = await unified()
+      .use(remarkParse)
+      .use(remarkGfm)
+      .use(remarkRehype, { allowDangerousHtml: true })
+      .use(rehypeRaw)
+      .use(rehypeStringify)
       .process(content);
     
     // Process external links to open in new tab
     const contentWithExternalLinks = processExternalLinks(processedContent.toString());
-    
+
+    // Convert Instagram URLs to embeds
+    const contentWithInstagram = processInstagramEmbeds(contentWithExternalLinks);
+
     return {
       slug,
       title: data.title || 'Sem título',
       date: data.date || '',
       description: data.description || firstParagraph,
-      content: contentWithExternalLinks,
+      content: contentWithInstagram,
       image: data.image,
     };
   } catch (error) {
@@ -115,6 +126,7 @@ export default async function BlogPostPage({ params }) {
   return (
     <>
       <JsonLd data={structuredData} id="article-structured-data" />
+      <InstagramEmbed />
       <Header />
       <main className="container">
         <article className="blog-post">
