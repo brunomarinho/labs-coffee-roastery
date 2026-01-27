@@ -1,0 +1,35 @@
+id: "007"
+subtitle: "Café Surpresa"  # ← Add this field
+inventoryId: "inv_007"
+slug: 007-cafe-surpresa
+name: "007"
+featured: false
+category: coffee
+visible: false
+
+# Descrição e Notas
+description: >
+  Café surpresa para os membros da comunidade /r/CafeEspecialBR/. 
+notas: ""
+
+# Comercial
+price: 30
+quantity: 2x70g (140g)
+stripePriceId: price_1SSKow7gcKVTMW1KX2kBgO6J
+
+# Informações do Café
+produtor: Surpresa
+fazenda: Surpresa
+regiao: Surpresa
+variedade: Surpresa
+processo: Surpresa
+altitude: Surpresa
+
+# Recomendações de Preparo
+descanso: 3-4 semanas pós torra
+filtrados: 85-90c, 1:17, pouca agitação
+espresso: 94c, 1:3
+
+# Imagens
+images:
+  - /images/products/003.jpg
