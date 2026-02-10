@@ -16,7 +16,7 @@ Compramos café verde em pequenas quantidades (1 a 3kg por vez) e torramos num t
 É o custo da pequena escala — mas também é o que permite experimentar sem compromissos com alto volume. Vale lembrar que o preço dos cafés inclui frete, o que muitas vezes é o item mais caro de compras online.
 
 ### Quando devo abrir e tomar meu café?
-Recomendo esperar 14 dias após a torra. É quando nossos cafés costumam atingir o seu melhor. Mas a curiosidade também faz parte — se quiser experimentar antes, 7 dias já é um bom começo.
+Nossos cafés são torrados em torra clara, o que significa que eles precisam de mais tempo para revelar todo o seu potencial. Recomendo esperar pelo menos 14 dias após a torra para a primeira xícara. A partir daí, o café continua evoluindo — muitos clientes relatam que o sabor atinge o auge entre 4 e 6 semanas. Não tenha pressa. Deixe o café te surpreender.
 
 ### Posso comprar mais de uma unidade?
 Pode, mas vai ter que fazer duas compras separadas. Como produzimos quantidades bem limitadas, preferimos que mais pessoas tenham a chance de experimentar torra clara.
