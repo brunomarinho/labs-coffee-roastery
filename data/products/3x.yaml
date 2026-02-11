@@ -1,0 +1,35 @@
+id: "3-cafes-fevereiro"
+inventoryId: "inv_3-cafes-fevereiro"
+slug: 3-cafes-fevereiro
+name: ""
+subtitle: "3 Cafés"  # ← Add this field
+featured: false
+category: coffee
+visible: false
+
+# Descrição e Notas
+description: >
+  Os três cafés da Mameluca em um combo só. Ivan Santana Catuaí Amarelo, Ivan Santana Mundo Novo e Luiz Alberto Catucaí Amarelo — três variedades, três experiências de torra clara brasileira.
+notas: ""
+
+# Comercial
+price: 150
+quantity: 3x140g
+stripePriceId: price_1SzfuA7gcKVTMW1KuacZjfHO
+
+# Informações do Café
+produtor: 
+fazenda: 
+regiao: 
+variedade: 
+processo: 
+altitude: 
+
+# Recomendações de Preparo
+descanso: 
+filtrados: 
+espresso: 
+
+# Imagens
+images:
+  - /images/products/3-cafes-fevereiro.jpg

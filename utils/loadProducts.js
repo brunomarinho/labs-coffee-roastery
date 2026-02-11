@@ -30,7 +30,7 @@ function loadAllProducts() {
         const product = yaml.load(content)
         
         // Validate that the product has required fields
-        if (product && product.id && product.name) {
+        if (product && product.id) {
           products.push(product)
         } else {
           console.warn(`Invalid product data in file: ${file}`)

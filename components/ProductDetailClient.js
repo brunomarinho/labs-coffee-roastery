@@ -145,7 +145,9 @@ export default function ProductDetailClient({ product, categories, descriptionHt
         <section className="product-detail-card">
           <div className="product-detail-info">
             <h2 className="product-title">{product.name}</h2>
-            <h3 className="product-subtitle">{product.subtitle || `${product.produtor} ${product.variedade}`}</h3>
+            {(product.subtitle || product.produtor || product.variedade) && (
+              <h3 className="product-subtitle">{product.subtitle || [product.produtor, product.variedade].filter(Boolean).join(' ')}</h3>
+            )}
 
             {product.notas && (
               <p className="product-notes">{product.notas}</p>
@@ -198,41 +200,41 @@ export default function ProductDetailClient({ product, categories, descriptionHt
         />
         
         
-        <h2>Detalhes</h2>
-        <div className="custom-attributes-grid">
-         
-          {/* Define which attributes to display */}
-          {['produtor', 'fazenda', 'regiao', 'variedade', 'processo', 'altitude'].map((key) => {
-            // Only render if the product has this attribute
-            if (!product[key]) return null
-            
-            return (
-              <p key={key} className="custom-attribute">
-                <strong>{key.charAt(0).toUpperCase() + key.slice(1)}</strong> <br /> {
-                  Array.isArray(product[key]) ? product[key].join(', ') : product[key]
-                }
-              </p>
-            )
-          })}
-        </div>
+        {['produtor', 'fazenda', 'regiao', 'variedade', 'processo', 'altitude'].some((key) => product[key]) && (
+          <>
+            <h2>Detalhes</h2>
+            <div className="custom-attributes-grid">
+              {['produtor', 'fazenda', 'regiao', 'variedade', 'processo', 'altitude'].map((key) => {
+                if (!product[key]) return null
+                return (
+                  <p key={key} className="custom-attribute">
+                    <strong>{key.charAt(0).toUpperCase() + key.slice(1)}</strong> <br /> {
+                      Array.isArray(product[key]) ? product[key].join(', ') : product[key]
+                    }
+                  </p>
+                )
+              })}
+            </div>
+          </>
+        )}
 
-        <h2>Recomendações</h2>
-        <div className="custom-attributes-grid">
-         
-          {/* Define which attributes to display */}
-          {['descanso', 'filtrados', 'espresso'].map((key) => {
-            // Only render if the product has this attribute
-            if (!product[key]) return null
-            
-            return (
-              <p key={key} className="custom-attribute">
-                <strong>{key.charAt(0).toUpperCase() + key.slice(1)}</strong> <br /> {
-                  Array.isArray(product[key]) ? product[key].join(', ') : product[key]
-                }
-              </p>
-            )
-          })}
-        </div>
+        {['descanso', 'filtrados', 'espresso'].some((key) => product[key]) && (
+          <>
+            <h2>Recomendações</h2>
+            <div className="custom-attributes-grid">
+              {['descanso', 'filtrados', 'espresso'].map((key) => {
+                if (!product[key]) return null
+                return (
+                  <p key={key} className="custom-attribute">
+                    <strong>{key.charAt(0).toUpperCase() + key.slice(1)}</strong> <br /> {
+                      Array.isArray(product[key]) ? product[key].join(', ') : product[key]
+                    }
+                  </p>
+                )
+              })}
+            </div>
+          </>
+        )}
         
         {/*
         <div className="product-details">
