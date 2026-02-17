@@ -2,7 +2,7 @@ id: "005"
 inventoryId: "inv_005"
 slug: 005-ivan-santana-mundo-novo
 name: "005"
-featured: true
+featured: false
 category: coffee
 visible: true
 
