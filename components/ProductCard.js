@@ -1,11 +1,15 @@
 import Link from 'next/link'
 import Image from 'next/image'
 
-export default function ProductCard({ product, categories }) {
+export default function ProductCard({ product, categories, index = 0 }) {
   const categoryDisplay = categories?.find(cat => cat.id === product.category)?.displayName || product.category
 
   return (
-    <Link href={`/produtos/${product.slug}`} className="product-card">
+    <Link
+      href={`/produtos/${product.slug}`}
+      className="product-card animate-fade-up"
+      style={{ animationDelay: `${index * 80}ms` }}
+    >
       <div className="product-card-image">
         <Image
           src={product.images[0]}

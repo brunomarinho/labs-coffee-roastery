@@ -1,13 +1,15 @@
 'use client'
 
 import Image from 'next/image'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import InventoryStatus from './InventoryStatus'
+import ScrollReveal from './ScrollReveal'
 
 
 export default function ProductDetailClient({ product, categories, descriptionHtml }) {
   const [isLoading, setIsLoading] = useState(false)
   const [isReleasingReservation, setIsReleasingReservation] = useState(false)
+  const [checkoutError, setCheckoutError] = useState(null)
   
   // Check if returning from Stripe checkout and release reservation
   useEffect(() => {
@@ -82,6 +84,7 @@ export default function ProductDetailClient({ product, categories, descriptionHt
     }
 
     setIsLoading(true)
+    setCheckoutError(null)
 
     try {
       // Call our API to create checkout session
@@ -115,7 +118,7 @@ export default function ProductDetailClient({ product, categories, descriptionHt
       window.location.href = data.url
     } catch (err) {
       console.error('Checkout error:', err)
-      alert(err.message || 'Erro ao processar pagamento. Tente novamente.')
+      setCheckoutError(err.message || 'Erro ao processar pagamento. Tente novamente.')
     } finally {
       setIsLoading(false)
     }
@@ -132,7 +135,7 @@ export default function ProductDetailClient({ product, categories, descriptionHt
         <span>{product.name}</span>
       </div>
       */}
-        <div className="product-detail-hero-image">
+        <div className="product-detail-hero-image animate-scale-settle">
             <Image
               src={product.images[0]}
               alt={product.name}
@@ -142,7 +145,7 @@ export default function ProductDetailClient({ product, categories, descriptionHt
               sizes="(max-width: 768px) 100vw, 50vw"
             />
         </div>
-        <section className="product-detail-card">
+        <section className="product-detail-card animate-fade-up" style={{ animationDelay: '150ms' }}>
           <div className="product-detail-info">
             <h2 className="product-title">{product.name}</h2>
             {(product.subtitle || product.produtor || product.variedade) && (
@@ -174,12 +177,12 @@ export default function ProductDetailClient({ product, categories, descriptionHt
                           Esgotado
                         </button>
                       ) : (
-                        <button 
+                        <button
                           onClick={handleCheckout}
-                          className="btn btn-primary btn-buy"
+                          className={`btn btn-primary btn-buy${isLoading || loading ? ' btn-loading' : ''}`}
                           disabled={isLoading || loading}
                         >
-                          {isLoading ? 'Processando...' : loading ? 'Verificando...' : 'Comprar'}
+                          Comprar
                         </button>
                       )}
                      
@@ -190,7 +193,9 @@ export default function ProductDetailClient({ product, categories, descriptionHt
               
               
             </div>
-            
+            {checkoutError && (
+              <p className="checkout-error">{checkoutError}</p>
+            )}
           </div>
           <p className='small'>Frete incluso</p>
         </section>
@@ -201,7 +206,7 @@ export default function ProductDetailClient({ product, categories, descriptionHt
         
         
         {['produtor', 'fazenda', 'regiao', 'variedade', 'processo', 'altitude'].some((key) => product[key]) && (
-          <>
+          <ScrollReveal>
             <h2>Detalhes</h2>
             <div className="custom-attributes-grid">
               {['produtor', 'fazenda', 'regiao', 'variedade', 'processo', 'altitude'].map((key) => {
@@ -215,11 +220,11 @@ export default function ProductDetailClient({ product, categories, descriptionHt
                 )
               })}
             </div>
-          </>
+          </ScrollReveal>
         )}
 
         {['descanso', 'filtrados', 'espresso'].some((key) => product[key]) && (
-          <>
+          <ScrollReveal delay={100}>
             <h2>Recomendações</h2>
             <div className="custom-attributes-grid">
               {['descanso', 'filtrados', 'espresso'].map((key) => {
@@ -233,7 +238,7 @@ export default function ProductDetailClient({ product, categories, descriptionHt
                 )
               })}
             </div>
-          </>
+          </ScrollReveal>
         )}
         
         {/*

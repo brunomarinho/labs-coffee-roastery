@@ -1,7 +1,7 @@
-import { getAllInventory } from '@/lib/redis'
 import { getAvailableInventory } from '@/lib/redis-reservations'
 import ProductCard from './ProductCard'
 import NoProductsPlaceholder from './NoProductsPlaceholder'
+import ScrollReveal from './ScrollReveal'
 
 export default async function ProductsWithInventory({ products, categories }) {
   // Filter out products where visible is explicitly false
@@ -66,36 +66,35 @@ export default async function ProductsWithInventory({ products, categories }) {
       {availableProductsByCategory.length > 0 && (
         <>
           <div className="category-section">
-            <h2>Disponíveis</h2>
+            <h2 className="animate-fade-up">Disponíveis</h2>
             {availableProductsByCategory.map((category) => (
               <div key={category.id}>
                 <div className="product-grid">
-                  {category.products.map((product) => (
-                    <ProductCard key={product.id} product={product} categories={categories} />
+                  {category.products.map((product, index) => (
+                    <ProductCard key={product.id} product={product} categories={categories} index={index} />
                   ))}
                 </div>
               </div>
-              
             ))}
           </div>
         </>
       )}
-      
+
       {soldOutProductsByCategory.length > 0 && (
-        <>
+        <ScrollReveal>
           <div className="category-section">
             <h2>Anteriores</h2>
             {soldOutProductsByCategory.map((category) => (
               <div key={category.id} className="category-section">
                 <div className="product-grid">
-                  {category.products.map((product) => (
-                    <ProductCard key={product.id} product={product} categories={categories} />
+                  {category.products.map((product, index) => (
+                    <ProductCard key={product.id} product={product} categories={categories} index={index} />
                   ))}
                 </div>
               </div>
             ))}
           </div>
-        </>
+        </ScrollReveal>
       )}
     </>
   )

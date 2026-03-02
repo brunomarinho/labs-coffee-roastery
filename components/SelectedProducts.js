@@ -91,8 +91,8 @@ export default async function SelectedProducts() {
   return (
     <section className="container">
       <div className="product-grid">
-        {productsToShow.map((product) => (
-          <ProductCard key={product.id} product={product} categories={productsData.categories} />
+        {productsToShow.map((product, index) => (
+          <ProductCard key={product.id} product={product} categories={productsData.categories} index={index} />
         ))}
       </div>
     </section>
