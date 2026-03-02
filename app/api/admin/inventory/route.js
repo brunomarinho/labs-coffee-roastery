@@ -61,6 +61,7 @@ export const GET = requireAdminAuth(async (req) => {
           id: product.id,
           inventoryId,
           name: product.name,
+          subtitle: product.subtitle || [product.produtor, product.variedade].filter(Boolean).join(' '),
           category: product.category,
           quantity,
           reserved,

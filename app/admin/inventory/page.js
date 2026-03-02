@@ -377,6 +377,7 @@ export default function InventoryAdmin() {
             <thead>
               <tr>
                 <th>ID</th>
+                <th>Subtitle</th>
                 <th>Nome</th>
                 <th>Inventory ID</th>
                 <th>Estoque Atual</th>
@@ -400,6 +401,7 @@ export default function InventoryAdmin() {
                       <span className={styles.newBadge}>Novo!</span>
                     )}
                   </td>
+                  <td>{product.subtitle}</td>
                   <td>{product.name}</td>
                   <td>
                     <code className={styles.inventoryId}>{product.inventoryId}</code>
