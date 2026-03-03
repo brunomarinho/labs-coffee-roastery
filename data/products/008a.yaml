@@ -1,0 +1,34 @@
+id: "008a"
+inventoryId: "inv_008a"
+slug: 008a-ivan-santana-bourbon-amarelo
+name: "008a"
+featured: false
+category: coffee
+visible: false
+
+# Descrição e Notas
+description: >
+  Pamonha e milho no aroma — nítido desde o primeiro segundo. Na boca, frutas amarelas com um fundo de melaço e mel que lembra garapa. Quando esfria, vira outro café: chá preto, Earl Grey, um toque herbal que surpreende. É um café exótico, licoroso, que não é pra todo mundo — mas quem gosta, gosta muito. Processo vulcão com 69 horas de fermentação lenta, alternando entre amontado e esparramado. Não é um natural convencional.
+notas: "Acidez Alta, Framboesa, Suculento"
+
+# Comercial
+price: 80
+quantity: 200g
+stripePriceId: price_1T6vNc7gcKVTMW1KyYPNeeF7
+
+# Informações do Café
+produtor: Ivan Santana
+fazenda: Jangada
+regiao: Cabo Verde, MG
+variedade: Bourbon Amarelo
+processo: "Natural"
+altitude: 1150m
+
+# Recomendações de Preparo
+descanso: 2-3 semanas pós torra
+filtrados: 85c, 1:17, pouca agitação
+espresso: 90c, 1:3
+
+# Imagens
+images:
+  - /images/products/004.jpg
