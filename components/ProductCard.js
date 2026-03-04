@@ -22,9 +22,10 @@ export default function ProductCard({ product, categories, index = 0 }) {
           <div className="sold-out-badge">Esgotado</div>
         )}
       </div>
-      <h2 className="product-title">{product.name}</h2>
       <h3 className="product-subtitle">
-        {product.subtitle || `${product.produtor || 'Ivan Santana'} ${product.variedade || 'Bourbon'}`}
+        {product.subtitle || (
+          <>{product.produtor}{product.produtor && product.variedade && <br />}{product.variedade}</>
+        )}
       </h3>
       {product.notas && (
         <p className="product-notes">{product.notas}</p>

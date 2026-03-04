@@ -147,9 +147,12 @@ export default function ProductDetailClient({ product, categories, descriptionHt
         </div>
         <section className="product-detail-card animate-fade-up" style={{ animationDelay: '150ms' }}>
           <div className="product-detail-info">
-            <h2 className="product-title">{product.name}</h2>
             {(product.subtitle || product.produtor || product.variedade) && (
-              <h3 className="product-subtitle">{product.subtitle || [product.produtor, product.variedade].filter(Boolean).join(' ')}</h3>
+              <h3 className="product-subtitle">
+                {product.subtitle || (
+                  <>{product.produtor}{product.produtor && product.variedade && <br />}{product.variedade}</>
+                )}
+              </h3>
             )}
 
             {product.notas && (
@@ -205,15 +208,16 @@ export default function ProductDetailClient({ product, categories, descriptionHt
         />
         
         
-        {['produtor', 'fazenda', 'regiao', 'variedade', 'processo', 'altitude'].some((key) => product[key]) && (
+        {['produtor', 'fazenda', 'regiao', 'variedade', 'processo', 'altitude', 'pago'].some((key) => product[key]) && (
           <ScrollReveal>
             <h2>Detalhes</h2>
             <div className="custom-attributes-grid">
-              {['produtor', 'fazenda', 'regiao', 'variedade', 'processo', 'altitude'].map((key) => {
+              {['produtor', 'fazenda', 'regiao', 'variedade', 'processo', 'altitude', 'pago'].map((key) => {
                 if (!product[key]) return null
+                const labels = { pago: 'Pago ao produtor' }
                 return (
                   <p key={key} className="custom-attribute">
-                    <strong>{key.charAt(0).toUpperCase() + key.slice(1)}</strong> <br /> {
+                    <strong>{labels[key] || key.charAt(0).toUpperCase() + key.slice(1)}</strong> <br /> {
                       Array.isArray(product[key]) ? product[key].join(', ') : product[key]
                     }
                   </p>

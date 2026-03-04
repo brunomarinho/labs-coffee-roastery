@@ -1,0 +1,35 @@
+id: "009"
+inventoryId: "inv_009"
+slug: 009-raquel-meirelles-catigua-mg2
+name: ""
+featured: true
+category: coffee
+visible: true
+
+# Descrição e Notas
+description: >
+  Abacaxi no primeiro gole — acidez viva, quase carbonatada, que abre pra uma suculência intensa. Caramelo salgado e melaço no fundo, com finalização longa que puxa pra uma nota alcoólica/fermentada sutil. Corpo leve, xícara limpa, muito fácil de beber. Café safra 2024 de um lote que acabou se perdendo no estoque por quase um ano. O verde perdeu umidade com o tempo, então então fui com uma torra ainda mais curta — o perfil ficou mais suave que o original, mas a suculência e a doçura sobreviveram. Só 2 pacotes disponíveis.
+notas: "Acidez Alta, Abacaxi, Suculento"
+
+# Comercial
+price: 50
+quantity: 200g
+stripePriceId: price_1T7Hzt7gcKVTMW1KRDg6rqvc
+
+# Informações do Café
+produtor: Raquel Meirelles
+fazenda: Alvorada
+regiao: Aricanduva, MG
+variedade: Catiguá MG2
+processo: Despolpado
+altitude: 1100m
+pago: R$64,90/kg
+
+# Recomendações de Preparo
+descanso: 2-3 semanas pós torra
+filtrados: 90c, 1:17, pouca agitação
+espresso: 94c, 1:3
+
+# Imagens
+images:
+  - /images/products/002.jpg
