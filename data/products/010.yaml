@@ -1,0 +1,56 @@
+id: "010"
+inventoryId: "inv_010"
+slug: 010-experiencia-3-niveis-arara
+name: ""
+subtitle: "Experiência: Níveis de Torra"
+featured: false
+category: coffee
+visible: false
+
+# Descrição e Notas
+description: >
+  **O mesmo café torrado de três formas diferentes. Três expressões
+  completamente distintas na xícara.**
+
+
+  Cada pacote de 70g é torrado em um nível de desenvolvimento
+  diferente — do mais cru e suculento ao mais encorpado e
+  desenvolvido. A caixa inclui um guia com sugestões para você
+  provar lado a lado e descobrir como diferentes tempos de torra
+  mudam tudo: aroma, acidez, corpo, sabor.
+
+
+  **Nível 1 — Pré-crack**. Cru e suculento, acidez viva, textura
+  de chá. O terroir sem filtro.
+
+
+  **Nível 2 — Ponto ideal**. Acidez vibrante, frutas vermelhas
+  nítidas.
+
+
+  **Nível 3 — Desenvolvido**. Mais corpo, menos acidez, notas
+  tostadas.
+notas: Educativo, Comparativo, Frutas Vermelhas
+
+# Comercial
+price: 120
+quantity: 3x70g
+stripePriceId: price_1T7Hzt7gcKVTMW1KRDg6rqvc
+
+# Informações do Café
+produtor: Ivan Santana
+fazenda: Jangada
+regiao: Cabo Verde, MG
+variedade: Arara
+processo: Natural Fermentado
+altitude: 1150m
+pago: R$64/kg
+
+# Recomendações de Preparo
+descanso: 3-4 semanas pós torra
+filtrados: 90c, 1:17, pouca agitação)
+espresso: 94c, 1:3
+
+# Imagens
+images:
+  - /images/products/experiencia-arara-mar.jpg
