@@ -1,5 +1,7 @@
 # Sobre
 
+### Um torrador de prova e um objetivo: Torra clara de verdade.
+
 Mameluca é um experimento, uma opinião. É uma mistura da minha apreciação e obsessão pelo universo do café — que começou em 2013 — com a oportunidade de mostrar para mais pessoas que o café é, antes de tudo, uma fruta.
 
 Sempre tive curiosidade de empreender com algo relacionado ao café. Uma nano-torrefação foi o modelo mais apropriado para o meu estilo de vida atual, comparado a servir café numa cafeteria, onde existiriam muito mais dependências e custos iniciais. Tenho o privilégio de poder dedicar tempo a esse projeto onde a qualidade vem antes do lucro — e entendo que nem todos têm essa oportunidade no Brasil.

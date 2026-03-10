@@ -114,17 +114,18 @@ img {
   font-weight: var(--font-weight-light);
   font-size: var(--font-hero);
   line-height: 110%;
-  margin-bottom: var(--space-xl);
+  margin-bottom: var(--space-lg);
 }
 
 .hero {
   display: block;
 }
 
-.hero span {
+.hero .hero-subtitle {
   font-size: var(--font-lg);
   font-style: normal;
   font-weight: var(--font-weight-regular);
+  line-height: 1.5;
 }
 
 .container p {
@@ -393,8 +394,9 @@ a:focus-visible {
 .product-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: var(--space-lg);
-  
+  column-gap: var(--space-lg);
+  row-gap: var(--space-xl);
+
 }
 
 .product-card {
