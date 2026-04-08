@@ -1,0 +1,34 @@
+id: "011"
+inventoryId: "inv_011"
+slug: 011-felipe-carvalho-blend-de-geshas
+name: "Felipe Carvalho Blend de Geshas"
+featured: true
+category: coffee
+visible: true
+
+# Descrição e Notas
+description: Floral no aroma, maracujá na boca — acidez viva e limpa que lembra suco de maracujá. Xícara muito limpa, tea-like, com uma suculência que surpreende. Fermentado em bombonas por 24-48 horas após secagem em terreiro suspenso, com “cura” de 2-3 meses em quarto escuro com temperatura e umidade controladas. Um processo longo e cuidadoso que preserva a delicadeza da Gesha.
+notas: Acidez Alta, Maracujá, Floral
+
+# Comercial
+price: 120
+quantity: 200g
+stripePriceId: price_1TJefq7gcKVTMW1KNl2r6iIr
+
+# Informações do Café
+produtor: Felipe Carvalho
+fazenda: Terracota
+regiao: Alta Mogiana, MG
+variedade: Blend de Geshas
+processo: Natural Fermentado
+altitude: 1100m
+pago: R$110/kg
+
+# Recomendações de Preparo
+descanso: 2-3 semanas pós torra
+filtrados: 90c, 1:17, pouca agitação
+espresso: 94c, 1:3
+
+# Imagens
+images:
+  - /images/products/011.png
